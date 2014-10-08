@@ -1,0 +1,132 @@
+\documentclass[a4paper]{book}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{hyperref}
+\usepackage{blindtext}
+
+\begin{document}
+\thispagestyle{empty}
+\begin{center}
+\huge
+\textbf{Software Spezifikation}\\
+\textit{libipc++}
+\end{center}
+
+\pagestyle{empty}
+\pagenumbering{Roman}
+\cleardoublepage
+\tableofcontents
+\cleardoublepage
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\chapter{Einleitung}
+\textit{libipc++} wird als Programmierprojekt im fünften Semester des Bachelor Informatik an der FH Technikum Wien erstellt.
+
+\section{Zweck}
+Dieses Dokument soll die technische, funktionale und nicht-funktionale Aspekte des Projekts erläutern. Ebenfalls werden Performance-Kriterien, sowie Fehlerkriterien erläutert. Am Ende soll die \textit{libipc++} den hier definierten Regeln und Anforderungen entsprechen.
+
+\section{Umfang}
+Für das Projekt werden als erste Schätzung 400 Stunden benötigt. Was pro Person dann 200 Stunden ausmacht. Wobei ungefähr die Hälfte dieser Zeit für Software-Tests zur Verfügung stehen muss. Ausnahme ist natürlich eine reibungslose Programmierung.
+
+\subsection{Versionierung}
+Als Versionierung wird ein Zahlensystem verwendet. Es gibt drei Zahlen in der Versionsnummer, die major number, minor number und patch level. Die Version ist dann wie folgt aufgebaut: $<$major$>$.$<$minor$>$.$<$patch$>$.\newline
+
+\noindent Falls es zu einer Revision eines Patches kommt, dann wird für interne Zwecke eine Revisionsnummer an der Version angehängt, diese sieht dann wie folgt aus: $<$major$>$.$<$minor$>$.$<$patch$>$.$<$revision$>$.
+
+\subsection{Statusberichte}
+Am Ende einer jeden Entwicklungswoche, wird ein Statusbericht angefertigt. Dieser Bericht beinhaltet dann die abgeschlossenen Themen der Woche eines jeden einzelnen Entwicklers beziehungsweise die Probleme die der Entwickler hatte.\newline
+
+\noindent Weiters wird eine Statistik mit den Bereits abgeschlossenen Arbeitspaketen und den noch übrigen angezeigt und eine Zeittabelle mit den bereits aufgebrauchten Stunden eines jeden einzelnen Entwicklers angezeigt.
+
+\subsection{Zeiterfassung}
+Ein jeder Arbeitsschritt der für das Projekt investiert wurde, wird in der Zeiterfassung protokolliert. Dies dient für spätere Zeitschätzungen, sodass man auf diese Ressourcen zurückgreifen kann.
+
+\subsection{Kanban}
+Als Management wird eine abgewandelte Form von Kanban verwendet. Wobei aufgrund der immanenten Studienzeit lokale Änderungen vorgenommen werden können. Diese werden dann im Statusbericht am Ende der Woche protokolliert. Im folgenden werden die Meetings vorgestellt:
+
+\subsubsection{Statusmeeting}
+Findet im unterschied zu Kanban nur einmal die Woche statt. Am Ende einer jeden Woche, in diesem Fall Sonntag, wird ein Treffen vereinbart in dem die Fortschritte der Woche oder etwaige Probleme besprochen werden.
+
+\subsubsection{Root Cause Analysis}
+Dieses Meeting findet gleich nach dem Statusmeeting statt. Hier werden Probleme genauer analysiert, vor allem dauerhafte Problemen oder Tickets die nicht zu lange in einer Station verweilen.
+
+\subsubsection{Operations Review}
+Diese Meeting findet einmal im Monat statt, idealerweise am Ende des Monats nach den Root Cause Analysis. Hier werden die angewendeten Methoden genauer analysiert und gegebenenfalls verbessert. Dieses Meeting macht nur dann Sinn wenn genug Daten für eine Verwertung gesammelt wurden. Falls nicht genug Daten vorhanden sind, dann wird das Meeting um ein Monat verschoben.
+
+\subsubsection{Board}
+Als Board dient \href{https://waffle.io/chronos38/libipc-}{waffle.io}.
+
+\subsubsection{Tickettypen}
+Alle Tickets die in Kanban verwendet werden, wurden übernommen. Diese sind:\newline
+\textbf{Expedite} - Haben hohe Priorität und müssen sofort gemacht werden.\newline
+\textbf{Fixed Date} - Haben einen fixen Termin für die Fertigstellung.\newline
+\textbf{Vage} - Sind nachrangige Tickets mit geringer Priorität.\newline
+\textbf{Standard} - Hat normale Priorität und wird als FIFO behandelt.
+
+\section{Erläuterungen und Begriffe}
+\begin{center}
+\begin{tabular}{|p{3cm}|p{8cm}|}
+\hline
+SRS & Software requirement specification \\
+\hline
+IPC & Interprocess communication \\
+\hline
+\end{tabular}
+\end{center}
+
+\section{Verweise auf sonstige Ressourcen oder Quellen}
+\begin{center}
+\begin{tabular}{|p{3cm}|p{8cm}|}
+\hline
+Statusbericht & \href{docs.google.com}{Google Docs} \\
+\hline
+Zeiterfassung & \href{docs.google.com}{Google Docs} \\
+\hline
+Kanban Board & \href{https://waffle.io/chronos38/libipc-}{GitHub - Waffle} \\
+\hline
+\end{tabular}
+\end{center}
+
+\chapter{Allgemeine Beschreibung}
+\blindtext
+
+\section{Produktperspektive}
+\blindtext
+
+\section{Produktfunktion}
+\blindtext
+
+\section{Benutzermerkmale}
+\blindtext
+
+\section{Einschränkungen}
+\blindtext
+
+\section{Annahme und Abhängigkeiten}
+\blindtext
+
+\section{Aufteilung der Anforderungen}
+\blindtext
+
+\chapter{Spezifische Anforderungen}
+\blindtext
+
+\section{Funktionale Anforderungen}
+\blindtext
+
+\section{Nicht-Funktionale Anforderungen}
+\blindtext
+
+\section{Externe Schnittstellen}
+\blindtext
+
+\section{Anforderungen an Performance}
+\blindtext
+
+\section{Qualitätsanforderungen}
+\blindtext
+
+
+\end{document}
