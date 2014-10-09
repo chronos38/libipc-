@@ -12,7 +12,6 @@
 \textit{libipc++}
 \end{center}
 
-\pagestyle{empty}
 \pagenumbering{Roman}
 \cleardoublepage
 \tableofcontents
@@ -64,6 +63,12 @@ Alle Tickets die in Kanban verwendet werden, wurden übernommen. Diese sind:\new
 \textbf{Fixed Date} - Haben einen fixen Termin für die Fertigstellung.\newline
 \textbf{Vage} - Sind nachrangige Tickets mit geringer Priorität.\newline
 \textbf{Standard} - Hat normale Priorität und wird als FIFO (First In First Out) behandelt.
+
+\subsubsection{Expedite}
+Diese Tickets dürfen mit Vorrang behandelt werden. Sie zählen nicht zu der Limitierung der einzelnen Spalten und müssen sofort abgearbeitet werden.
+
+\subsubsection{Fixed Date}
+Dieses Ticket hat eine normale Priorität bis zur angegebenen Deadline. Falls das Ticket bis zu diesem Zeitpunkt noch nicht fertig ist, dann wird es zu einem \textit{Expedite} konvertiert.
 
 \section{Erläuterungen und Begriffe}
 \begin{center}
