@@ -78,7 +78,13 @@ Kanban & Form von Projektmanagement \\
 \hline
 SRS & Software requirement specification \\
 \hline
+MPC & Multi processing \\
+\hline
 IPC & Interprocess communication \\
+\hline
+OS & Operating system \\
+\hline
+API & Application programming interface \\
 \hline
 FIFO & First In First Out \\
 \hline
@@ -101,16 +107,53 @@ Zeiterfassung & \href{https://docs.google.com/spreadsheet/ccc?key=0AuApAQ4FqnCEd
 \hline
 Kanban Board & \href{https://waffle.io/chronos38/libipc-}{GitHub - Waffle Kanban Management} \\
 \hline
+Boost.Interprocess & \url{http://www.boost.org/doc/libs/1_56_0/doc/html/interprocess.html} \\
+\hline
+OpenMP & \url{http://openmp.org/wp/} \\
+\hline
+Win32 Processing & \url{http://msdn.microsoft.com/en-us/library/windows/desktop/ms684852\%28v=vs.85\%29.aspx} \\
+\hline 
 \end{tabular}
 \end{center}
 
 \chapter{Allgemeine Beschreibung}
-\blindtext
+\textit{libipc++} dient zum Einstatz für Interprozesskommunikation. Der Grund weshalb diese Bibltiothek existieren soll, ist dass es noch keine schöne IPC (Inter process communication) Lösung gibt. Das Ziel dieser Bibliothek ist deshalb eine syntaktische schöne und konsistente API für MPC (Multi processing) und IPC zu bieten.\newline
+
+\noindent Die Bibliothek wird auf allen gängigen und modernen OS (Operating system) lauffähig sein. Abhängigkeiten gibt es nur auf OS-Ebene, wodurch keine weiteren Programmbibliotheken notwendig sind.
 
 \section{Produktperspektive}
-\blindtext
+Als Vergleich soll hier die Boost.Interprocess dienen. Die Boost.Interprocess ist zwar mächtig, jedoch syntaktische nicht sehr elegant und erfordert eine höheres Verständnis für den Endanwender. Im Gegensatz dazu soll \textit{libipc++} eine ähnlich mächtige API (Application programming interface) anbieten, jedoch eine syntaktisch höherwertige API bieten. Das Ziel ist dass der Endanwender kein tieferes Verständnis für die Anwendung braucht. Der Endanwender soll beispielsweise Memory Mapped Files problemlos verwenden können, ohne jedoch deren Ablauf verstehen zu müssen.\newline
+
+\noindent Auch wenn Boost.Interprocess als Hauptvergleichspunkt dient, werden hier nun alle Vergleiche durchgenommen.
+
+\subsection{Boost.Interprocess}
+Das Ziel von Boost.Interprocess ist eine vereinfachte Plattformübergreifende Softwarelösung for MPC und IPC. Es bietet einige Features wie Shared memory oder Memory-mapped files an. Die Bibliothek ist mächtig und sehr stabil und befindet sich nahe am C++ Standard, was schließlich der Grund ist warum die Boost.Interprocess als Referenz ausgewählt wurde.
+Eines der Hauptprobleme an Boost.Interprocess ist nicht nur seine schwer zugängliche Syntax, sondern auch der Overhead den diese mitbringt. Ziel von \textit{libipc++} ist es eine ähnlich mächtige API mit geringeren Overhead und einer schöneren Syntax zu realisieren.
+
+\subsection{OpenMP}
+Neben Boost.Interprocess hat sich die OpenMP als quasi Standard durchgesetzt. Sie wird von allen großen Herstellern und OS unterstützt. Jedoch versucht OpenMP Parallelität durch den C Präprozessor zu realisieren. Diese Art von Design wird als überholt und veraltet erachtet. Aus diesem Grund wurde OpenMP nicht als Referenz zu diesen Projekt gewählt.
 
 \section{Produktfunktion}
+\textit{libipc++} soll wie schon erwähnt eine MPC und IPC bieten, hierzu wird auf Systemressourcen zurückgegriffen. Im folgenden findet sich ein kleiner Überblick über die Funktionalität der Software.
+
+\subsection{Prozess}
+Als Grundfunktion was IPC überhaupt erst notwendig macht, ist es einen neuen Prozess innerhalb eines Programms zur Laufzeit zu starten. Diese Funktionalität ist sehr stark vom verwendeten OS abhängig. In diesem wird daher lediglich das allgemeine Konzept eines Kindprozesses innerhalb eines Programms besprochen.\newline
+
+\noindent Wenn ein ausgeführtes Programm einen neuen Prozess zur Laufzeit startet, dann läuft dieser als Kindprozess des ausführenden Prozesses. Der neue erstellte Prozess besitzt dann eine eigene Laufzeitumgebung was bedeutet dass er einen eigenen virtuellen Speicherbereich vom OS zugewiesen bekommt. Das Ziel eines Prozesses ist es jedoch meist eine Berechnung oder Anweisung parallel durchzuführen, was bedeutet dass es zumindest ein relevantes Ergebnis gibt. Da der Prozess jedoch einen eigenen virtuellen Speicherbereich besitzt, muss der Speicheraustausch über andere Mechanismen stattfinden.
+
+\subsection{Pipes}
+\blindtext
+
+\subsection{Message Queus}
+\blindtext
+
+\subsection{Memory-mapped File}
+\blindtext
+
+\subsection{Semaphore}
+\blindtext
+
+\subsection{Shared Memory}
 \blindtext
 
 \section{Benutzermerkmale}
