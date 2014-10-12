@@ -3,6 +3,16 @@
 \usepackage[ngerman]{babel}
 \usepackage{hyperref}
 \usepackage{blindtext}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+
+\newenvironment{customindent}[1]
+{\begin{list}{}
+	{\setlength{\leftmargin}{#1}}
+    	\item[]
+    }
+{\end{list}}
 
 \begin{document}
 \thispagestyle{empty}
@@ -72,7 +82,7 @@ Dieses Ticket hat eine normale Priorität bis zur angegebenen Deadline. Falls da
 
 \section{Erläuterungen und Begriffe}
 \begin{center}
-\begin{tabular}{|p{3cm}|p{8cm}|}
+\begin{longtable}{|p{3cm}|p{8cm}|}
 \hline
 Kanban & Form von Projektmanagement \\
 \hline
@@ -88,16 +98,30 @@ API & Application programming interface \\
 \hline
 FIFO & First In First Out \\
 \hline
-\end{tabular}
+OPP & Object oriented programming \\
+\hline
+IDE & Integrated development environment \\
+\hline
+LVA & Lehrveranstaltung \\
+\hline
+MSDN & Microsoft Developer Network \\
+\hline
+\end{longtable}
 \end{center}
 
 \section{Verweise auf sonstige Ressourcen oder Quellen}
 \begin{center}
-\begin{tabular}{|p{3cm}|p{8cm}|}
+\begin{longtable}{|p{3cm}|p{8cm}|}
 \hline
-Kanban & \href{http://de.wikipedia.org/wiki/Kanban_(Softwareentwicklung)}{Kanban in der Softwareentwicklung} \\
+FH Technikum Wien & \url{http://www.technikum-wien.at/} \\
 \hline
-Projekt & \href{https://github.com/chronos38/libipc-}{Public Repository auf GitHub} \\
+SRS & \url{https://de.wikipedia.org/wiki/Software_Requirements_Specification} \\
+\hline
+IDE & \url{https://de.wikipedia.org/wiki/Integrierte_Entwicklungsumgebung} \\
+\hline
+Kanban & \url{http://de.wikipedia.org/wiki/Kanban_(Softwareentwicklung)} \\
+\hline
+Project Repository & \url{https://github.com/chronos38/libipc-} \\
 \hline
 Statusbericht & \href{https://docs.google.com/document/d/12IZJyU6WJ3upd81pHYRQ8KWd34AJqNXi5WnBbJPOtIQ/edit?usp=sharing}{Google Docs} \\
 \hline
@@ -107,22 +131,32 @@ Zeiterfassung & \href{https://docs.google.com/spreadsheet/ccc?key=0AuApAQ4FqnCEd
 \hline
 Kanban Board & \href{https://waffle.io/chronos38/libipc-}{GitHub - Waffle Kanban Management} \\
 \hline
+C++ Referenz & \url{http://en.cppreference.com/w/} \\
+\hline
+Design Pattern & \url{https://de.wikipedia.org/wiki/Entwurfsmuster} \\
+\hline
+CMake & \url{http://www.cmake.org/} \\
+\hline
 Boost.Interprocess & \url{http://www.boost.org/doc/libs/1_56_0/doc/html/interprocess.html} \\
 \hline
 OpenMP & \url{http://openmp.org/wp/} \\
 \hline
 Win32 Processing & \url{http://msdn.microsoft.com/en-us/library/windows/desktop/ms684852\%28v=vs.85\%29.aspx} \\
+\hline
+Beej IPC & \url{http://beej.us/guide/bgipc/} \\
+\hline
+MSDN & \url{http://msdn.microsoft.com/en-us/default.aspx} \\
 \hline 
-\end{tabular}
+\end{longtable}
 \end{center}
 
 \chapter{Allgemeine Beschreibung}
-\textit{libipc++} dient zum Einstatz für Interprozesskommunikation. Der Grund weshalb diese Bibltiothek existieren soll, ist dass es noch keine schöne IPC (Inter process communication) Lösung gibt. Das Ziel dieser Bibliothek ist deshalb eine syntaktische schöne und konsistente API für MPC (Multi processing) und IPC zu bieten.\newline
+\textit{libipc++} dient zum Einstatz für Interprozesskommunikation. Der Grund weshalb diese Bibltiothek existieren soll, ist dass es noch keine schöne IPC (Inter process communication) Lösung gibt. Das Ziel dieser Bibliothek ist deshalb eine syntaktische schöne und konsistente API (Application programming interface) für MPC (Multi processing) und IPC zu bieten.\newline
 
 \noindent Die Bibliothek wird auf allen gängigen und modernen OS (Operating system) lauffähig sein. Abhängigkeiten gibt es nur auf OS-Ebene, wodurch keine weiteren Programmbibliotheken notwendig sind.
 
 \section{Produktperspektive}
-Als Vergleich soll hier die Boost.Interprocess dienen. Die Boost.Interprocess ist zwar mächtig, jedoch syntaktische nicht sehr elegant und erfordert eine höheres Verständnis für den Endanwender. Im Gegensatz dazu soll \textit{libipc++} eine ähnlich mächtige API (Application programming interface) anbieten, jedoch eine syntaktisch höherwertige API bieten. Das Ziel ist dass der Endanwender kein tieferes Verständnis für die Anwendung braucht. Der Endanwender soll beispielsweise Memory Mapped Files problemlos verwenden können, ohne jedoch deren Ablauf verstehen zu müssen.\newline
+Als Vergleich soll hier die Boost.Interprocess dienen. Die Boost.Interprocess ist zwar mächtig, jedoch syntaktische nicht sehr elegant und erfordert eine höheres Verständnis für den Endanwender. Im Gegensatz dazu soll \textit{libipc++} eine ähnlich mächtige API anbieten, jedoch eine syntaktisch höherwertige API bieten. Das Ziel ist dass der Endanwender kein tieferes Verständnis für die Anwendung braucht. Der Endanwender soll beispielsweise Memory Mapped Files problemlos verwenden können, ohne jedoch deren Ablauf verstehen zu müssen.\newline
 
 \noindent Auch wenn Boost.Interprocess als Hauptvergleichspunkt dient, werden hier nun alle Vergleiche durchgenommen.
 
@@ -157,21 +191,208 @@ Als Grundfunktion was IPC überhaupt erst notwendig macht, ist es einen neuen Pr
 \blindtext
 
 \section{Benutzermerkmale}
-\blindtext
+Da es sich bei der \textit{libipc++} um eine Programmbibliothek handelt, werden vom Endanwender gewisse Kenntnisse vorausgesetzt, im folgenden werden diese kurz beschrieben.
+
+\subsection{C++}
+Die Bibliothek wird in \texttt{C++} implementiert, was bedeutet dass der Endanwender zumindest fortgeschrittene Kenntnisse in \texttt{C++} aufweisen sollte. Als Mindestvoraussetzung gilt die Version \texttt{C++11}. Verwendet werden mehrere Sprachkonzepte von \texttt{C++}, darunter auch Templates.
+
+\subsection{Design Patterns}
+Ebenfalls wird viel Wert auf Design Patterns gelegt. Wichtig ist dass die Bibliothek leicht erweiterbar und schnell auf Veränderungen reagieren kann. Der Endanwender braucht jedoch nicht unbedingt ein umfangreiches Wissen über Design Patterns, es genügt ein hohes Verständniss über OOP (Object oriented programming).
 
 \section{Einschränkungen}
-\blindtext
+Da \textit{libipc++} als cross-platform Bibliothek entwickelt wird, muss als das Codetool CMake verwendet werden. Unterstützt werden alle gängigen IDEs (Integrated development environment), sowie UNIX makefile.
 
 \section{Annahme und Abhängigkeiten}
-\blindtext
+Die \textit{libipc++} wird als Studentenprojekt an der FH Technikum Wien gemacht. Daraus ergibt sich dass für das Projekt nicht der volle Zeitaufwand aufgebracht werden kann wie in einen eigentlichen Softwareprojekt, da es nebenbei noch andere Projekte und LVAs (Lehrveranstaltungen) gibt.
+
+\subsection{Betriebssystem}
+Entwickelt wird \textit{libipc++} für Windows und Linux, bei Linux speziell ein OpenSUSE Derivat. Der Code wird entsprechend auf diesen beiden OS getestet werden.
+
+\subsection{Nebenberuflich}
+Da eine nebenberufliche Tätigkeit von einen Teammitglied nachgegangen wird, kann es zu einigen Verzögerungen innerhalb des Projektflusses kommen. Es wird jedoch darauf geachtet dass diese Tätigkeit keinen zu großen Einfluss auf das Projekt hat.
+
+\subsection{Andere Lehrveranstaltungen}
+Das Projekt wird neben anderen LVAs (Lehrveranstaltungen) im Studiengang Bachelor Informatik an der FH Technikum Wien gemacht. Dies kann dann natürlich aufgrund von Überkreuzungen zu einer Verzögerung des Projekts führen.
 
 \section{Aufteilung der Anforderungen}
-\blindtext
+Anforderungen die nicht zum jetzigen Release miteinbezogen werden können sind
+\begin{itemize}
+\item serialisieren von Datenobjekten,
+\item umfangreiches Profiling,
+\item Benchmark testing und
+\item Performancetests im allgemeinen.
+\end{itemize}
+
+Diese Features sind für zukünftige Versionen gedacht. Falls es sich jedoch ausgehen sollte diese Features im kommenden Release zu implementieren, dann wird die Spezifikation entsprechen aktualisiert.
 
 \chapter{Spezifische Anforderungen}
-\blindtext
+Im Gegensatz zum zweiten Kapitel, wo nur allgemeine Anforderungen und Beschreibungen vorgenommen wurden, werden hier nun die Anforderungen im Detail spezifiziert. Beginnend mit den funktionalen Anforderungen die Themen wie die Bibliotheksfunktionen beinhalten zu den nicht-funktionalen Anforderungen die Themen wie
+\begin{itemize}
+\item Zuverlässigkeit,
+\item Benutzbarkeit,
+\item Wartbarkeit,
+\item Flexibilität,
+\item Skalierbarkeit und
+\item Sicherheit
+\end{itemize}
+im Detail beschreiben. Danach werden noch externe APIs und andere verwendete externe Produkte beschrieben. Zum Schluss gibt es noch einen Überblick über die geforderte Performance, den zu erwartenden Overhead und einen Vergleich mit anderen Produkten der selben Kategorie.
 
 \section{Funktionale Anforderungen}
+Die \textit{libipc++} teilt sich im wesentlichen in zwei Blöcke ein. Den Plattform-spezifischen Block der dazu dient die OS API als ein einheitliches Interface zu adaptieren. Dieser Block wird als Backend bezeichnet. Und den zweiten Block der dann die abstrahierte OS API zu einer schönen high level API adaptiert. Dieser Block wird als Frontend bezeichnet.\newline
+
+\noindent Die Beschreibung der Win32 Argumente wird in Englisch gehalten, der Grund hierfür ist die ebenfalls englische Ausführung auf der MSDN (Microsoft Developer Network).
+
+\subsection{Backend}
+Dadurch dass die \textit{libipc++} auf unterschiedlichen OS funktionieren soll, diese jedoch kein einheitliches System von IPC besitzen, ist es notwendig die zur Verfügung stehende OS API zu einer einheitlichen abstrakten API zusammenzufassen. Im nachfolgenden werden die OS spezifischen Funktionen genauer erläutert. Angefangen wird mit der Erzeugung eines neuen Prozesses. Es sei noch angemerkt dass immer zuerst die Win32 Funktion erläutert wird, danach die UNIX Funktion. Der Grund ist dass die UNIX Funktionen meist wohlbekannt sind, jedoch die Win32 Funktionen dadurch dass sie seltener verwendet werden eher unbekannt sind.\newline
+
+\noindent Sämtliche hier präsentierten Funktionen können auch selber in der entsprechenden Dokumentation nachgelesen werden. Der Verweis befindet sich unter der Sektion externe Ressourcen.
+
+\subsubsection{Prozess}
+Ein Prozess wird im wesentlichen durch den Aufruf einer einzelnen Funktion erzeugt.
+
+\lstset{language=[Visual]C++}
+\begin{lstlisting}[caption={CreateProcess},frame=single]
+BOOL WINAPI CreateProcess(
+  _In_opt_     LPCTSTR lpApplicationName,
+  _Inout_opt_  LPTSTR lpCommandLine,
+  _In_opt_     LPSECURITY_ATTRIBUTES lpProcessAttributes,
+  _In_opt_     LPSECURITY_ATTRIBUTES lpThreadAttributes,
+  _In_         BOOL bInheritHandles,
+  _In_         DWORD dwCreationFlags,
+  _In_opt_     LPVOID lpEnvironment,
+  _In_opt_     LPCTSTR lpCurrentDirectory,
+  _In_         LPSTARTUPINFO lpStartupInfo,
+  _Out_        LPPROCESS_INFORMATION lpProcessInformation
+);
+\end{lstlisting}
+
+\noindent \textit{lpApplicationName} [in, optional]
+\begin{customindent}{1cm}
+    The name of the module to be executed. This module can be a Windows-based application. It can be some other type of module (for example, MS-DOS or OS/2) if the appropriate subsystem is available on the local computer.
+
+    The string can specify the full path and file name of the module to execute or it can specify a partial name. In the case of a partial name, the function uses the current drive and current directory to complete the specification. The function will not use the search path. This parameter must include the file name extension; no default extension is assumed.
+
+    The \textit{lpApplicationName} parameter can be \textbf{NULL}. In that case, the module name must be the first white space–delimited token in the \textit{lpCommandLine} string. If you are using a long file name that contains a space, use quoted strings to indicate where the file name ends and the arguments begin; otherwise, the file name is ambiguous. For example, consider the string "c:\textbackslash program files\textbackslash sub dir\textbackslash program name". This string can be interpreted in a number of ways. The system tries to interpret the possibilities in the following order:
+
+        \textbf{c:\textbackslash program.exe} files\textbackslash sub dir\textbackslash program name\newline
+        \textbf{c:\textbackslash program files\textbackslash sub.exe} dir\textbackslash program name\newline
+        \textbf{c:\textbackslash program files\textbackslash sub dir\textbackslash program.exe} name\newline
+        \textbf{c:\textbackslash program files\textbackslash sub dir\textbackslash program name.exe}\newline
+
+    If the executable module is a 16-bit application, \textit{lpApplicationName} should be \textbf{NULL}, and the string pointed to by \textit{lpCommandLine} should specify the executable module as well as its arguments.
+
+    To run a batch file, you must start the command interpreter; set \textit{lpApplicationName} to cmd.exe and set \textit{lpCommandLine} to the following arguments: /c plus the name of the batch file.
+\end{customindent}
+
+\noindent \textit{lpCommandLine} [in, out, optional]
+\begin{customindent}{1cm}
+    The command line to be executed. The maximum length of this string is 32,768 characters, including the Unicode terminating null character. If \textit{lpApplicationName} is \textbf{NULL}, the module name portion of \textit{lpCommandLine} is limited to \textbf{MAX\_PATH} characters.
+
+    The Unicode version of this function, CreateProcessW, can modify the contents of this string. Therefore, this parameter cannot be a pointer to read-only memory (such as a const variable or a literal string). If this parameter is a constant string, the function may cause an access violation.
+
+    The \textit{lpCommandLine} parameter can be \textbf{NULL}. In that case, the function uses the string pointed to by \textit{lpApplicationName} as the command line.
+
+    If both \textit{lpApplicationName} and \textit{lpCommandLine} are non-\textbf{NULL}, the null-terminated string pointed to by \textit{lpApplicationName} specifies the module to execute, and the null-terminated string pointed to by \textit{lpCommandLine} specifies the command line. The new process can use GetCommandLine to retrieve the entire command line. Console processes written in C can use the argc and argv arguments to parse the command line. Because argv[0] is the module name, C programmers generally repeat the module name as the first token in the command line.
+
+    If \textit{lpApplicationName} is \textbf{NULL}, the first white space–delimited token of the command line specifies the module name. If you are using a long file name that contains a space, use quoted strings to indicate where the file name ends and the arguments begin (see the explanation for the \textit{lpApplicationName} parameter). If the file name does not contain an extension, .exe is appended. Therefore, if the file name extension is .com, this parameter must include the .com extension. If the file name ends in a period (.) with no extension, or if the file name contains a path, .exe is not appended. If the file name does not contain a directory path, the system searches for the executable file in the following sequence:
+
+\begin{enumerate}
+        \item The directory from which the application loaded.
+        \item The current directory for the parent process.
+        \item The 32-bit Windows system directory. Use the GetSystemDirectory function to get the path of this directory.
+        \item The 16-bit Windows system directory. There is no function that obtains the path of this directory, but it is searched. The name of this directory is System.
+        \item The Windows directory. Use the GetWindowsDirectory function to get the path of this directory.
+        \item The directories that are listed in the PATH environment variable. Note that this function does not search the per-application path specified by the App Paths registry key. To include this per-application path in the search sequence, use the ShellExecute function.
+\end{enumerate}
+
+    The system adds a terminating null character to the command-line string to separate the file name from the arguments. This divides the original string into two strings for internal processing.
+\end{customindent}
+
+\noindent \textit{lpProcessAttributes} [in, optional]
+\begin{customindent}{1cm}
+    A pointer to a \textbf{SECURITY\_ATTRIBUTES} structure that determines whether the returned handle to the new process object can be inherited by child processes. If \textit{lpProcessAttributes} is \textbf{NULL}, the handle cannot be inherited.
+
+    The \textit{lpSecurityDescriptor} member of the structure specifies a security descriptor for the new process. If \textit{lpProcessAttributes} is \textbf{NULL} or \textit{lpSecurityDescriptor} is \textbf{NULL}, the process gets a default security descriptor. The ACLs in the default security descriptor for a process come from the primary token of the creator.
+
+    \textbf{Windows XP:}  The ACLs in the default security descriptor for a process come from the primary or impersonation token of the creator. This behavior changed with Windows XP with SP2 and Windows Server 2003.
+\end{customindent}
+
+\noindent \textit{lpThreadAttributes} [in, optional]
+\begin{customindent}{1cm}
+    A pointer to a \textbf{SECURITY\_ATTRIBUTES} structure that determines whether the returned handle to the new thread object can be inherited by child processes. If \textit{lpThreadAttributes} is \textbf{NULL}, the handle cannot be inherited.
+
+    The \textit{lpSecurityDescriptor} member of the structure specifies a security descriptor for the main thread. If \textit{lpThreadAttributes} is \textbf{NULL} or \textit{lpSecurityDescriptor} is \textbf{NULL}, the thread gets a default security descriptor. The ACLs in the default security descriptor for a thread come from the process token.
+
+    \textbf{Windows XP:}  The ACLs in the default security descriptor for a thread come from the primary or impersonation token of the creator. This behavior changed with Windows XP with SP2 and Windows Server 2003.
+\end{customindent}
+
+\newpage
+\noindent \textit{bInheritHandles} [in]
+\begin{customindent}{1cm}
+	If this parameter TRUE, each inheritable handle in the calling process is inherited by the new process. If the parameter is FALSE, the handles are not inherited. Note that inherited handles have the same value and access rights as the original handles.
+\end{customindent}
+
+\noindent \textit{dwCreationFlags} [in]
+\begin{customindent}{1cm}
+    The flags that control the priority class and the creation of the process. For a list of values, see Process Creation Flags.
+
+    This parameter also controls the new process's priority class, which is used to determine the scheduling priorities of the process's threads. For a list of values, see \textbf{GetPriorityClass}. If none of the priority class flags is specified, the priority class defaults to \textbf{NORMAL\_PRIORITY\_CLASS} unless the priority class of the creating process is \newline\textbf{IDLE\_PRIORITY\_CLASS} or \newline\textbf{BELOW\_NORMAL\_PRIORITY\_CLASS}. In this case, the child process receives the default priority class of the calling process.
+\end{customindent}
+
+\noindent \textit{lpEnvironment} [in, optional]
+\begin{customindent}{1cm}
+    A pointer to the environment block for the new process. If this parameter is \textbf{NULL}, the new process uses the environment of the calling process.
+
+    An environment block consists of a null-terminated block of null-terminated strings. Each string is in the following form:
+
+    name=value\textbackslash 0
+
+    Because the equal sign is used as a separator, it must not be used in the name of an environment variable.
+
+    An environment block can contain either Unicode or ANSI characters. If the environment block pointed to by lpEnvironment contains Unicode characters, be sure that \textit{dwCreationFlags} includes \newline\textbf{CREATE\_UNICODE\_ENVIRONMENT}. If this parameter is \textbf{NULL} and the environment block of the parent process contains Unicode characters, you must also ensure that \textit{dwCreationFlags} includes \newline\textbf{CREATE\_UNICODE\_ENVIRONMENT}.
+
+    The ANSI version of this function, \textit{CreateProcessA} fails if the total size of the environment block for the process exceeds 32,767 characters.
+
+    Note that an ANSI environment block is terminated by two zero bytes: one for the last string, one more to terminate the block. A Unicode environment block is terminated by four zero bytes: two for the last string, two more to terminate the block.
+\end{customindent}
+
+\noindent \textit{lpCurrentDirectory} [in, optional]
+\begin{customindent}{1cm}
+    The full path to the current directory for the process. The string can also specify a UNC path.
+
+    If this parameter is \textbf{NULL}, the new process will have the same current drive and directory as the calling process. (This feature is provided primarily for shells that need to start an application and specify its initial drive and working directory.)
+\end{customindent}
+
+\noindent \textit{lpStartupInfo} [in]
+\begin{customindent}{1cm}
+    A pointer to a \textbf{STARTUPINFO} or \textbf{STARTUPINFOEX} structure.
+
+    To set extended attributes, use a \textbf{STARTUPINFOEX} structure and specify \textbf{EXTENDED\_STARTUPINFO\_PRESENT} in the \textit{dwCreationFlags} parameter.
+
+    Handles in \textbf{STARTUPINFO} or \textbf{STARTUPINFOEX} must be closed with \textbf{CloseHandle} when they are no longer needed.
+
+    Important  The caller is responsible for ensuring that the standard handle fields in \textbf{STARTUPINFO} contain valid handle values. These fields are copied unchanged to the child process without validation, even when the \textit{dwFlags} member specifies \textbf{STARTF\_USESTDHANDLES}. Incorrect values can cause the child process to misbehave or crash. Use the Application Verifier runtime verification tool to detect invalid handles.
+\end{customindent}
+
+\noindent \textit{lpProcessInformation} [out]
+\begin{customindent}{1cm}
+    A pointer to a \textbf{PROCESS\_INFORMATION} structure that receives identification information about the new process.
+
+    Handles in \textbf{PROCESS\_INFORMATION} must be closed with CloseHandle when they are no longer needed.
+\end{customindent}
+
+\paragraph{Return value}
+\begin{customindent}{1cm}
+	If the function succeeds, the return value is nonzero.
+
+	If the function fails, the return value is zero. To get extended error information, call \textbf{GetLastError}.
+
+	Note that the function returns before the process has finished initialization. If a required DLL cannot be located or fails to initialize, the process is terminated. To get the termination status of a process, call \newline\textbf{GetExitCodeProcess}.
+\end{customindent}
+
+\noindent Die weiteren Funktionen für Prozessmanagement können auf der MSDN nachgelesen werden. Als nächstes folgt das UNIX Pendant.
+
+\subsection{Frontend}
 \blindtext
 
 \section{Nicht-Funktionale Anforderungen}
