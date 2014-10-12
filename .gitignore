@@ -308,3 +308,6 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
+
+.directory
+.kdev4/

@@ -98,7 +98,7 @@ API & Application programming interface \\
 \hline
 FIFO & First In First Out \\
 \hline
-OPP & Object oriented programming \\
+OOP & Object oriented programming \\
 \hline
 IDE & Integrated development environment \\
 \hline
@@ -394,6 +394,7 @@ BOOL WINAPI CreateProcess(
 
 \lstset{language=[GNU]C++}
 \begin{lstlisting}[caption={fork},frame=single]
+pid_t fork(void);
 \end{lstlisting}
 
 \noindent Auch hier können die restlichen Prozessmanagementfunktionen in der offiziellen Dokumentation nachgelesen werden. Als nächstes wird nun die zu adaptierende Klasse beschrieben.
@@ -430,7 +431,32 @@ class IPC_API Process : public ReferenceType {
 Das Frontend stellt die high level API dar. Das Frontend ist anders als das Backend nicht von der OS API abhängig, sondern von der Abstrahierten API die unter Backend beschrieben wurde.
 
 \section{Nicht-Funktionale Anforderungen}
-\blindtext
+\subsection{Versionierung}
+\begin{center}
+\begin{longtable}{|p{3cm}|p{8cm}|}
+\hline
+0.1 & Abstrakte API \\
+\hline
+0.2 & Process \\
+\hline
+0.3 & AnonymousPipe \\
+\hline
+0.4 & NamedPipe \\
+\hline 
+0.5 & MessageQueue \\
+\hline
+0.6 & Semaphore \\
+\hline
+0.7 & MemoryMap, SharedMemory \\
+\hline
+0.8 & FileLocking \\
+\hline
+0.9 & Profiling Windows und Linux\\
+\hline
+1.0 & Release \\
+\hline
+\end{longtable}
+\end{center}
 
 \section{Externe Schnittstellen}
 \blindtext
