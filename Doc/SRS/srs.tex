@@ -392,8 +392,42 @@ BOOL WINAPI CreateProcess(
 
 \noindent Die weiteren Funktionen für Prozessmanagement können auf der MSDN nachgelesen werden. Als nächstes folgt das UNIX Pendant.
 
+\lstset{language=[GNU]C++}
+\begin{lstlisting}[caption={fork},frame=single]
+\end{lstlisting}
+
+\noindent Auch hier können die restlichen Prozessmanagementfunktionen in der offiziellen Dokumentation nachgelesen werden. Als nächstes wird nun die zu adaptierende Klasse beschrieben.
+
+\lstset{language=C++,breaklines=true}
+\begin{lstlisting}[caption={class Process},frame=single]
+class IPC_API Process : public ReferenceType {
+  public:
+    Process();
+    Process(Process&& process);
+    virtual ~Process();
+    
+    int ExitCode() const;
+    ProcessHandle Handle() const;
+    void Kill() const;
+    bool Valid() const;
+    void Wait() const;
+    
+    template<typename Rep, typename Period>
+    bool WaitFor(const std::chrono::duration<Rep, Period>& timeoutDuration) const;
+    
+    template <typename Clock, typename Duration>
+    bool WaitUntil(const std::chrono::time_point<Clock, Duration>& timoutTime) const;
+    
+    Process& operator=(Process&& process);
+    bool operator==(const Process& process) const;
+    bool operator!=(const Process& process) const;
+    
+  private:
+};
+\end{lstlisting}
+
 \subsection{Frontend}
-\blindtext
+Das Frontend stellt die high level API dar. Das Frontend ist anders als das Backend nicht von der OS API abhängig, sondern von der Abstrahierten API die unter Backend beschrieben wurde.
 
 \section{Nicht-Funktionale Anforderungen}
 \blindtext
