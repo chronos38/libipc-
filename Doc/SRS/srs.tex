@@ -141,12 +141,16 @@ Boost.Interprocess & \url{http://www.boost.org/doc/libs/1_56_0/doc/html/interpro
 \hline
 OpenMP & \url{http://openmp.org/wp/} \\
 \hline
-Win32 Processing & \url{http://msdn.microsoft.com/en-us/library/windows/desktop/ms684852\%28v=vs.85\%29.aspx} \\
-\hline
 Beej IPC & \url{http://beej.us/guide/bgipc/} \\
 \hline
 MSDN & \url{http://msdn.microsoft.com/en-us/default.aspx} \\
-\hline 
+\hline
+Win32 Processing & \url{http://msdn.microsoft.com/en-us/library/windows/desktop/ms684852\%28v=vs.85\%29.aspx} \\
+\hline
+Win32 Pipes & \url{http://msdn.microsoft.com/en-us/library/windows/desktop/aa365784\%28v=vs.85\%29.aspx} \\
+\hline
+MSMQ & \url{http://msdn.microsoft.com/en-us/library/ms711472\%28v=vs.85\%29.aspx} \\
+\hline
 \end{longtable}
 \end{center}
 
@@ -205,6 +209,9 @@ Da \textit{libipc++} als cross-platform Bibliothek entwickelt wird, muss als das
 \section{Annahme und Abhängigkeiten}
 Die \textit{libipc++} wird als Studentenprojekt an der FH Technikum Wien gemacht. Daraus ergibt sich dass für das Projekt nicht der volle Zeitaufwand aufgebracht werden kann wie in einen eigentlichen Softwareprojekt, da es nebenbei noch andere Projekte und LVAs (Lehrveranstaltungen) gibt.
 
+\subsection{Message Queues}
+Da die MSMQ (Microsoft Message Queues) Bibliothek wesentlich komplexer ist als zuvor angenommen. Was dazu führen kann dass das Feature unter Win32 nicht vollständig implementiert wird.
+
 \subsection{Betriebssystem}
 Entwickelt wird \textit{libipc++} für Windows und Linux, bei Linux speziell ein OpenSUSE Derivat. Der Code wird entsprechend auf diesen beiden OS getestet werden.
 
@@ -217,13 +224,18 @@ Das Projekt wird neben anderen LVAs (Lehrveranstaltungen) im Studiengang Bachelo
 \section{Aufteilung der Anforderungen}
 Anforderungen die nicht zum jetzigen Release miteinbezogen werden können sind
 \begin{itemize}
+\item Frontend der Bibliothek,
+\item Ausbau von NamedPipes,
 \item serialisieren von Datenobjekten,
 \item umfangreiches Profiling,
 \item Benchmark testing und
 \item Performancetests im allgemeinen.
 \end{itemize}
 
-Diese Features sind für zukünftige Versionen gedacht. Falls es sich jedoch ausgehen sollte diese Features im kommenden Release zu implementieren, dann wird die Spezifikation entsprechen aktualisiert.
+Diese Features sind für zukünftige Versionen gedacht. Falls es sich jedoch ausgehen sollte diese Features im kommenden Release zu implementieren, dann wird die Spezifikation entsprechen aktualisiert. Als nächstes eine Liste von problematische Features die vielleicht nicht realisiert werden können wenn der tatsächlichen Aufwand höher ist als der geschätzte Aufwand ist.
+\begin{itemize}
+\item MessageQueues (Win32)
+\end{itemize}
 
 \chapter{Spezifische Anforderungen}
 Im Gegensatz zum zweiten Kapitel, wo nur allgemeine Anforderungen und Beschreibungen vorgenommen wurden, werden hier nun die Anforderungen im Detail spezifiziert. Beginnend mit den funktionalen Anforderungen die Themen wie die Bibliotheksfunktionen beinhalten zu den nicht-funktionalen Anforderungen die Themen wie
