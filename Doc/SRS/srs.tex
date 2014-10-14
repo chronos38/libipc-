@@ -106,6 +106,8 @@ LVA & Lehrveranstaltung \\
 \hline
 MSDN & Microsoft Developer Network \\
 \hline
+MSMQ & Microsoft Message Queues \\
+\hline
 \end{longtable}
 \end{center}
 
@@ -440,7 +442,9 @@ class IPC_API Process : public ReferenceType {
 \end{lstlisting}
 
 \subsection{Frontend}
-Das Frontend stellt die high level API dar. Das Frontend ist anders als das Backend nicht von der OS API abhängig, sondern von der Abstrahierten API die unter Backend beschrieben wurde.
+Das Frontend stellt die high level API dar. Das Frontend ist anders als das Backend nicht von der OS API abhängig, sondern von der Abstrahierten API die unter Backend beschrieben wurde.\newline
+
+\noindent \textbf{Dieses Feature wird erst im nächsten Release implementiert.}
 
 \section{Nicht-Funktionale Anforderungen}
 \subsection{Versionierung}
@@ -469,36 +473,17 @@ Das Frontend stellt die high level API dar. Das Frontend ist anders als das Back
 \hline
 \end{longtable}
 \end{center}
+Die erste Version bietet noch keine Features an. Es wird die API von \textit{libipc++} implementiert und auf Konsistenz getestet. Dabei werden alle notwendigen und definierten Klassen beschrieben, deren Methoden und Felder dokumentiert sowie Utility-Funktionalität beschrieben. Es ist wichtig dass das Design eine eigene Version erhält, da dadurch erst mit der Implementierung begonnen werden kann wenn das Design voll funktionsfähig und getestet ist. Folgende Klassen müssen definiert und getestet sein bevor die Version abgeschlossen wird.\newline
 
-\subsubsection{Abstrakte API}
-\blindtext
+\noindent Jede Version nach der Version 0.1 implementiert dann die entsprechende Klasse für die unterstützten Plattformen. Eine Klasse gilt erst dann als fertig wenn
+\begin{itemize}
+\item sie vollständig implementiert ist,
+\item sie ausreichend getestet ist,
+\item sie umfangreich dokumentiert ist
+\item und best practice als auch Beispielcode für jede Methode existiert.
+\end{itemize}
 
-\subsubsection{Process}
-\blindtext
-
-\subsubsection{AnonymousPipe}
-\blindtext
-
-\subsubsection{NamedPipe}
-\blindtext
-
-\subsubsection{MessageQueue}
-\blindtext
-
-\subsubsection{Semaphore}
-\blindtext
-
-\subsubsection{MemoryMap und SharedMemory}
-\blindtext
-
-\subsubsection{FileLocking}
-\blindtext
-
-\subsubsection{Profiling}
-\blindtext
-
-\subsubsection{Release}
-\blindtext
+\noindent Eine Ausnahme stellt hier die Version 0.9 dar. Diese Version dient lediglich dazu den bereits existierenden Code zu optimieren. Primär für die Geschwindigkeit. Wie bereits erwähnt, kann es zu Verzögerungen bei dieser Version kommen.
 
 \section{Externe Schnittstellen}
 \blindtext
