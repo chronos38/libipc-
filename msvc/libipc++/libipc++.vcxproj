@@ -66,6 +66,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\libipcpp\Definitions.h" />
+    <ClInclude Include="..\..\include\libipcpp\libipcpp.h" />
+    <ClInclude Include="..\..\include\libipcpp\MessageQueue.h" />
+    <ClInclude Include="..\..\include\libipcpp\Pipe.h" />
+    <ClInclude Include="..\..\include\libipcpp\Process.h" />
+    <ClInclude Include="..\..\include\libipcpp\Semaphore.h" />
+    <ClInclude Include="..\..\include\libipcpp\SharedMemory.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\source\MessageQueue.cpp" />
+    <ClCompile Include="..\..\source\Pipe.cpp" />
+    <ClCompile Include="..\..\source\platform\win32\Definitions.cpp" />
+    <ClCompile Include="..\..\source\Process.cpp" />
+    <ClCompile Include="..\..\source\Semaphore.cpp" />
+    <ClCompile Include="..\..\source\SharedMemory.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
