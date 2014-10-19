@@ -184,7 +184,7 @@ namespace ipc {
          * \returns Zeiger auf neu erstellten Prozess.
          */
         template <typename Function, typename... Args>
-        static std::shared_ptr<Process> ProcessFactory(Function&& main, Args&&... args) throw(IpcException)
+        static std::shared_ptr<Process> Create(Function&& main, Args&&... args) throw(IpcException)
         {
             // TODO: implementieren
         }
