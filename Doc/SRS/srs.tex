@@ -108,6 +108,10 @@ MSDN & Microsoft Developer Network \\
 \hline
 MSMQ & Microsoft Message Queues \\
 \hline
+gTest & Google Test \\
+\hline
+RAM & Random Access Memory \\
+\hline
 \end{longtable}
 \end{center}
 
@@ -147,11 +151,15 @@ Beej IPC & \url{http://beej.us/guide/bgipc/} \\
 \hline
 MSDN & \url{http://msdn.microsoft.com/en-us/default.aspx} \\
 \hline
-Win32 Processing & \url{http://msdn.microsoft.com/en-us/library/windows/desktop/ms684852\%28v=vs.85\%29.aspx} \\
+Win32 Processing & \url{http://msdn.microsoft.com/en-us/library/windows/desktop/ms684841\%28v=vs.85\%29.aspx} \\
 \hline
 Win32 Pipes & \url{http://msdn.microsoft.com/en-us/library/windows/desktop/aa365784\%28v=vs.85\%29.aspx} \\
 \hline
 MSMQ & \url{http://msdn.microsoft.com/en-us/library/ms711472\%28v=vs.85\%29.aspx} \\
+\hline
+Win32 File Mapping und Shared Memory & \url{http://msdn.microsoft.com/en-us/library/windows/desktop/aa366556\%28v=vs.85\%29.aspx} \\
+\hline
+Google Test & \url{https://code.google.com/p/googletest/} \\
 \hline
 \end{longtable}
 \end{center}
@@ -190,10 +198,10 @@ Als Grundfunktion was IPC überhaupt erst notwendig macht, ist es einen neuen Pr
 \subsection{Memory-mapped File}
 \blindtext
 
-\subsection{Semaphore}
+\subsection{Shared Memory}
 \blindtext
 
-\subsection{Shared Memory}
+\subsection{Semaphore}
 \blindtext
 
 \section{Benutzermerkmale}
@@ -486,6 +494,30 @@ Die erste Version bietet noch keine Features an. Es wird die API von \textit{lib
 \noindent Eine Ausnahme stellt hier die Version 0.9 dar. Diese Version dient lediglich dazu den bereits existierenden Code zu optimieren. Primär für die Geschwindigkeit. Wie bereits erwähnt, kann es zu Verzögerungen bei dieser Version kommen.
 
 \section{Externe Schnittstellen}
+Da die \textit{libipc++} keine Abhängigkeiten von anderen Programmbibliotheken besitzt, gibt es als externe Schnittstelle nur die von OS angebotene API für MPC und IPC. Eine Ausnahme stellt hier der Testingbereich dar. Dieser hat als Abhängigkeit das gTest Framework, gTest wird jedoch mit der Repo mitgeliefert um eine selbstständige Kompilierung samt Testing zu ermöglichen. Im Folgenden werden die Schnittstellen der OS API kurz beschrieben.
+
+\subsection{Win32 API}
+\blindtext
+
+\subsubsection{Multiprocessing}
+\blindtext
+
+\subsubsection{Pipes}
+\blindtext
+
+\subsubsection{Message Queues}
+\blindtext
+
+\subsubsection{Memory Mapped Files}
+\blindtext
+
+\subsubsection{Shared Memory}
+\blindtext
+
+\subsubsection{Semaphore}
+\blindtext
+
+\subsection{UNIX API}
 \blindtext
 
 \section{Anforderungen an Performance}
