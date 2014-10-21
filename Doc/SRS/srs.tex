@@ -190,19 +190,24 @@ Als Grundfunktion was IPC überhaupt erst notwendig macht, ist es einen neuen Pr
 \noindent Wenn ein ausgeführtes Programm einen neuen Prozess zur Laufzeit startet, dann läuft dieser als Kindprozess des ausführenden Prozesses. Der neue erstellte Prozess besitzt dann eine eigene Laufzeitumgebung was bedeutet dass er einen eigenen virtuellen Speicherbereich vom OS zugewiesen bekommt. Das Ziel eines Prozesses ist es jedoch meist eine Berechnung oder Anweisung parallel durchzuführen, was bedeutet dass es zumindest ein relevantes Ergebnis gibt. Da der Prozess jedoch einen eigenen virtuellen Speicherbereich besitzt, muss der Speicheraustausch über andere Mechanismen stattfinden.
 
 \subsection{Pipes}
-\blindtext
+Eine weitverbreitete Variante der Kommunikation sind Pipes, welche durch Unix populär wurden und inzwischen von den meisten Betriebssystemen unterstützt werden. Pipes übertragen sequentiell einzelne Bytes. Jedem Prozess sind immer zwei Datenströme zugeordnet, einer für die Ausgabe und einer für die Eingabe. Ein Ausgabestrom eines Prozesses kann anschließend direkt mit dem Eingabestrom eines anderen Prozesses verbunden werden. \newline
+Eine Erweiterung dieses Konzeptes stellen \textbf{Named Pipes} dar: Diese sind nicht einem Prozess fest zugeordnet, sondern können genau wie Dateien geschrieben und gelesen werden. Sie existieren als Objekte im Dateisystem mit einem Namen, und bieten so eine sehr flexible Schnittstelle für die Kommunikation mit einem Prozess.
 
-\subsection{Message Queus}
-\blindtext
+\subsection{Message Queues}
+Message Queues sind wesentlich weniger Verbreitet als Pipes und erlauben es Nachrichten in einzelnen Paketen zu versenden. Diese Kommunikationsform hat den Vorteil dass Nachrichten eine Priorität zugewiesen werden kann, dies erlaubt es bestimmte Nachrichten vor anderen aus dem Queue abzurufen.
 
 \subsection{Memory-mapped File}
-\blindtext
-
-\subsection{Shared Memory}
-\blindtext
+Memory-mapped Files erlauben es eine Datei direkt in den Speicher zu kopieren. Besonders bei sehr großen Dateien kann sich dies positiv auf die I/O Performance auswirken.
 
 \subsection{Semaphore}
-\blindtext
+Semaphoren ermöglichen den Zugriff auf Shared Memory, Dateien oder andere Ressourcen zu kontrollieren. 
+
+\subsection{File Locking}
+File Locking ist eine vereinfachte Variante der Zugriffskontrolle speziell für Dateien.
+
+
+\subsection{Shared Memory}
+Shared Memory erlaubt mehreren Prozessen Zugriff auf den selben Speicherbereich. Bei der Verwendung von Shared Memory ist zu beachten dass es zu Concurrency Problemen kommen kann. Daher ist die Verwendung einer Semaphore zur Zugriffskontrolle empfohlen.
 
 \section{Benutzermerkmale}
 Da es sich bei der \textit{libipc++} um eine Programmbibliothek handelt, werden vom Endanwender gewisse Kenntnisse vorausgesetzt, im folgenden werden diese kurz beschrieben.
@@ -418,6 +423,12 @@ BOOL WINAPI CreateProcess(
 \begin{lstlisting}[caption={fork},frame=single]
 pid_t fork(void);
 \end{lstlisting}
+Fork spaltet nach dem Aufruf einen Kindprozess ab welcher nur für die Laufzeit des Vaterprozesses
+ausgeführt wird. 
+\paragraph{Return Value}
+	Bei Erfolg wird die PID des Kindprozesses im Vaterprozess, und 0 im Kindprozess zurückgegeben.
+	Bei Misserfolg wird -1 zurückgegeben und es wird kein Kindprozess erstellt. Die globale variable
+	\textit{errno} wird auf den entsprechenden Fehlercode gesetzt.
 
 \noindent Auch hier können die restlichen Prozessmanagementfunktionen in der offiziellen Dokumentation nachgelesen werden. Als nächstes wird nun die zu adaptierende Klasse beschrieben.
 
