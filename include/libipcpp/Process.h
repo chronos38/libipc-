@@ -8,15 +8,15 @@
 #include "Definitions.h"
 
 namespace ipc {
-    //! Diese Klasse speichert wichtige Prozessdaten
+    //! This class saves important process data
     class LIBIPC_API ProcessInfo
     {
     public:
-        //! Erzeugt eine neue Klasse
+        //! Creates a new class
         ProcessInfo() = default;
-        //! Standard Kopierkonstruktor
+        //! Standard copy constructor
         ProcessInfo(const ProcessInfo&) = default;
-        //! Standard Destruktor
+        //! Standard destructor
         ~ProcessInfo() = default;
 
 #ifdef _MSC_VER
@@ -26,27 +26,26 @@ namespace ipc {
 #endif
 
         /*!
-         * Retouniert die Prozess ID. Kann aber auch -1 im Falle eines
-         * invaliden Prozesses retounieren.
+         * On success the process ID is returned.
+         * On failure -1 is returned this might be caused by an invalid process
          *
-         * \returns Prozess ID
+         * \returns Process ID or -1 on failure
          */
         int32_t GetId() const NOEXCEPT;
 
         /*!
-         * Retouniert den Namen des Prozesses. Im Falle eines invaliden
-         * Prozesses wird eine leere Zeichenkette retouniert.
+         * The name of the process is returned.
+         * An empty string is returned in case the process is invalid
          *
-         * \returns Prozessname
+         * \returns Process name
          */
         std::string GetName() const NOEXCEPT;
 
         /*!
-         * Retouniert den nativen Prozess-Handle. Dient dazu um selber auf
-         * Systemfunktionen zurückgreifen zu können, falls die angebotene API
-         * nicht den geforderten Ansprüchen genügt.
          *
-         * \return Nativer Prozess-Handle.
+         * Allows access to the native process handle.
+         *
+         * \return Native process handle
          */
         ProcessHandle GetHandle() const NOEXCEPT;
 
@@ -61,12 +60,9 @@ namespace ipc {
     class LIBIPC_API Process : public ReferenceType
     {
     public:
-
+        //TODO: Add Start() method
         /*!
-         * Erzeugt einen neuen Prozess. Der Prozess wird jedoch noch nicht
-         * ausgeführt sondern lediglich auf eine Ausführung vorbereitet. Um den
-         * Prozess auszuführen, muss die Methode Process::Start ausgeführt
-         * werden.
+         * Creates a new Process instance.
          *
          * \b Exceptions:
          * - IpcException
@@ -74,82 +70,67 @@ namespace ipc {
         Process() throw(IpcException);
 
         /*!
-         * Dieser Konstruktor dient dazu einen Prozess bspw zwischen
-         * Threads verschieben zu können. Es ist wichtig das es immer nur
-         * ein valides Prozessobjekt gibt. Dies gilt jedoch nicht für den
-         * Fall von Systemprozessen bzw Prozesse die keine Kindprozesse vom
-         * Programm darstellen, da jene Prozesse von einen anderen Besitzer
-         * erzeugt wurden.
+         * Move constructor
          *
-         * \params[in,out] p Der Prozess der verschoben wird. 
+         * \params[in,out] p The Process instance that should be moved to a new handle
          */
         Process(Process&& p);
 
         /*!
-         * Es gilt zu beachten dass der Destruktor eines erzeugten Prozesses
-         * nicht exception safe ist. Solange der Prozess läuft und nicht vom
-         * ausführenden Prozess terminiert wurde, kann der Destruktor eine
-         * Exception vom Typ IpcException produzieren.
+         * The destructor is not exception safe and can throw an exception of the type IpcException.
+         * Exceptions occur when the process can not be killed.
          *
-         * Ein workaround stellen die best practice Beispiele dar.
          */
         virtual ~Process() throw(IpcException);
 
         /*!
-         * Überprüft ob der Prozess in einen validen zustand ist. Falls der
-         * Zustand invalide ist, dann kann der Prozess nicht weiter verwendet
-         * werden.
+         * Checks if the process is in a valid state.
+         * A Process in an invalid state can not be used.
          *
-         * \returns TRUE wenn der Prozess valide ist, FALSE wenn invalide.
+         * \returns TRUE when the Process is in a valid state, otherwise FALSE is returned.
          */
         bool IsValid() const NOEXCEPT;
 
         /*!
-         * Diese Methode liest den Returnwert aus. Falls der Prozess noch
-         * noch keinen Exitcode generiert hat, dann wird einer der folgenden
-         * Zustände retouniert:
+         * Reads the exit code of the process.
+         * If the process has not exited yet one of the following codes is returned:
          *
-         * \b Zustände:
-         * - PROCESS_NOT_RUNNING
+         * \b States:
+         * - PROCESS_NOT_STARTED
          * - PROCESS_STILL_RUNNING
          * - PROCESS_NOT_VALID
          *
-         * \returns Den Exitcode vom Prozess.
+         * \returns The exit code of the process.
          */
         int32_t ExitCode() const NOEXCEPT;
-        //! Der Prozess läuft nicht.
-        static const int32_t PROCESS_NOT_RUNNING = 0x80000000;
-        //! Der Prozess läuft noch.
+        //! The process has not been started.
+        static const int32_t PROCESS_NOT_STARTED = 0x80000000;
+        //! The process is running.
         static const int32_t PROCESS_STILL_RUNNING = 0x80000001;
-        //! Der Prozess befindet sich in keinen validen Zustand.
+        //! The process is in an invalid state.
         static const int32_t PROCESS_NOT_VALID = 0x80000002;
 
         /*!
-         * Terminiert den Prozess unabhängig vom seiner Ausführung. Falls der
-         * Prozess jedoch nicht terminiert werden kann bzw nicht die nötigen
-         * Rechte für diesen Befehl exisiteren, dann wird eine Exception
-         * geworfen. Der Zustand des Prozesses ist danach auf Invalid gesetzt.
+         * Terminates the process and sets the instance state to "invalid".
+         * A exception of the type IpcException is thrown on error.
          *
-         * \returns Referenz zum Prozess.
          */
-        Process& Kill() throw(IpcException);
+         void Kill() throw(IpcException);
         
         /*!
-         * Wartet solange bis der Prozess seine Ausführung beendet hat. Falls
-         * der Prozess nicht läuft, oder in einen invaliden Zustand ist, dann
-         * retouniert die Methode sofort. In allen anderen Fällen blockiert die
-         * Methode solange bis der Prozess terminiert ist.
+         * Wait until the process has stopped execution.
+         * Returns immediately if the process is not running or in an invalid state.
+         * This method is blocking.
          *
-         * \returns Referenz zum Prozess.
+         * \returns Reference to the process.
          */
         Process& Wait() NOEXCEPT;
 
         /*!
-         * Wartet für eine bestimmte Zeitspanne bis der Prozess beendet wurde.
-         * Es gelten die selben Kriterien wie für Process::Wait.
+         * Equal behaviour to Wait but returns after a certain time.
          *
-         * \params[in]  timeoutDuration Zeitdauer die gewartet werden soll.
-         * \returns TRUE wenn der Prozess terminiert ist, ansonsten FALSE.
+         * \params[in]  timeoutDuration Maximum duration to wait for termination
+         * \returns TRUE if the process terminated, otherwise FALSE.
          */
         template <typename Rep, typename Period>
         bool WaitFor(const std::chrono::duration<Rep, Period>& timeoutDuration) const NOEXCEPT
@@ -158,11 +139,10 @@ namespace ipc {
         }
 
         /*!
-         * Wartet bis zu einen bestimmten Zeitpunkt bis der Prozess terminiert
-         * ist. Es gelten die selben Kriterien wie für Process::Wait.
+         *  Similar to WaitFor but waits until a certain point in time is reached.
          *
-         * \params[in]  timeoutTime Zeitpunkt bis zu dem gewartet werden soll.
-         * \returns TRUE wenn der Prozess terminiert ist, ansonsten FALSE.
+         * \params[in]  timeoutTime Wait until this point for termination
+         * \returns TRUE if the process terminated, otherwise FALSE.
          */
         template <typename Clock, typename Duration>
         bool WaitUntil(const std::chrono::time_point<Clock, Duration>& timeoutTime) const NOEXCEPT
@@ -171,17 +151,16 @@ namespace ipc {
         }
 
         /*!
-         * Erzeugt einen neuen Prozess und führt die mitgegebene Funktion als
-         * dessen Main aus. Falls jedoch Fehler beim erstellen oder ausführen
-         * stattfinden, dann wird eine IpcException geworfen.
+         * Creates a new process and executes the passed function as main function.
+         * Throws an IpcException on error.
          *
          * \b Exception:
          * - IpcException
          *
-         * \params[in]  main    Das Funktionsobjekt das ausgeführt wird.
-         * \params[in]  args... Die Argumente die der Funktion übergeben 
-         *                      werden.
-         * \returns Zeiger auf neu erstellten Prozess.
+         * \params[in]  main    The function object to be executed
+         * \params[in]  args... The function parameters
+         *
+         * \returns Pointer to the new Process instance.
          */
         template <typename Function, typename... Args>
         static std::shared_ptr<Process> Create(Function&& main, Args&&... args) throw(IpcException)
@@ -190,22 +169,18 @@ namespace ipc {
         }
 
         /*!
-         * Retouniert den angegebenen Prozess mit anhand des übergebenen
-         * Namen. Falls kein Prozess mit dem spezifizierten Namen existiert,
-         * dann wird ein nullptr Objekt retouniert. Falls jedoch mehrere
-         * Prozesse mit dem angegebenen Namen existieren, dann wird der erste
-         * Fund retouniert.
          *
-         * \returns Prozess mit angegebenen Namen.
+         * Searches for a process by name and returns a pointer to the first match.
+         * If no process is found a nullptr is returned
+         *
+         * \returns Pointer to a process, nullptr if no match exists
          */
         static std::shared_ptr<Process> GetProcessByName(const std::string&) NOEXCEPT;
 
         /*!
-         * Retouniert eine Liste aller aktuell laufenden Prozesse. Es sei
-         * angemerkt dass Prozesse die nicht vom Programm erzeugt wurden, von
-         * diesen auch nicht terminiert werden könne.
+         * Returns a Vector of all currently running processes.
          *
-         * \returns List aller im Moment laufenden Prozesse.
+         * \returns Vector of all running processes
          */
         static std::vector<ProcessInfo> GetProcesses() NOEXCEPT;
 
