@@ -57,17 +57,24 @@ namespace ipc {
 #include <exception>
 
 namespace ipc {
+    //! Type is not copyable
     class LIBIPC_API ReferenceType
     {
     public:
+        //! Default constructor
         ReferenceType() = default;
+        //! Default destructor
         virtual ~ReferenceType() = default;
 
 #ifdef _MSC_VER
+        //! Explicit implemenation for Win32
         ReferenceType(ReferenceType&&);
+        //! Explicit implemenation for Win32
         ReferenceType& operator=(ReferenceType&&);
 #else
+        //! Default move constructor
         ReferenceType(ReferenceType&&) = default;
+        //! Default move assignment operator
         ReferenceType& operator=(ReferenceType&&) = default;
 #endif
     private:

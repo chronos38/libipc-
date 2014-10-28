@@ -1,3 +1,7 @@
+## libipc++
+doc/Doxygen/html
+doc/Doxygen/latex
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof

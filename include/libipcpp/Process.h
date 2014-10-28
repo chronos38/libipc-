@@ -20,8 +20,10 @@ namespace ipc {
         ~ProcessInfo() = default;
 
 #ifdef _MSC_VER
+        //! Explicit implemenation for Win32
         ProcessInfo(ProcessInfo&&);
 #else
+        //! Default move constructor
         ProcessInfo(ProcessInfo&&) = default;
 #endif
 
@@ -64,6 +66,7 @@ namespace ipc {
         Invalid //!< Process has an invalid state.
     };
 
+    //! Process class for multi processing.
     class LIBIPC_API Process : public ReferenceType
     {
     public:
@@ -79,7 +82,7 @@ namespace ipc {
         /*!
          * Move constructor
          *
-         * \params[in,out] p The Process instance that should be moved to a new handle
+         * \param[in,out] p The Process instance that should be moved to a new handle
          */
         Process(Process&& p);
 
@@ -87,8 +90,8 @@ namespace ipc {
          * Creates a new process and immediately start the given function f.
          * The arguments for are provided through the variable argument list.
          *
-         * \params[in]  f       Function to call as a main.
-         * \params[in]  args    Argument list for the function.
+         * \param[in]  f       Function to call as a main.
+         * \param[in]  args    Argument list for the function.
          */
         template <class Function, class... Args>
         Process(Function&& f, Args&&... args) throw(IpcException)
@@ -140,8 +143,8 @@ namespace ipc {
          * serves as a main function. The function itself could be a function
          * pointer, lambda expression or functional object.
          *
-         * \params[in]  f       Function to call as a main function.
-         * \params[in]  args    Variable argument list given as function
+         * \param[in]  f       Function to call as a main function.
+         * \param[in]  args    Variable argument list given as function
          *                      arguments.
          */
         template <class Function, class... Args>
@@ -162,7 +165,7 @@ namespace ipc {
         /*!
          * Equal behaviour to Wait but returns after a certain time.
          *
-         * \params[in]  timeoutDuration Maximum duration to wait for termination
+         * \param[in]  timeoutDuration Maximum duration to wait for termination
          * \returns TRUE if the process terminated, otherwise FALSE.
          */
         template <typename Rep, typename Period>
@@ -174,7 +177,7 @@ namespace ipc {
         /*!
          *  Similar to WaitFor but waits until a certain point in time is reached.
          *
-         * \params[in]  timeoutTime Wait until this point for termination
+         * \param[in]  timeoutTime Wait until this point for termination
          * \returns TRUE if the process terminated, otherwise FALSE.
          */
         template <typename Clock, typename Duration>
@@ -190,8 +193,8 @@ namespace ipc {
          * \b Exception:
          * - IpcException
          *
-         * \params[in]  main    The function object to be executed
-         * \params[in]  args... The function parameters
+         * \param[in]  main The function object to be executed
+         * \param[in]  args The function parameters
          *
          * \returns Pointer to the new Process instance.
          */
@@ -205,7 +208,7 @@ namespace ipc {
          * Searches for a process by name and returns a pointer to the first match.
          * If no process is found a nullptr is returned
          *
-         * \params[in]  name    Name to search for.
+         * \param[in]  name    Name to search for.
          * \returns Pointer to a process, nullptr if no match exists
          */
         static std::vector<std::shared_ptr<Process>> GetProcessByName(const std::string& name) NOEXCEPT;
