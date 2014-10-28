@@ -54,7 +54,7 @@ namespace ipc {
     private:
         int64_t mId = 0;
         std::string mName = "";
-        ProcessHandle mHandle = PROCESS_NULL_HANDLE;
+        ProcessHandle mHandle = PROCESS_INVALID_HANDLE;
 
         friend class Process;
     };

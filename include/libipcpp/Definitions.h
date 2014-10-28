@@ -1,3 +1,23 @@
+/**  This file is part of libipc++
+ * 
+ *  Copyright (C) 2014 leonhardt schwarz <if12b076@technikum-wien.at>
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Library General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2 of the License, or (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Library General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Library General Public License
+ *  along with this library; see the file COPYING.LIB.  If not, write to
+ *  the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ *  Boston, MA 02110-1301, USA.
+ */
+
 #ifndef LIBIPC_DEFINITIONS_H
 #define LIBIPC_DEFINITIONS_H
 
@@ -17,17 +37,18 @@ namespace ipc {
     //! Global OS handle
     typedef HANDLE IpcHandle;
     //! Native OS null handle
-    static const IpcHandle NULL_HANDLE = nullptr;
+    static const IpcHandle INVALID_HANDLE = nullptr;
     //! Native process handle
     typedef HANDLE ProcessHandle;
     //! Native process null handle
-    static const ProcessHandle PROCESS_NULL_HANDLE = nullptr;
+    static const ProcessHandle PROCESS_INVALID_HANDLE = nullptr;
     //! Native byte count type
     typedef DWORD ByteCount;
 }
 
 #else
 #define NOEXCEPT noexcept
+#include <sys/types.h>
 
 #ifdef LIBIPC_EXPORT
 
@@ -46,6 +67,18 @@ namespace ipc {
 #endif
 
 #endif
+namespace ipc {
+    //! Global OS handle
+    typedef int IpcHandle;
+    //! Native OS null handle
+    static const IpcHandle INVALID_HANDLE = -1;
+    //! Native process handle
+    typedef pid_t ProcessHandle;
+    //! Native process null handle
+    static const ProcessHandle PROCESS_INVALID_HANDLE = nullptr;
+    //! Native byte count type
+    typedef ssize_t ByteCount;
+}
 #endif
 
 #include <cstdint>
@@ -82,15 +115,6 @@ namespace ipc {
         ReferenceType& operator=(const ReferenceType&) = delete;
     };
 
-    class LIBIPC_API IpcException : public std::exception
-    {
-    public:
-        IpcException(const std::string&);
-        ~IpcException() = default;
-        const char* what() const override;
-    private:
-        std::string mMsg = "";
-    };
 }
 
 #endif
