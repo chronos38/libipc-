@@ -6,6 +6,7 @@
 #endif
 
 #include "Definitions.h"
+#include "Exception/ProcessException.h"
 
 namespace ipc {
     //! This class saves important process data.
@@ -75,9 +76,9 @@ namespace ipc {
          * Creates a new Process instance.
          *
          * \b Exceptions:
-         * - IpcException
+         * - ProcessException
          */
-        Process() throw(IpcException);
+        Process() throw(ProcessException);
 
         /*!
          * Move constructor
@@ -94,18 +95,18 @@ namespace ipc {
          * \param[in]  args    Argument list for the function.
          */
         template <class Function, class... Args>
-        Process(Function&& f, Args&&... args) throw(IpcException)
+        Process(Function&& f, Args&&... args) throw(ProcessException)
         {
             // TODO: implementieren
         }
 
         /*!
          * The destructor is not exception safe and can throw an exception of 
-         * the type IpcException. Exceptions occur when the process can not 
+         * the type ProcessException. Exceptions occur when the process can not 
          * be killed.
          *
          */
-        virtual ~Process() throw(IpcException);
+        virtual ~Process() throw(ProcessException);
 
         /*!
          * Checks if the process is in a valid state.
@@ -133,10 +134,10 @@ namespace ipc {
 
         /*!
          * Terminates the process and sets the instance state to "invalid".
-         * A exception of the type IpcException is thrown on error.
+         * A exception of the type ProcessException is thrown on error.
          *
          */
-        void Kill() throw(IpcException);
+        void Kill() throw(ProcessException);
 
         /*!
          * Starts the execution with the specified function. This function
@@ -148,7 +149,7 @@ namespace ipc {
          *                      arguments.
          */
         template <class Function, class... Args>
-        void Start(Function&& f, Args&&... args) throw(IpcException)
+        void Start(Function&& f, Args&&... args) throw(ProcessException)
         {
             // TODO: implementieren
         }
@@ -188,10 +189,10 @@ namespace ipc {
 
         /*!
          * Creates a new process and executes the passed function as main function.
-         * Throws an IpcException on error.
+         * Throws an ProcessException on error.
          *
          * \b Exception:
-         * - IpcException
+         * - ProcessException
          *
          * \param[in]  main The function object to be executed
          * \param[in]  args The function parameters
@@ -199,7 +200,7 @@ namespace ipc {
          * \returns Pointer to the new Process instance.
          */
         template <typename Function, typename... Args>
-        static std::shared_ptr<Process> Create(Function&& main, Args&&... args) throw(IpcException)
+        static std::shared_ptr<Process> Create(Function&& main, Args&&... args) throw(ProcessException)
         {
             // TODO: implementieren
         }
