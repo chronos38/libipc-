@@ -14,8 +14,16 @@
 #endif
 
 namespace ipc {
+    //! Global OS handle
+    typedef HANDLE IpcHandle;
+    //! Native OS null handle
+    static const IpcHandle NULL_HANDLE = nullptr;
+    //! Native process handle
     typedef HANDLE ProcessHandle;
+    //! Native process null handle
     static const ProcessHandle PROCESS_NULL_HANDLE = nullptr;
+    //! Native byte count type
+    typedef DWORD ByteCount;
 }
 
 #else

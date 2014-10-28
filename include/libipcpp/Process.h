@@ -8,15 +8,15 @@
 #include "Definitions.h"
 
 namespace ipc {
-    //! This class saves important process data
+    //! This class saves important process data.
     class LIBIPC_API ProcessInfo
     {
     public:
-        //! Creates a new class
+        //! Creates a new class.
         ProcessInfo() = default;
-        //! Standard copy constructor
+        //! Standard copy constructor.
         ProcessInfo(const ProcessInfo&) = default;
-        //! Standard destructor
+        //! Standard destructor.
         ~ProcessInfo() = default;
 
 #ifdef _MSC_VER
@@ -27,17 +27,17 @@ namespace ipc {
 
         /*!
          * On success the process ID is returned.
-         * On failure -1 is returned this might be caused by an invalid process
+         * On failure -1 is returned this might be caused by an invalid process.
          *
-         * \returns Process ID or -1 on failure
+         * \returns Process ID or -1 on failure.
          */
-        int32_t GetId() const NOEXCEPT;
+        int64_t GetId() const NOEXCEPT;
 
         /*!
          * The name of the process is returned.
          * An empty string is returned in case the process is invalid
          *
-         * \returns Process name
+         * \returns Name of the process.
          */
         std::string GetName() const NOEXCEPT;
 
@@ -45,16 +45,23 @@ namespace ipc {
          *
          * Allows access to the native process handle.
          *
-         * \return Native process handle
+         * \return Native process handle.
          */
         ProcessHandle GetHandle() const NOEXCEPT;
 
     private:
-        int32_t mId = 0;
+        int64_t mId = 0;
         std::string mName = "";
         ProcessHandle mHandle = PROCESS_NULL_HANDLE;
 
         friend class Process;
+    };
+
+    //! Process state enumeration.
+    enum class ProcessState : uint8_t {
+        NotRunning, //!< Process is not running.
+        IsRunning, //!< Process is running.
+        Invalid //!< Process has an invalid state.
     };
 
     class LIBIPC_API Process : public ReferenceType
@@ -77,8 +84,22 @@ namespace ipc {
         Process(Process&& p);
 
         /*!
-         * The destructor is not exception safe and can throw an exception of the type IpcException.
-         * Exceptions occur when the process can not be killed.
+         * Creates a new process and immediately start the given function f.
+         * The arguments for are provided through the variable argument list.
+         *
+         * \params[in]  f       Function to call as a main.
+         * \params[in]  args    Argument list for the function.
+         */
+        template <class Function, class... Args>
+        Process(Function&& f, Args&&... args) throw(IpcException)
+        {
+            // TODO: implementieren
+        }
+
+        /*!
+         * The destructor is not exception safe and can throw an exception of 
+         * the type IpcException. Exceptions occur when the process can not 
+         * be killed.
          *
          */
         virtual ~Process() throw(IpcException);
@@ -92,30 +113,42 @@ namespace ipc {
         bool IsValid() const NOEXCEPT;
 
         /*!
-         * Reads the exit code of the process.
-         * If the process has not exited yet one of the following codes is returned:
-         *
-         * \b States:
-         * - PROCESS_NOT_STARTED
-         * - PROCESS_STILL_RUNNING
-         * - PROCESS_NOT_VALID
+         * Reads the exit code of the process. The value depends heavily on the
+         * used operating systems.
          *
          * \returns The exit code of the process.
          */
         int32_t ExitCode() const NOEXCEPT;
-        //! The process has not been started.
-        static const int32_t PROCESS_NOT_STARTED = 0x80000000;
-        //! The process is running.
-        static const int32_t PROCESS_STILL_RUNNING = 0x80000001;
-        //! The process is in an invalid state.
-        static const int32_t PROCESS_NOT_VALID = 0x80000002;
+
+        /*!
+         * Gets the current process state. If the state equals
+         * ProcessState::Invalid, than this class has an undefined state.
+         *
+         * \returns Current process state.
+         */
+        ProcessState GetState() const NOEXCEPT;
 
         /*!
          * Terminates the process and sets the instance state to "invalid".
          * A exception of the type IpcException is thrown on error.
          *
          */
-         void Kill() throw(IpcException);
+        void Kill() throw(IpcException);
+
+        /*!
+         * Starts the execution with the specified function. This function
+         * serves as a main function. The function itself could be a function
+         * pointer, lambda expression or functional object.
+         *
+         * \params[in]  f       Function to call as a main function.
+         * \params[in]  args    Variable argument list given as function
+         *                      arguments.
+         */
+        template <class Function, class... Args>
+        void Start(Function&& f, Args&&... args) throw(IpcException)
+        {
+            // TODO: implementieren
+        }
         
         /*!
          * Wait until the process has stopped execution.
@@ -169,13 +202,13 @@ namespace ipc {
         }
 
         /*!
-         *
          * Searches for a process by name and returns a pointer to the first match.
          * If no process is found a nullptr is returned
          *
+         * \params[in]  name    Name to search for.
          * \returns Pointer to a process, nullptr if no match exists
          */
-        static std::shared_ptr<Process> GetProcessByName(const std::string&) NOEXCEPT;
+        static std::vector<std::shared_ptr<Process>> GetProcessByName(const std::string& name) NOEXCEPT;
 
         /*!
          * Returns a Vector of all currently running processes.
@@ -183,8 +216,6 @@ namespace ipc {
          * \returns Vector of all running processes
          */
         static std::vector<ProcessInfo> GetProcesses() NOEXCEPT;
-
-    protected:
 
     private:
 
