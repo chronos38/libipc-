@@ -69,6 +69,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\libipcpp\Definitions.h" />
+    <ClInclude Include="..\..\include\libipcpp\Exception\IpcException.h" />
+    <ClInclude Include="..\..\include\libipcpp\Exception\MessageQueueException.h" />
+    <ClInclude Include="..\..\include\libipcpp\Exception\NamedPipeException.h" />
+    <ClInclude Include="..\..\include\libipcpp\Exception\PipeException.h" />
+    <ClInclude Include="..\..\include\libipcpp\Exception\ProcessException.h" />
+    <ClInclude Include="..\..\include\libipcpp\Exception\SemaphoreException.h" />
+    <ClInclude Include="..\..\include\libipcpp\Exception\SharedMemoryException.h" />
+    <ClInclude Include="..\..\include\libipcpp\FileLock.h" />
     <ClInclude Include="..\..\include\libipcpp\libipcpp.h" />
     <ClInclude Include="..\..\include\libipcpp\MessageQueue.h" />
     <ClInclude Include="..\..\include\libipcpp\Pipe.h" />
