@@ -1,6 +1,6 @@
-/**  This file is part of lipipc++
+/*  This file is part of lipipc++
  * 
- *  Copyright (C) 2014 leonhardt schwarz <if12b076@technikum-wien.at>
+ *  Copyright (C) 2014 David Wolf, Leonhardt Schwarz
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -18,8 +18,8 @@
  *  Boston, MA 02110-1301, USA.
  */
 
-#ifndef PIPE_EXCEPTION
-#define PIPE_EXCEPTION
+#ifndef LIBIPC_PIPE_EXCEPTION
+#define LIBIPC_PIPE_EXCEPTION
 
 #include "IpcException.h"
 #include <string>
