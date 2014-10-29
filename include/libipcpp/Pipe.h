@@ -1,5 +1,5 @@
-#ifndef PIPE_H
-#define PIPE_H
+#ifndef LIBIPC_PIPE_H
+#define LIBIPC_PIPE_H
 
 #ifdef _MSC_VER
 #pragma once
