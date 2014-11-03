@@ -36,6 +36,6 @@ namespace ipc {
         std::string mMsg = "";
         std::exception mInnerException;
     };
-
+    
 }
 #endif

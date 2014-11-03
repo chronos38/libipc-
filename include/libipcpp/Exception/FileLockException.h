@@ -1,6 +1,6 @@
 /*  This file is part of libipc++
  * 
- *  Copyright (C) 2014 David Wolf, Leonhardt Schwarz
+ *  Copyright (C) 2014 leonhardt schwarz <if12b076@technikum-wien.at>
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -17,26 +17,22 @@
  *  the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  *  Boston, MA 02110-1301, USA.
  */
+#ifndef FILELOCK_EXCEPTION
+#define FILELOCK_EXCEPTION
 
-#ifndef LIBIPC_SHAREDMEMORY_EXCEPTION
-#define LIBIPC_SHAREDMEMORY_EXCEPTION
 
 #include "IpcException.h"
 #include <string>
-#include <exception>
 
-namespace ipc
+namespace ipc 
 {
-    class LIBIPC_API SharedMemoryException : public IpcException
+    class LIBIPC_API FileLockException : public IpcException
     {
     public:
-        SharedMemoryException(const std::string& );
-        SharedMemoryException(const std::string , const exception& ex);
+        FileLockException( const std::string& ); 
+        FileLockException( const std::string , const exception& ex );
         virtual const char* what() const;
-        virtual ~SharedMemoryException() = default;
     };
-
 }
 
-
-#endif //SHAREDMEMORY_EXCEPTION
+#endif //FileLockException

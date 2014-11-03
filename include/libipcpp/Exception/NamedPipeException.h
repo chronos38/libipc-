@@ -1,6 +1,6 @@
-/*  This file is part of lipipc++
- *
- *  Copyright (C) 2014 David Wolf, Leonhardt Schwarz
+/*  This file is part of libipc-
+ * 
+ *  Copyright (C) 2014 leonhardt schwarz <if12b076@technikum-wien.at>
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -18,8 +18,8 @@
  *  Boston, MA 02110-1301, USA.
  */
 
-#ifndef LIBIPC_NAMEDPIPE_EXCEPTION
-#define LIBIPC_NAMEDPIPE_EXCEPTION
+#ifndef LIBIPC_API_NAMEDPIPE_EXCEPTION
+#define LIBIPC_API_NAMEDPIPE_EXCEPTION
 
 #include "IpcException.h"
 #include <string>

@@ -29,10 +29,11 @@ namespace ipc
 {
     class LIBIPC_API SemaphoreException : public IpcException
     {
-    SemaphoreException ( const std::string& );
-    SemaphoreException ( const std::string , const exception& ex );
-    virtual const char* what() const;
-    virtual ~SemaphoreException();
+    public:
+        SemaphoreException ( const std::string& );
+        SemaphoreException ( const std::string , const exception& ex );
+        virtual const char* what() const;
+        virtual ~SemaphoreException();
     };
 
 }

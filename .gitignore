@@ -1,6 +1,6 @@
 ## libipc++
-doc/Doxygen/html
-doc/Doxygen/latex
+Doc/Doxygen/html
+Doc/Doxygen/latex
 
 ## Core latex/pdflatex auxiliary files:
 *.aux

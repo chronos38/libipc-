@@ -23,7 +23,6 @@
 
 #include "IpcException.h"
 #include <string>
-#include <exception>
 
 namespace ipc
 {
