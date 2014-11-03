@@ -44,15 +44,70 @@ namespace ipc {
         /*!
          *  Writes a block of data to the pipe.
          *
-         * \params[in] buf The buffer containing the data to be written to the pipe
-         * \params[in] size The buffers size
+         * \param[in] in The vector containing the data to be written to the pipe
+         * \param[in] size The amount of data to be written to the pipe
+         * \param[in] offset The position at which to start reading from the vector
          * \returns The number of bytes written is returned
          */
-        uint32_t Write(char * buf, uint32_t size);
-        uint32_t Read(char * buf, uint32_t size);
-        bool WriteByte(unsigned char);
-        bool ReadByte(unsigned char);
+        ByteCount Write(const std::vector<uint8_t>& in, size_t size, size_t offset);
+        /*!
+         *  Reads a block of data from the pipe
+         * 
+         * \param[out] out The vector that accepts data from the pipe
+         * \param[in] size The amount of data to be read from the pipe
+         * \param[in] offset The position at which to start writing data to the vector
+         */
+        ByteCount Read(const std::vector<uint8_t>& out, size_t size, size_t offset);
+        
+        /*!
+         *  Writes a block of data to the pipe.
+         * 
+         * \param[in] InputIt must meet the requirements of InputIterator
+         * \param[in] first,last The range of elements to examine
+         * \returns The number of bytes written is returned
+         */
+        template <typename InputIt>
+        ByteCount Write(InputIt first, InputIt end)
+        {
+            
+        }
+        
+        /*!
+         *  Reads a block of data from the pipe.
+         * 
+         * \tparam InputIt must meet the requirements of InputIterator
+         * \param[in] first,last The range of elements to examine
+         * \returns The number of bytes written is returned
+         */
+        template <typename InputIt>
+        ByteCount Read(InputIt first, InputIt end)
+        {
+            
+        }
+
+        /*!
+         * Writes a single byte to the pipe.
+         * 
+         * \param[in] c The byte to be written to the Pipe
+         * \returns The number of written bytes
+         */
+        ByteCount WriteByte(unsigned char c);
+        
+        /*!
+         * Reads a single byte from the pipe.
+         * 
+         * \returns The read byte
+         */
+        unsigned char ReadByte();
+        
+        /*!
+         * Closes the Pipe.
+         */
         void Close();
+        
+        /*!
+         * \returns Returns true if the Pipe is Open 
+         */
         bool isOpen();
     };
 }
