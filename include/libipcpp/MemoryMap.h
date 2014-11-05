@@ -61,7 +61,7 @@ namespace ipc {
          * \param[in]   index   The 0 based index for access.
          * \returns Byte on given index.
          */
-        uint8_t& operator[](size_t index) throw(std::out_of_range);
+        uint8_t& operator[](size_t index) throw(IpcException, std::out_of_range);
 
         /*!
          * Gets read only access for the byte on the given index. If the index
@@ -70,7 +70,7 @@ namespace ipc {
          * \param[in]   index   The 0 based index for access.
          * \returns Byte on given index.
          */
-        const uint8_t& operator[](size_t index) const throw(std::out_of_range);
+        const uint8_t& operator[](size_t index) const throw(IpcException, std::out_of_range);
 
         /*!
          * Gets the length for this memory map.
@@ -169,7 +169,7 @@ namespace ipc {
          *
          * \returns Byte value or ?????????????????????????????????????????????
          */
-        int ReadByte(); // INFO: int statt ByteCount?
+        int ReadByte() NOEXCEPT; // INFO: int statt ByteCount?
     };
 }
 

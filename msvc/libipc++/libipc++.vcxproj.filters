@@ -63,6 +63,9 @@
     <ClInclude Include="..\..\include\libipcpp\Exception\SharedMemoryException.h">
       <Filter>Header Files\Exception</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\libipcpp\MemoryMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\MessageQueue.cpp">

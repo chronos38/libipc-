@@ -78,6 +78,7 @@
     <ClInclude Include="..\..\include\libipcpp\Exception\SharedMemoryException.h" />
     <ClInclude Include="..\..\include\libipcpp\FileLock.h" />
     <ClInclude Include="..\..\include\libipcpp\libipcpp.h" />
+    <ClInclude Include="..\..\include\libipcpp\MemoryMap.h" />
     <ClInclude Include="..\..\include\libipcpp\MessageQueue.h" />
     <ClInclude Include="..\..\include\libipcpp\Pipe.h" />
     <ClInclude Include="..\..\include\libipcpp\Process.h" />
