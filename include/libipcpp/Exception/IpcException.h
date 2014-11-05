@@ -21,6 +21,10 @@
 #ifndef LIBIPC_IPC_EXCEPTION
 #define LIBIPC_IPC_EXCEPTION
 
+#ifdef _MSC_VER
+#pragma once
+#endif
+
 #include "../Definitions.h"
 #include <exception>
 

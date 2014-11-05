@@ -21,6 +21,10 @@
 #ifndef LIBIPC_SEMAPHORE_EXCEPTION
 #define LIBIPC_SEMAPHORE_EXCEPTION
 
+#ifdef _MSC_VER
+#pragma once
+#endif
+
 #include "IpcException.h"
 #include <string>
 #include <exception>

@@ -1,6 +1,6 @@
 /*  This file is part of libipc-
  * 
- *  Copyright (C) 2014 leonhardt schwarz <if12b076@technikum-wien.at>
+ *  Copyright (C) 2014 David Wolf, Leonhardt Schwarz
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -20,6 +20,10 @@
 
 #ifndef LIBIPC_API_NAMEDPIPE_EXCEPTION
 #define LIBIPC_API_NAMEDPIPE_EXCEPTION
+
+#ifdef _MSC_VER
+#pragma once
+#endif
 
 #include "IpcException.h"
 #include <string>
