@@ -26,11 +26,12 @@
 #endif
 
 #include "Exception/IpcException.h" // TODO: Sobald exception vorhanden, diese implementieren
+#include "IOBase.h"
 
 namespace ipc {
     // TODO: IO Interface implementieren.
     //! A memory map references a file memory in the RAM.
-    class MemoryMap : public ReferenceType
+    class MemoryMap : public IOBase, public ReferenceType
     {
     public:
         /*!
@@ -76,7 +77,19 @@ namespace ipc {
          * Gets the length for this memory map.
          * \returns Length in bytes for this memory map.
          */
-        size_t Length() const NOEXCEPT;
+        virtual size_t Length() const NOEXCEPT override;
+
+        /*!
+         * Gets the current position within this map.
+         * \returns Position in this map.
+         */
+        virtual size_t Position() const NOEXCEPT override;
+
+        /*!
+         * Sets the position within this map. If the position is out of range,
+         * than the particular exception is raised.
+         */
+        virtual void Position(size_t position) throw(std::out_of_range) override;
 
         /*!
          * Writes a buffer to this memory map. This method is not safe for
@@ -97,7 +110,7 @@ namespace ipc {
          * \param[in]   size    The actual size to write.
          * \returns Count of written bytes to the memory map.
          */
-        ByteCount Write(const std::vector<uint8_t>& buffer, size_t offset, size_t size) throw(IpcException, std::out_of_range);
+        virtual ByteCount Write(const std::vector<uint8_t>& buffer, size_t offset, size_t size) throw(IpcException, std::out_of_range) override;
 
         /*!
          * This method allows range based writing. It expects sequential
@@ -123,7 +136,7 @@ namespace ipc {
          *
          * \returns Either 1 or 0.
          */
-        ByteCount WriteByte(uint8_t byte) NOEXCEPT;
+        virtual ByteCount WriteByte(uint8_t byte) NOEXCEPT override;
 
         /*!
          * This method reads from the memory map. All read bytes are written
@@ -143,7 +156,7 @@ namespace ipc {
          * \param[in]   size    The actual size to write.
          * \returns Count of read bytes from the memory map.
          */
-        ByteCount Read(std::vector<uint8_t>& buffer, size_t offset, size_t size) throw(IpcException, std::out_of_range);
+        virtual ByteCount Read(std::vector<uint8_t>& buffer, size_t offset, size_t size) throw(IpcException, std::out_of_range) override;
 
         /*!
          * This method allows range based reading. It expects sequential
@@ -170,7 +183,7 @@ namespace ipc {
          *
          * \returns Byte value or -1
          */
-        int ReadByte() NOEXCEPT;
+        virtual int ReadByte() NOEXCEPT override;
     };
 }
 

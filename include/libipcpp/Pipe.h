@@ -26,10 +26,11 @@
 #endif
 
 #include "Definitions.h"
+#include "IOBase.h"
 
 namespace ipc {
 
-    class LIBIPC_API Pipe : public ReferenceType
+    class LIBIPC_API Pipe : public IOBase, public ReferenceType
     {
         Pipe() = default;
         ~Pipe() = default;
@@ -48,7 +49,8 @@ namespace ipc {
          * \param[in] offset The position at which to start reading from the vector
          * \returns The number of bytes written is returned
          */
-        ByteCount Write(const std::vector<uint8_t>& in, size_t size, size_t offset);
+        virtual ByteCount Write(const std::vector<uint8_t>& in, size_t size, size_t offset) override;
+
         /*!
          *  Reads a block of data from the pipe
          * 
@@ -56,7 +58,7 @@ namespace ipc {
          * \param[in] size The amount of data to be read from the pipe
          * \param[in] offset The position at which to start writing data to the vector
          */
-        ByteCount Read(const std::vector<uint8_t>& out, size_t size, size_t offset);
+        virtual ByteCount Read(std::vector<uint8_t>& out, size_t size, size_t offset) override;
         
         /*!
          *  Writes a block of data to the pipe.
@@ -90,14 +92,14 @@ namespace ipc {
          * \param[in] c The byte to be written to the Pipe
          * \returns The number of written bytes
          */
-        ByteCount WriteByte(uint8_t c);
+        virtual ByteCount WriteByte(uint8_t c) override;
         
         /*!
          * Reads a single byte from the pipe.
          * 
          * \returns The read byte or -1 in case of error.
          */
-        int ReadByte();
+        virtual int ReadByte() override;
         
         /*!
          * Closes the Pipe.

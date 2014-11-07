@@ -26,11 +26,12 @@
 #endif
 
 #include "Exception/SharedMemoryException.h"
+#include "IOBase.h"
 
 namespace ipc {
     // TODO: IO Interface implementieren.
     //! A shared memory for different threads and processes.
-    class MemoryMap : public ReferenceType
+    class MemoryMap : public IOBase, public ReferenceType
     {
     public:
         /*!
@@ -61,7 +62,19 @@ namespace ipc {
          * Gets the length for this shared memory.
          * \returns Length in bytes for this shared memory.
          */
-        size_t Length() const NOEXCEPT;
+        virtual size_t Length() const NOEXCEPT override;
+
+        /*!
+         * Gets the current position within this memory.
+         * \returns Position in this map.
+         */
+        virtual size_t Position() const NOEXCEPT override;
+
+        /*!
+         * Sets the position within this memory. If the position is out of
+         * range, than the particular exception is raised.
+         */
+        virtual void Position(size_t position) throw(std::out_of_range) override;
 
         /*!
          * Writes a buffer to this shared memory. This method is not safe for
@@ -82,7 +95,7 @@ namespace ipc {
          * \param[in]   size    The actual size to write.
          * \returns Count of written bytes to the shared memory.
          */
-        ByteCount Write(const std::vector<uint8_t>& buffer, size_t offset, size_t size) throw(SharedMemoryException, std::out_of_range);
+        virtual ByteCount Write(const std::vector<uint8_t>& buffer, size_t offset, size_t size) throw(SharedMemoryException, std::out_of_range) override;
 
         /*!
          * This method allows range based writing. It expects sequential
@@ -108,7 +121,7 @@ namespace ipc {
          *
          * \returns Either 1 or 0.
          */
-        ByteCount WriteByte(uint8_t byte) NOEXCEPT;
+        virtual ByteCount WriteByte(uint8_t byte) NOEXCEPT override;
 
         /*!
          * This method reads from the shared memory. All read bytes are written
@@ -128,7 +141,7 @@ namespace ipc {
          * \param[in]   size    The actual size to write.
          * \returns Count of read bytes from the shared memory.
          */
-        ByteCount Read(std::vector<uint8_t>& buffer, size_t offset, size_t size) throw(SharedMemoryException, std::out_of_range);
+        virtual ByteCount Read(std::vector<uint8_t>& buffer, size_t offset, size_t size) throw(SharedMemoryException, std::out_of_range) override;
 
         /*!
          * This method allows range based reading. It expects sequential
@@ -155,7 +168,7 @@ namespace ipc {
          *
          * \returns Byte value or -1
          */
-        int ReadByte() NOEXCEPT;
+        virtual int ReadByte() NOEXCEPT override;
     };
 }
 
