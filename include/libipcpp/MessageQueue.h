@@ -36,13 +36,16 @@
 #endif
 
 namespace ipc {
-    class IMessage;
-
 #ifdef _MSC_VER
     typedef long PriorityId; // TODO: long durch Win32 Datentyp ersetzen
 #else
     typedef long PriorityId;
 #endif
+
+    struct Message {
+        PriorityId Priority;
+        std::vector<uint8_t> Data;
+    };
 
     // TODO: Ein IO Interace für Schreib- und Leseoperationen definieren.
 
@@ -63,13 +66,12 @@ namespace ipc {
         virtual ~MessageQueue();
 
         /*!
-         * Send a message to the queue. Allowed are all types that implements
-         * the IMessage interface. For convenience there is already a pre 
-         * defined message type name <MessageTypeName>.
+         * Send a message to the queue. If an error happend while sending or
+         * the message could not be sent. Than an exception is raised.
          *
          * \param[in]   message Message to send to the queue.
          */
-        void SendMessage(std::shared_ptr<IMessage> message) throw(MessageQueueException);
+        void SendMessage(const Message& message) throw(MessageQueueException);
 
         /*!
          * Reads a message from the queue. If there is no message, than this
@@ -78,20 +80,20 @@ namespace ipc {
          * \param[out]  message The received message.
          * \returns Also returns the received message.
          */
-        std::shared_ptr<IMessage> ReceiveMessage(std::shared_ptr<IMessage>& message) throw(MessageQueueException);
+        Message& ReceiveMessage(Message& message) throw(MessageQueueException);
 
         /*!
          * Reads only a message with given ID from the queue. If the queue
          * contains no such message, than this method returns immediately. In
-         * that case the return value is a nullptr. In any other case a valid
-         * message is returned.
+         * that case the return value is an empty message. In any other case a 
+         * valid message is returned.
          *
          * \param[out]  message The received message.
          * \param[in]   id      The required ID for the message.
          * \returns Also returns the received message or a nullptr if no such
          *          message is in the queue.
          */
-        std::shared_ptr<IMessage> ReceiveMessage(std::shared_ptr<IMessage>& message, PriorityId id) throw(MessageQueueException);
+        Message& ReceiveMessage(Message& message, PriorityId id) throw(MessageQueueException);
     };
 }
 

@@ -1,6 +1,6 @@
 /*  This file is part of libipc++
  *
- *  Copyright (C) 2014 David Wolf
+ *  Copyright (C) 2014 David Wolf, Leonhardt Schwarz
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
