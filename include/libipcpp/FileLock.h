@@ -49,12 +49,24 @@ namespace ipc {
         virtual ~FileLock();
 
         /*!
+         * This method locks the file for exclusive use. If the file is already
+         * locked, than this method blocks until the file gets unlocked.
+         *
+         * If this method gets called multiple times by the same process, than 
+         * the behavior is undefined.
+         */
+        void Lock() NOEXCEPT;
+
+        /*!
          * Unlocks the file manually. The destructor will not attempt to unlock
          * the file. If the file is already unlocked, than this method does
          * nothing.
          *
          * This is a non blocking method and it returns immediately after it is
          * called.
+         *
+         * If this method gets called by a non owning process, than the
+         * behavior is undefined.
          */
         void Unlock() NOEXCEPT;
 

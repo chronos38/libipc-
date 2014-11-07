@@ -32,7 +32,6 @@ namespace ipc {
     class LIBIPC_API Pipe : public ReferenceType
     {
         Pipe() = default;
-        Pipe(const Pipe&) = default;
         ~Pipe() = default;
 
 #ifdef _MSC_VER

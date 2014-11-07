@@ -114,7 +114,7 @@ namespace ipc {
          * \param[in]  f       Function to call as a main.
          * \param[in]  args    Argument list for the function.
          */
-        template <class Function, class... Args>
+        template <typename Function, typename... Args>
         Process(Function&& f, Args&&... args) throw(ProcessException)
         {
             // TODO: implementieren
