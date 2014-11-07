@@ -101,7 +101,7 @@ namespace ipc {
 
         /*!
          * This method allows range based writing. It expects sequential
-         * iterators. It also allows only std types. For any other custom type
+         * iterators. It also allows only primitive types. For any other custom type
          * an seperate serialize method must be implemented.
          *
          * If the iterator is invalid or out of bound, than the behavior of
@@ -164,12 +164,13 @@ namespace ipc {
         }
 
         /*!
-         * This method reads a single byte from the memory map. If any error
-         * happens, than this method returns ??????????????????????????????????
+         * This method reads a single byte from the shared memory. If any error
+         * happens, than this method returns -1.
+         * If this method succeeds, than it returns a value between 0 and 255.
          *
-         * \returns Byte value or ?????????????????????????????????????????????
+         * \returns Byte value or -1
          */
-        int ReadByte() NOEXCEPT; // INFO: int statt ByteCount?
+        int ReadByte() NOEXCEPT;
     };
 }
 

@@ -29,7 +29,7 @@
 
 namespace ipc {
 
-    class LIBIPC_API Pipe
+    class LIBIPC_API Pipe : public ReferenceType
     {
         Pipe() = default;
         Pipe(const Pipe&) = default;
@@ -91,14 +91,14 @@ namespace ipc {
          * \param[in] c The byte to be written to the Pipe
          * \returns The number of written bytes
          */
-        ByteCount WriteByte(unsigned char c);
+        ByteCount WriteByte(uint8_t c);
         
         /*!
          * Reads a single byte from the pipe.
          * 
-         * \returns The read byte
+         * \returns The read byte or -1 in case of error.
          */
-        unsigned char ReadByte();
+        int ReadByte();
         
         /*!
          * Closes the Pipe.
@@ -108,7 +108,7 @@ namespace ipc {
         /*!
          * \returns Returns true if the Pipe is Open 
          */
-        bool isOpen();
+        bool IsOpen();
     };
 }
 #endif
