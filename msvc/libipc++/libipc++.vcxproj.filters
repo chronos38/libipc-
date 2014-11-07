@@ -66,6 +66,12 @@
     <ClInclude Include="..\..\include\libipcpp\MemoryMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\libipcpp\LockGuard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\libipcpp\IOBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\MessageQueue.cpp">

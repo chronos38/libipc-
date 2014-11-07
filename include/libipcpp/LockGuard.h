@@ -28,20 +28,30 @@
 #include "Definitions.h"
 
 namespace ipc {
+    //! High level locking class to lock in scope.
     template <typename T>
-    class LIBIPC_API LockGuard : public ReferenceType
+    class LIBIPC_API LockGuard
     {
     public:
+        //! Locks given lockable object.
         LockGuard(T& t) :
             mT(t)
         {
             mT.Lock();
         }
 
+        //! Unlocks object
         ~LockGuard()
         {
             mT.Unlock();
         }
+
+        LockGuard() = delete;
+        LockGuard(const LockGuard&) = delete;
+        LockGuard(LockGuard&&) = delete;
+
+        LockGuard& operator=(const LockGuard&) = delete;
+        LockGuard& operator=(LockGuard&&) = delete;
 
     private:
 
