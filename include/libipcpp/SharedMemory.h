@@ -31,14 +31,14 @@
 namespace ipc {
     // TODO: IO Interface implementieren.
     //! A shared memory for different threads and processes.
-    class MemoryMap : public IOBase, public ReferenceType
+    class LIBIPC_API SharedMemory : public IOBase, public ReferenceType
     {
     public:
         /*!
          * 
          */
-        MemoryMap(); // INFO: Leerer Konstruktor richtig?
-        virtual ~MemoryMap();
+        SharedMemory(); // INFO: Leerer Konstruktor richtig?
+        virtual ~SharedMemory();
 
         /*!
          * Gets read and write access for the byte on the given index. If the

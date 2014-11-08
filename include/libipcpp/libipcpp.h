@@ -25,10 +25,14 @@
 #pragma once
 #endif
 
+#include "Utility.h"
 #include "Process.h"
 #include "Pipe.h"
 #include "MessageQueue.h"
 #include "Semaphore.h"
 #include "SharedMemory.h"
+#include "MemoryMap.h"
+#include "FileLock.h"
+#include "LockGuard.h"
 
 #endif

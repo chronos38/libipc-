@@ -91,7 +91,6 @@ namespace ipc {
     class LIBIPC_API Process : public ReferenceType
     {
     public:
-        //TODO: Add Start() method
         /*!
          * Creates a new Process instance.
          *

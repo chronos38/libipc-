@@ -25,13 +25,13 @@
 #pragma once
 #endif
 
-#include "Exception/IpcException.h" // TODO: Sobald exception vorhanden, diese implementieren
+#include "Exception/MemoryMapException.h"
 #include "IOBase.h"
 
 namespace ipc {
     // TODO: IO Interface implementieren.
     //! A memory map references a file memory in the RAM.
-    class MemoryMap : public IOBase, public ReferenceType
+    class LIBIPC_API MemoryMap : public IOBase, public ReferenceType
     {
     public:
         /*!
@@ -42,7 +42,7 @@ namespace ipc {
          *
          * \param[in]   fileName    File name for creating the memory map.
          */
-        MemoryMap(const std::string& fileName) throw(IpcException);
+        MemoryMap(const std::string& fileName) throw(MemoryMapException);
 
         /*!
          * Creates a new memory map with at leas the given byte size. If there
@@ -62,7 +62,7 @@ namespace ipc {
          * \param[in]   index   The 0 based index for access.
          * \returns Byte on given index.
          */
-        uint8_t& operator[](size_t index) throw(IpcException, std::out_of_range);
+        uint8_t& operator[](size_t index) throw(MemoryMapException, std::out_of_range);
 
         /*!
          * Gets read only access for the byte on the given index. If the index
@@ -71,7 +71,7 @@ namespace ipc {
          * \param[in]   index   The 0 based index for access.
          * \returns Byte on given index.
          */
-        const uint8_t& operator[](size_t index) const throw(IpcException, std::out_of_range);
+        const uint8_t& operator[](size_t index) const throw(MemoryMapException, std::out_of_range);
 
         /*!
          * Gets the length for this memory map.
@@ -103,14 +103,14 @@ namespace ipc {
          * If the size minus offset is greate than the buffer size, than an
          * out_of_range exception is thrown.
          *
-         * For the remaining errors an IpcException is thrown.
+         * For the remaining errors an MemoryMapException is thrown.
          *
          * \param[in]   buffer  The byte buffer to write to the memory map.
          * \param[in]   offset  The offest for the given byte buffer.
          * \param[in]   size    The actual size to write.
          * \returns Count of written bytes to the memory map.
          */
-        virtual ByteCount Write(const std::vector<uint8_t>& buffer, size_t offset, size_t size) throw(IpcException, std::out_of_range) override;
+        virtual ByteCount Write(const std::vector<uint8_t>& buffer, size_t offset, size_t size) throw(MemoryMapException, std::out_of_range) override;
 
         /*!
          * This method allows range based writing. It expects sequential
@@ -125,7 +125,7 @@ namespace ipc {
          * \returns Count of written elements to the memory map.
          */
         template <typename InputIt>
-        size_t Write(InputIt first, InputIt last) throw(IpcException)
+        size_t Write(InputIt first, InputIt last) throw(MemoryMapException)
         {
             // TODO: implementieren
         }
@@ -149,14 +149,14 @@ namespace ipc {
          * If the size minus offset is greate than the buffer size, than an
          * out_of_range exception is thrown.
          *
-         * For the remaining errors an IpcException is thrown.
+         * For the remaining errors an MemoryMapException is thrown.
          *
          * \param[in,out]   buffer  Target buffer for this operation.
          * \param[in]   offset  The offest for the given byte buffer.
          * \param[in]   size    The actual size to write.
          * \returns Count of read bytes from the memory map.
          */
-        virtual ByteCount Read(std::vector<uint8_t>& buffer, size_t offset, size_t size) throw(IpcException, std::out_of_range) override;
+        virtual ByteCount Read(std::vector<uint8_t>& buffer, size_t offset, size_t size) throw(MemoryMapException, std::out_of_range) override;
 
         /*!
          * This method allows range based reading. It expects sequential
@@ -171,7 +171,7 @@ namespace ipc {
          * \returns Count of written elements to the memory map.
          */
         template <typename OutputIt>
-        size_t Read(OutputIt first, OutputIt last) throw(IpcException)
+        size_t Read(OutputIt first, OutputIt last) throw(MemoryMapException)
         {
             // TODO: implementieren
         }
