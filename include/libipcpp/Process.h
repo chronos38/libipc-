@@ -98,8 +98,20 @@ namespace ipc {
          * - ProcessException
          *
          * \param[in] fileName The executable file for the new process.
+         * \param[in] args Arguments for the new process.
          */
         Process(const std::string& fileName, const std::vector<std::string>& args) throw(ProcessException);
+
+        /*!
+         * Creates a new Process instance.
+         *
+         * \b Exceptions:
+         * - ProcessException
+         *
+         * \param[in] fileName The executable file for the new process.
+         * \param[in] args Arguments for the new process.
+         */
+        Process(const std::string& fileName, const std::string& args);
 
         /*!
          * Move constructor
