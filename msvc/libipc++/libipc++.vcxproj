@@ -97,6 +97,9 @@
     <ClCompile Include="..\..\source\Semaphore.cpp" />
     <ClCompile Include="..\..\source\SharedMemory.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\libipcpp\Platform\Win32\Process.inl" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

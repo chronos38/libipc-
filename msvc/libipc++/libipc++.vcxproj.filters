@@ -19,6 +19,9 @@
     <Filter Include="Source Files\Win32">
       <UniqueIdentifier>{31e56228-d804-4070-b075-6163ba601524}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Inline">
+      <UniqueIdentifier>{11afde6e-d1ba-431a-b83f-8b9a98f4dd64}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\libipcpp\Definitions.h">
@@ -101,5 +104,10 @@
     <ClCompile Include="..\..\source\platform\win32\Process.cpp">
       <Filter>Source Files\Win32</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\libipcpp\Platform\Win32\Process.inl">
+      <Filter>Header Files\Inline</Filter>
+    </None>
   </ItemGroup>
 </Project>
