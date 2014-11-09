@@ -16,6 +16,9 @@
     <Filter Include="Header Files\Exception">
       <UniqueIdentifier>{b8f7b4ae-9da4-470b-b1be-26e2aa549881}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Win32">
+      <UniqueIdentifier>{31e56228-d804-4070-b075-6163ba601524}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\libipcpp\Definitions.h">
@@ -94,6 +97,9 @@
     </ClCompile>
     <ClCompile Include="..\..\source\platform\win32\Definitions.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\platform\win32\Process.cpp">
+      <Filter>Source Files\Win32</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

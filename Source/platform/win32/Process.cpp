@@ -7,8 +7,6 @@ template <typename T>
 using vector = std::vector < T > ;
 template <typename T>
 using shared_ptr = std::shared_ptr < T > ;
-template <typename T>
-using make_shared = std::make_shared < T > ;
 
 namespace ipc {
     ProcessInfo::~ProcessInfo()
@@ -51,6 +49,15 @@ namespace ipc {
             mIsOwner = true;
             mProcess = processInformation.hProcess; // TODO: hThread speichern.
             mState = ProcessState::IsRunning;
+        }
+    }
+
+    Process::Process(const ProcessHandle& handle) :
+        mProcess(handle)
+    {
+        if (handle != PROCESS_INVALID_HANDLE) {
+            DWORD ret = WaitForSingleObject(handle, 0);
+            mState = (ret == WAIT_TIMEOUT) ? ProcessState::IsRunning : ProcessState::NotRunning;
         }
     }
 
@@ -115,7 +122,7 @@ namespace ipc {
 
     vector<shared_ptr<Process>> Process::GetProcessByName(const string& name)
     {
-        vector<shared_ptr<Process>> result = nullptr;
+        vector<shared_ptr<Process>> result;
         DWORD aProcesses[1024];
         DWORD cbNeeded;
         DWORD cProcesses;
@@ -140,7 +147,7 @@ namespace ipc {
                         GetModuleBaseNameA(hProcess, hMod, szProcessName, sizeof(szProcessName) / sizeof(CHAR));
                         
                         if (szProcessName == name.c_str()) {
-                            result.push_back(make_shared<Process>(hProcess));
+                            result.push_back(std::make_shared<Process>(hProcess));
                         }
                     }
                 }
