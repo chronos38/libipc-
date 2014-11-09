@@ -96,8 +96,10 @@ namespace ipc {
          *
          * \b Exceptions:
          * - ProcessException
+         *
+         * \param[in] fileName The executable file for the new process.
          */
-        Process() throw(ProcessException);
+        Process(const std::string& fileName, const std::vector<std::string>& args) throw(ProcessException);
 
         /*!
          * Move constructor
@@ -105,19 +107,6 @@ namespace ipc {
          * \param[in,out] p The Process instance that should be moved to a new handle
          */
         Process(Process&& p);
-
-        /*!
-         * Creates a new process and immediately start the given function f.
-         * The arguments for are provided through the variable argument list.
-         *
-         * \param[in]  f       Function to call as a main.
-         * \param[in]  args    Argument list for the function.
-         */
-        template <typename Function, typename... Args>
-        Process(Function&& f, Args&&... args) throw(ProcessException)
-        {
-            // TODO: implementieren
-        }
 
         /*!
          * The destructor is not exception safe and can throw an exception of 
@@ -157,21 +146,6 @@ namespace ipc {
          *
          */
         void Kill() throw(ProcessException);
-
-        /*!
-         * Starts the execution with the specified function. This function
-         * serves as a main function. The function itself could be a function
-         * pointer, lambda expression or functional object.
-         *
-         * \param[in]  f       Function to call as a main function.
-         * \param[in]  args    Variable argument list given as function
-         *                      arguments.
-         */
-        template <class Function, class... Args>
-        void Start(Function&& f, Args&&... args) throw(ProcessException)
-        {
-            // TODO: implementieren
-        }
         
         /*!
          * Wait until the process has stopped execution.
@@ -207,24 +181,6 @@ namespace ipc {
         }
 
         /*!
-         * Creates a new process and executes the passed function as main function.
-         * Throws an ProcessException on error.
-         *
-         * \b Exception:
-         * - ProcessException
-         *
-         * \param[in]  main The function object to be executed
-         * \param[in]  args The function parameters
-         *
-         * \returns Pointer to the new Process instance.
-         */
-        template <typename Function, typename... Args>
-        static std::shared_ptr<Process> Create(Function&& main, Args&&... args) throw(ProcessException)
-        {
-            // TODO: implementieren
-        }
-
-        /*!
          * Searches for a process by name and returns a pointer to the first match.
          * If no process is found a nullptr is returned
          *
@@ -242,6 +198,7 @@ namespace ipc {
 
     private:
 
+        Process() = delete;
         Process(const Process&) = delete;
 
         bool mIsOwner = false;

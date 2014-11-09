@@ -4,7 +4,7 @@
 using namespace std;
 
 namespace ipc {
-    Process::Process()
+    Process::Process(const string& fileName, const vector<string>& args)
     {
 
     }
@@ -19,17 +19,7 @@ namespace ipc {
 
     }
 
-    bool Process::IsValid() const
-    {
-
-    }
-
     int32_t Process::ExitCode() const
-    {
-
-    }
-
-    ProcessState Process::GetState() const
     {
 
     }
