@@ -38,7 +38,7 @@ namespace ipc {
         //! Standard copy constructor.
         ProcessInfo(const ProcessInfo&) = default;
         //! Standard destructor.
-        ~ProcessInfo() = default;
+        ~ProcessInfo();
 
 #ifdef _MSC_VER
         //! Explicit implemenation for Win32
@@ -142,7 +142,7 @@ namespace ipc {
          *
          * \returns The exit code of the process.
          */
-        int32_t ExitCode() const NOEXCEPT;
+        int32_t ExitCode() const throw(ProcessException);
 
         /*!
          * Gets the current process state. If the state equals
@@ -166,7 +166,7 @@ namespace ipc {
          *
          * \returns Reference to the process.
          */
-        Process& Wait() NOEXCEPT;
+        Process& Wait() throw(ProcessException);
 
         /*!
          * Equal behaviour to Wait but returns after a certain time.
@@ -175,7 +175,7 @@ namespace ipc {
          * \returns TRUE if the process terminated, otherwise FALSE.
          */
         template <typename Rep, typename Period>
-        bool WaitFor(const std::chrono::duration<Rep, Period>& timeoutDuration) const NOEXCEPT
+        bool WaitFor(const std::chrono::duration<Rep, Period>& timeoutDuration) throw(ProcessException)
         {
             // TODO: implementieren
         }
@@ -187,7 +187,7 @@ namespace ipc {
          * \returns TRUE if the process terminated, otherwise FALSE.
          */
         template <typename Clock, typename Duration>
-        bool WaitUntil(const std::chrono::time_point<Clock, Duration>& timeoutTime) const NOEXCEPT
+        bool WaitUntil(const std::chrono::time_point<Clock, Duration>& timeoutTime) throw(ProcessException)
         {
             // TODO: implementieren
         }
@@ -199,14 +199,14 @@ namespace ipc {
          * \param[in]  name    Name to search for.
          * \returns Pointer to a process, nullptr if no match exists
          */
-        static std::vector<std::shared_ptr<Process>> GetProcessByName(const std::string& name) NOEXCEPT;
+        static std::vector<std::shared_ptr<Process>> GetProcessByName(const std::string& name) throw(ProcessException);
 
         /*!
          * Returns a Vector of all currently running processes.
          *
          * \returns Vector of all running processes
          */
-        static std::vector<ProcessInfo> GetProcesses() NOEXCEPT;
+        static std::vector<ProcessInfo> GetProcesses() throw(ProcessException);
 
     private:
 

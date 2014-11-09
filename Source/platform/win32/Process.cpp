@@ -1,5 +1,6 @@
 #ifdef _MSC_VER
 #include "../../../include/libipcpp/Process.h"
+#include <Psapi.h>
 
 using string = std::string;
 template <typename T>
@@ -8,6 +9,14 @@ template <typename T>
 using shared_ptr = std::shared_ptr < T > ;
 
 namespace ipc {
+    ProcessInfo::~ProcessInfo()
+    {
+        if (mHandle != PROCESS_INVALID_HANDLE) {
+            CloseHandle(mHandle);
+            mHandle = PROCESS_INVALID_HANDLE;
+        }
+    }
+
     Process::Process(const string& fileName, const vector<string>& args)
     {
         string str = fileName;
@@ -28,6 +37,8 @@ namespace ipc {
         memset(cmdl, 0, args.size() + 1);
         memcpy(cmdl, args.data(), args.size());
 
+        startupInfo.cb = sizeof(startupInfo);
+
         BOOL result = CreateProcessA(fileName.c_str(), cmdl, NULL, NULL, FALSE, 0, NULL, NULL, &startupInfo, &processInformation);
         delete cmdl;
 
@@ -36,7 +47,7 @@ namespace ipc {
             throw ProcessException("");
         } else {
             mIsOwner = true;
-            mProcess = processInformation.hProcess;
+            mProcess = processInformation.hProcess; // TODO: hThread speichern.
             mState = ProcessState::IsRunning;
         }
     }
@@ -51,22 +62,53 @@ namespace ipc {
 
     Process::~Process()
     {
+        if (mIsOwner) {
+            if (mProcess != PROCESS_INVALID_HANDLE) {
+                CloseHandle(mProcess);
+                mProcess = PROCESS_INVALID_HANDLE;
+            }
 
+            // TODO: mThread schließen.
+        }
     }
 
     int32_t Process::ExitCode() const
     {
-
+        DWORD exitCode = ~0;
+        
+        if (!GetExitCodeProcess(mProcess, &exitCode)) {
+            // TODO: Systeminformation abrufen und als Argument übergeben.
+            throw ProcessException("");
+        } else {
+            return static_cast<int32_t>(exitCode);
+        }
     }
 
     void Process::Kill()
     {
+        // TODO: Bestimmter ExitCode?
+        BOOL result = TerminateProcess(mProcess, ~0);
 
+        if (!result) {
+            // TODO: Systeminformation abrufen und als Argument übergeben.
+            throw ProcessException("");
+        } else {
+            mProcess = PROCESS_INVALID_HANDLE;
+            mState = ProcessState::Invalid;
+        }
+
+        // TODO: mThread terminieren.
     }
 
     Process& Process::Wait()
     {
-
+        if (WaitForSingleObject(mProcess, INFINITE) == WAIT_FAILED) {
+            // TODO: Systeminformation abrufen und als Argument übergeben.
+            throw ProcessException("");
+        } else {
+            mProcess = PROCESS_INVALID_HANDLE;
+            mState = ProcessState::Invalid;
+        }
     }
 
     vector<shared_ptr<Process>> Process::GetProcessByName(const string& name)
@@ -76,7 +118,40 @@ namespace ipc {
 
     vector<ProcessInfo> Process::GetProcesses()
     {
+        vector<ProcessInfo> result;
+        DWORD aProcesses[1024];
+        DWORD cbNeeded;
+        DWORD cProcesses;
 
+        if (!EnumProcesses(aProcesses, sizeof(aProcesses), &cbNeeded)) {
+            // TODO: Systeminformation abrufen und als Argument übergeben.
+            throw ProcessException("");
+        }
+
+        cProcesses = cbNeeded / sizeof(DWORD);
+
+        for (DWORD i = 0; i < cProcesses; i++) {
+            if (aProcesses[i] != 0) {
+                CHAR szProcessName[MAX_PATH] = "<unknown>";
+                HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, aProcesses[i]);
+
+                if (hProcess) {
+                    HMODULE hMod;
+                    DWORD cbNeeded;
+
+                    if (EnumProcessModules(hProcess, &hMod, sizeof(hMod), &cbNeeded)) {
+                        GetModuleBaseNameA(hProcess, hMod, szProcessName, sizeof(szProcessName) / sizeof(CHAR));
+                        ProcessInfo info;
+                        info.mHandle = hProcess;
+                        info.mId = static_cast<int64_t>(aProcesses[i]);
+                        info.mName = szProcessName;
+                        result.push_back(info);
+                    }
+                }
+            }
+        }
+
+        return result;
     }
 }
 #endif
