@@ -114,8 +114,9 @@ namespace ipc {
         Process(const std::string& fileName, const std::string& args);
         
        /*!
-        * 
-        * Creates a new Process instance.
+        * Creates a new Process instance. The process class does not take
+        * ownership of this handle. Therefore if the process is still running,
+        * the destructor does not kill it.
         * 
         * \b Exceptions:
         * - ProcessException

@@ -62,8 +62,6 @@ namespace ipc {
     Process::Process(const ProcessInfo& info) :
         mProcess(info.mHandle)
     {
-        if (mProcess != PROCESS_INVALID_HANDLE) {
-        }
     }
 
     Process::Process(Process&& p) :
@@ -75,13 +73,15 @@ namespace ipc {
 
     Process::~Process()
     {
-        if (mIsOwner) {
-            if (mProcess != PROCESS_INVALID_HANDLE) {
+        if (mProcess != PROCESS_INVALID_HANDLE) {
+            if (mIsOwner) {
+                Kill();
+            } else {
                 CloseHandle(mProcess);
                 mProcess = PROCESS_INVALID_HANDLE;
-            }
 
-            // TODO: mThread schließen.
+                // TODO: mThread schließen.
+            }
         }
     }
 
@@ -109,18 +109,20 @@ namespace ipc {
 
     void Process::Kill()
     {
-        // TODO: Bestimmter ExitCode?
-        BOOL result = TerminateProcess(mProcess, ~0);
+        if (GetState() == ProcessState::IsRunning) {
+            // TODO: Bestimmter ExitCode?
+            BOOL result = TerminateProcess(mProcess, ~0);
 
-        if (!result) {
-            // TODO: Systeminformation abrufen und als Argument übergeben.
-            throw ProcessException("");
-        } else {
-            CloseHandle(mProcess);
-            mProcess = PROCESS_INVALID_HANDLE;
+            if (!result) {
+                // TODO: Systeminformation abrufen und als Argument übergeben.
+                throw ProcessException("");
+            } else {
+                CloseHandle(mProcess);
+                mProcess = PROCESS_INVALID_HANDLE;
+            }
+
+            // TODO: mThread terminieren.
         }
-
-        // TODO: mThread terminieren.
     }
 
     Process& Process::Wait()
