@@ -4,10 +4,19 @@
 using string = std::string;
 template <typename T>
 using vector = std::vector < T > ;
+template <typename T>
+using shared_ptr = std::shared_ptr < T > ;
 
 namespace ipc {
     Process::Process(const string& fileName, const vector<string>& args)
     {
+        string str = fileName;
+
+        for (const string& arg : args) {
+            str += " " + arg;
+        }
+
+        Process::Process(fileName, args);
     }
 
     Process::Process(const string& fileName, const string& args)
@@ -28,12 +37,16 @@ namespace ipc {
         } else {
             mIsOwner = true;
             mProcess = processInformation.hProcess;
+            mState = ProcessState::IsRunning;
         }
     }
 
-    Process::Process(Process&& p)
+    Process::Process(Process&& p) :
+        mIsOwner(p.mIsOwner), mProcess(p.mProcess), mState(p.mState)
     {
-
+        p.mIsOwner = false;
+        p.mProcess = PROCESS_INVALID_HANDLE;
+        p.mState = ProcessState::Invalid;
     }
 
     Process::~Process()

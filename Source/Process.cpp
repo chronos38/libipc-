@@ -1,6 +1,6 @@
 #include "../include/libipcpp/Process.h"
 
-using namespace std;
+using string = std::string;
 
 namespace ipc {
     int64_t ProcessInfo::GetId() const
