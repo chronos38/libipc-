@@ -116,6 +116,7 @@ namespace ipc {
             // TODO: Systeminformation abrufen und als Argument übergeben.
             throw ProcessException("");
         } else {
+            CloseHandle(mProcess);
             mProcess = PROCESS_INVALID_HANDLE;
         }
 
@@ -128,7 +129,10 @@ namespace ipc {
             // TODO: Systeminformation abrufen und als Argument übergeben.
             throw ProcessException("");
         } else {
+            CloseHandle(mProcess);
             mProcess = PROCESS_INVALID_HANDLE;
+
+            // TODO: mThread schließen.
         }
     }
 

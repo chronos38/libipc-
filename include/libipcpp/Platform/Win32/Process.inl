@@ -7,9 +7,6 @@ namespace ipc {
         if (WaitForSingleObject(mProcess, static_cast<DWORD>(std::chrono::duration_cast<std::chrono::milliseconds>(timeoutDuration).count())) == WAIT_FAILED) {
             // TODO: Systeminformation abrufen und als Argument übergeben.
             throw ProcessException("");
-        } else {
-            mProcess = PROCESS_INVALID_HANDLE;
-            mState = ProcessState::Invalid;
         }
     }
 
