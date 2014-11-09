@@ -56,25 +56,21 @@ namespace ipc {
         } else {
             mIsOwner = true;
             mProcess = processInformation.hProcess; // TODO: hThread speichern.
-            mState = ProcessState::IsRunning;
         }
     }
 
-    Process::Process(const ProcessHandle& handle) :
-        mProcess(handle)
+    Process::Process(const ProcessInfo& info) :
+        mProcess(info.mHandle)
     {
-        if (handle != PROCESS_INVALID_HANDLE) {
-            DWORD ret = WaitForSingleObject(handle, 0);
-            mState = (ret == WAIT_TIMEOUT) ? ProcessState::IsRunning : ProcessState::NotRunning;
+        if (mProcess != PROCESS_INVALID_HANDLE) {
         }
     }
 
     Process::Process(Process&& p) :
-        mIsOwner(p.mIsOwner), mProcess(p.mProcess), mState(p.mState)
+        mIsOwner(p.mIsOwner), mProcess(p.mProcess)
     {
         p.mIsOwner = false;
         p.mProcess = PROCESS_INVALID_HANDLE;
-        p.mState = ProcessState::Invalid;
     }
 
     Process::~Process()
@@ -86,6 +82,16 @@ namespace ipc {
             }
 
             // TODO: mThread schlieﬂen.
+        }
+    }
+
+    ProcessState Process::GetState() const
+    {
+        if (mProcess != PROCESS_INVALID_HANDLE) {
+            DWORD ret = WaitForSingleObject(mProcess, 0);
+            return (ret == WAIT_TIMEOUT) ? ProcessState::IsRunning : ProcessState::NotRunning;
+        } else {
+            return ProcessState::Invalid;
         }
     }
 
@@ -111,7 +117,6 @@ namespace ipc {
             throw ProcessException("");
         } else {
             mProcess = PROCESS_INVALID_HANDLE;
-            mState = ProcessState::Invalid;
         }
 
         // TODO: mThread terminieren.
@@ -124,7 +129,6 @@ namespace ipc {
             throw ProcessException("");
         } else {
             mProcess = PROCESS_INVALID_HANDLE;
-            mState = ProcessState::Invalid;
         }
     }
 
@@ -160,7 +164,11 @@ namespace ipc {
                             info.mId = static_cast<int64_t>(aProcesses[i]);
                             info.mName = szProcessName;
                             result.push_back(info);
+                        } else {
+                            CloseHandle(hProcess);
                         }
+                    } else {
+                        CloseHandle(hProcess);
                     }
                 }
             }
@@ -199,6 +207,8 @@ namespace ipc {
                         info.mId = static_cast<int64_t>(aProcesses[i]);
                         info.mName = szProcessName;
                         result.push_back(info);
+                    } else {
+                        CloseHandle(hProcess);
                     }
                 }
             }

@@ -20,11 +20,6 @@ namespace ipc {
 
     bool Process::IsValid() const
     {
-        return (mProcess != PROCESS_INVALID_HANDLE && mState != ProcessState::Invalid);
-    }
-
-    ProcessState Process::GetState() const
-    {
-        return mState;
+        return (mProcess != PROCESS_INVALID_HANDLE);
     }
 }
