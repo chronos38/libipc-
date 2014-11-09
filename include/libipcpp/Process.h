@@ -246,6 +246,7 @@ namespace ipc {
 
         bool mIsOwner = false;
         ProcessHandle mProcess = PROCESS_INVALID_HANDLE;
+        ProcessState mState = ProcessState::Invalid;
     };
 }
 
