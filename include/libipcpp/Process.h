@@ -120,9 +120,9 @@ namespace ipc {
         * \b Exceptions:
         * - ProcessException
         * 
-        * \param[in] handle The ProcessHandle of the Process to be managed by the Instance.
+        * \param[in] info The ProcessHandle of the Process to be managed by the Instance.
         */ 
-        Process(const ProcessHandle& handle);
+        Process(const ProcessInfo& info);
 
         /*!
          * Move constructor
@@ -204,7 +204,7 @@ namespace ipc {
          * \param[in]  name    Name to search for.
          * \returns Pointer to a process, nullptr if no match exists
          */
-        static std::vector<std::shared_ptr<Process>> GetProcessByName(const std::string& name) throw(ProcessException);
+        static std::vector<ProcessInfo> GetProcessByName(const std::string& name) throw(ProcessException);
 
         /*!
          * Returns a Vector of all currently running processes.

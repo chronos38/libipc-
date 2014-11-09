@@ -1,8 +1,9 @@
-
+#ifdef __linux__
 #include "../../../include/libipcpp/Utility.h"
 #include "../../../include/libipcpp/Process.h"
 #include <unistd.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <dirent.h>
 #include <signal.h>
 #include <algorithm>
@@ -34,9 +35,10 @@ namespace ipc {
         }
     }
     
-    Process::Process(const ProcessHandle& handle)
+    Process::Process(const ProcessInfo& info)
     {
-        mProcess = handle;
+        mProcess = info.GetHandle();
+        ValidateProcessHandle();
         if (!IsValid()) {
             throw ProcessException("Process handle is not valid.");
         }
@@ -52,36 +54,36 @@ namespace ipc {
         if(!mIsOwner);
             return;
             
-        int rv = kill(mProcess, SIGKILL);
-        if (rv == EPERM)
-            throw ProcessException("Process could not be killed");
+        Kill();
     }
 
     int32_t Process::ExitCode() const
     {
-
+        
     }
 
     void Process::Kill()
     {
-
+        int rv = kill(mProcess, SIGKILL);
+        if(rv < 0)
+            throw ProcessException("Process could not be killed.");
     }
 
     Process& Process::Wait()
     {
-
     }
 
-    std::vector<shared_ptr<Process>> Process::GetProcessByName(const std::string& name)
+    std::vector<ProcessInfo> Process::GetProcessByName(const std::string& name)
     {
         DIR *directory = opendir("/proc");
-        std::vector<Process> results;
+        std::vector<ProcessInfo> results;
+        
         if(directory) {
             struct dirent *dirEntry;
             while ((dirEntry = readdir(directory)))
             {
                 if(!IsNumber(dirEntry->d_name))
-                continue;
+                    continue;
 
                 int nextPid = std::stoi(dirEntry->d_name);
 
@@ -89,17 +91,24 @@ namespace ipc {
                 std::ifstream file(path);
                 std::string line;
                 std::getline(file, line, '\0');
+                
                 if(line.empty())
-                continue;
+                    continue;
                 std::vector< std::string > tokens;
                 SplitString(line, "/", tokens);
 
                 std::string processCandidate = tokens.back();
                 auto it = std::search(processCandidate.begin(), processCandidate.end(), name.begin(), name.end());
-                if(it != processCandidate.end())
-                results.push_back(nextPid);
+                if(it != processCandidate.end()) {
+                    ProcessInfo tmp; 
+                    tmp.mId = nextPid;
+                    tmp.mHandle = nextPid;
+                    tmp.mName = name;
+                    results.push_back(tmp);
+                }
+                    
             }
-            return;
+            return results;
 
         }
     }
@@ -112,7 +121,11 @@ namespace ipc {
     
     Process::ValidateProcessHandle(ProcessHandle& handle) {
         int rv = kill(mProcess, 0);
-        if(rv == EPERM) {
+        if (rv == 0) {
+            mIsOwner = true;
+            mState = ProcessState::IsRunning;
+        }
+        else if(rv == EPERM) {
             mIsOwner = false;
             mState = ProcessState::IsRunning;
         } else if(rv < 0) {
@@ -123,3 +136,4 @@ namespace ipc {
     }
 
 }
+#endif

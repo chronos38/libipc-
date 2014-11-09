@@ -52,3 +52,4 @@ add_test(test1 ${PROJECT_TEST_NAME})
 
 #add_executable(libipc++_test main.cpp)
 #add_library(libipc++ SHARED Process.cpp)
+add_subdirectory(test/linux)
