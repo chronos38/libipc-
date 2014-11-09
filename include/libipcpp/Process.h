@@ -112,6 +112,17 @@ namespace ipc {
          * \param[in] args Arguments for the new process.
          */
         Process(const std::string& fileName, const std::string& args);
+        
+       /*!
+        * 
+        * Creates a new Process instance.
+        * 
+        * \b Exceptions:
+        * - ProcessException
+        * 
+        * \param[in] handle The ProcessHandle of the Process to be managed by the Instance.
+        */ 
+        Process(const ProcessHandle& handle);
 
         /*!
          * Move constructor
@@ -216,6 +227,10 @@ namespace ipc {
         bool mIsOwner = false;
         ProcessHandle mProcess = PROCESS_INVALID_HANDLE;
         ProcessState mState = ProcessState::Invalid;
+#ifdef _MSC_VER
+#else
+        void ValidateProcessHandle(ProcessHandle& handle);
+#endif
     };
 }
 
