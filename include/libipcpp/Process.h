@@ -186,10 +186,7 @@ namespace ipc {
          * \returns TRUE if the process terminated, otherwise FALSE.
          */
         template <typename Rep, typename Period>
-        bool WaitFor(const std::chrono::duration<Rep, Period>& timeoutDuration) throw(ProcessException)
-        {
-            // TODO: implementieren
-        }
+        bool WaitFor(const std::chrono::duration<Rep, Period>& timeoutDuration) throw(ProcessException);
 
         /*!
          *  Similar to WaitFor but waits until a certain point in time is reached.
@@ -198,10 +195,7 @@ namespace ipc {
          * \returns TRUE if the process terminated, otherwise FALSE.
          */
         template <typename Clock, typename Duration>
-        bool WaitUntil(const std::chrono::time_point<Clock, Duration>& timeoutTime) throw(ProcessException)
-        {
-            // TODO: implementieren
-        }
+        bool WaitUntil(const std::chrono::time_point<Clock, Duration>& timeoutTime) throw(ProcessException);
 
         /*!
          * Searches for a process by name and returns a pointer to the first match.
@@ -233,5 +227,8 @@ namespace ipc {
 #endif
     };
 }
+
+#include "Platform/UNIX/Process.inl"
+#include "Platform/Win32/Process.inl"
 
 #endif
