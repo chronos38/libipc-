@@ -7,6 +7,8 @@ template <typename T>
 using vector = std::vector < T > ;
 template <typename T>
 using shared_ptr = std::shared_ptr < T > ;
+template <typename T>
+using make_shared = std::make_shared < T > ;
 
 namespace ipc {
     ProcessInfo::~ProcessInfo()
@@ -113,7 +115,39 @@ namespace ipc {
 
     vector<shared_ptr<Process>> Process::GetProcessByName(const string& name)
     {
+        vector<shared_ptr<Process>> result = nullptr;
+        DWORD aProcesses[1024];
+        DWORD cbNeeded;
+        DWORD cProcesses;
 
+        if (!EnumProcesses(aProcesses, sizeof(aProcesses), &cbNeeded)) {
+            // TODO: Systeminformation abrufen und als Argument übergeben.
+            throw ProcessException("");
+        }
+
+        cProcesses = cbNeeded / sizeof(DWORD);
+
+        for (DWORD i = 0; i < cProcesses; i++) {
+            if (aProcesses[i] != 0) {
+                CHAR szProcessName[MAX_PATH] = "<unknown>";
+                HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, aProcesses[i]);
+
+                if (hProcess) {
+                    HMODULE hMod;
+                    DWORD cbNeeded;
+
+                    if (EnumProcessModules(hProcess, &hMod, sizeof(hMod), &cbNeeded)) {
+                        GetModuleBaseNameA(hProcess, hMod, szProcessName, sizeof(szProcessName) / sizeof(CHAR));
+                        
+                        if (szProcessName == name.c_str()) {
+                            result.push_back(make_shared<Process>(hProcess));
+                        }
+                    }
+                }
+            }
+        }
+
+        return result;
     }
 
     vector<ProcessInfo> Process::GetProcesses()
