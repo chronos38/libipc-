@@ -30,7 +30,7 @@
 namespace ipc {
     //! High level locking class to lock in scope.
     template <typename T>
-    class LIBIPC_API LockGuard
+    class LockGuard
     {
     public:
         //! Locks given lockable object.

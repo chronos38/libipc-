@@ -1,4 +1,7 @@
+#ifdef _MSC_VER
 #include "../../../include/libipcpp/Process.h"
+
+using namespace std;
 
 namespace ipc {
     Process::Process()
@@ -45,4 +48,10 @@ namespace ipc {
     {
 
     }
+
+    vector<ProcessInfo> Process::GetProcesses()
+    {
+
+    }
 }
+#endif

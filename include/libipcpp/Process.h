@@ -243,6 +243,9 @@ namespace ipc {
     private:
 
         Process(const Process&) = delete;
+
+        bool mIsOwner = false;
+        ProcessHandle mProcess = PROCESS_INVALID_HANDLE;
     };
 }
 
