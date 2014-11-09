@@ -9,6 +9,14 @@ template <typename T>
 using shared_ptr = std::shared_ptr < T > ;
 
 namespace ipc {
+    ProcessInfo::ProcessInfo(ProcessInfo&& info) :
+        mId(info.mId), mHandle(info.mHandle), mName(info.mName)
+    {
+        info.mId = 0;
+        info.mName = "";
+        info.mHandle = PROCESS_INVALID_HANDLE;
+    }
+
     ProcessInfo::~ProcessInfo()
     {
         if (mHandle != PROCESS_INVALID_HANDLE) {
@@ -120,9 +128,9 @@ namespace ipc {
         }
     }
 
-    vector<shared_ptr<Process>> Process::GetProcessByName(const string& name)
+    vector<ProcessInfo> Process::GetProcessByName(const string& name)
     {
-        vector<shared_ptr<Process>> result;
+        vector<ProcessInfo> result;
         DWORD aProcesses[1024];
         DWORD cbNeeded;
         DWORD cProcesses;
@@ -147,7 +155,11 @@ namespace ipc {
                         GetModuleBaseNameA(hProcess, hMod, szProcessName, sizeof(szProcessName) / sizeof(CHAR));
                         
                         if (szProcessName == name.c_str()) {
-                            result.push_back(std::make_shared<Process>(hProcess));
+                            ProcessInfo info;
+                            info.mHandle = hProcess;
+                            info.mId = static_cast<int64_t>(aProcesses[i]);
+                            info.mName = szProcessName;
+                            result.push_back(info);
                         }
                     }
                 }
