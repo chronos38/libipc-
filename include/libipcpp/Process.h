@@ -223,6 +223,8 @@ namespace ipc {
 #ifdef _MSC_VER
 #else
         void ValidateProcessHandle(ProcessHandle& handle);
+        
+        int32_t mStatus;
 #endif
     };
 }

@@ -31,7 +31,6 @@ namespace ipc {
                 execv(fileName, static_cast<char *[]>{fileName, args, NULL});
             default:
                 mProcess = pid;
-                mState = ProcessState::IsRunning;
         }
     }
     
@@ -44,9 +43,11 @@ namespace ipc {
         }
     }
 
-    Process::Process(Process&& p)
+    Process::Process(Process&& p) :
+        mIsOwner(p.mIsOwner), mProcess(p.mProcess)
     {
-
+        p.mIsOwner = false;
+        p.mProcess = PROCESS_INVALID_HANDLE;
     }
 
     Process::~Process()
@@ -59,11 +60,14 @@ namespace ipc {
 
     int32_t Process::ExitCode() const
     {
-        
+        return WEXITSTATUS(mStatus);
     }
 
     void Process::Kill()
     {
+        if(mProcess == PROCESS_INVALID_HANDLE)
+            return;
+        
         int rv = kill(mProcess, SIGKILL);
         if(rv < 0)
             throw ProcessException("Process could not be killed.");
@@ -71,6 +75,7 @@ namespace ipc {
 
     Process& Process::Wait()
     {
+        waitpid(mProcess, &mStatus, 0);
     }
 
     std::vector<ProcessInfo> Process::GetProcessByName(const std::string& name)
@@ -115,7 +120,32 @@ namespace ipc {
 
     std::vector<ProcessInfo> Process::GetProcesses()
     {
+        
+        DIR *directory = opendir("/proc");
+        std::vector<ProcessInfo> results;
+        
+        if(directory) {
+            struct dirent *dirEntry;
+            while ((dirEntry = readdir(directory)))
+            {
+                if(!IsNumber(dirEntry->d_name))
+                    continue;
 
+                int nextPid = std::stoi(dirEntry->d_name);
+
+                std::string path = std::string("/proc/") + dirEntry->d_name + "/cmdline";
+                std::ifstream file(path);
+                std::string line;
+                std::getline(file, line, '\0');
+                
+                ProcessInfo tmp;
+                tmp.mId = nextPid;
+                tmp.mHandle = nextPid;
+                tmp.GetName = line;
+                results.push_back(tmp);
+            }
+            return results;
+        
     }
     
     
@@ -123,13 +153,12 @@ namespace ipc {
         int rv = kill(mProcess, 0);
         if (rv == 0) {
             mIsOwner = true;
-            mState = ProcessState::IsRunning;
         }
         else if(rv == EPERM) {
             mIsOwner = false;
-            mState = ProcessState::IsRunning;
         } else if(rv < 0) {
-            mState = ProcessState::Invalid;
+            mProcess = PROCESS_INVALID_HANDLE;
+            throw ProcessException("Process is not valid.");
         }
         
         return true;
