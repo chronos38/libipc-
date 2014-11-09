@@ -228,7 +228,7 @@ namespace ipc {
     };
 }
 
-#include "Platform/UNIX/Process.inl"
+#include "Platform/Linux/Process.inl"
 #include "Platform/Win32/Process.inl"
 
 #endif
