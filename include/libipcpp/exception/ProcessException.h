@@ -35,7 +35,7 @@ namespace ipc
     public:
         ProcessException ( const std::string& );
         ProcessException ( const std::string , const exception& ex ); 
-        virtual const char* what() const;
+        virtual const char* what() const throw();
         virtual ~ProcessException() = default;
     };
 

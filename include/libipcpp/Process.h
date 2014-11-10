@@ -26,7 +26,7 @@
 #endif
 
 #include "Definitions.h"
-#include "Exception/ProcessException.h"
+#include "exception/ProcessException.h"
 
 namespace ipc {
     //! This class saves important process data.
@@ -223,14 +223,14 @@ namespace ipc {
         ProcessHandle mProcess = PROCESS_INVALID_HANDLE;
 #ifdef _MSC_VER
 #else
-        void ValidateProcessHandle(ProcessHandle& handle);
+        void ValidateProcessHandle();
         
         int32_t mStatus;
 #endif
     };
 }
 
-#include "Platform/Linux/Process.inl"
-#include "Platform/Win32/Process.inl"
+#include "platform/linux/Process.inl"
+#include "platform/win32/Process.inl"
 
 #endif

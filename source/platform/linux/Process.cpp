@@ -7,13 +7,15 @@
 #include <dirent.h>
 #include <signal.h>
 #include <algorithm>
+#include <fstream>
+#include <vector>
 
 namespace ipc {
     
    
-    Process::Process(const std::string& fileName, const std::vector<std::string>& args)
+    Process::Process(const std::string& fileName, const std::vector<std::string>& args) throw(ProcessException)
     {
-        std::string str();
+        std::string str;
         for(const std::string& arg : args) {
             str += " " + arg;
         }
@@ -23,12 +25,18 @@ namespace ipc {
     Process::Process(const std::string& fileName, const std::string& args)
     {
         pid_t pid = fork();
+        std::vector<char *> argV;
+        
         switch(pid) {
             case -1:
                 throw ProcessException("Process could not be created.");
                 break;
             case 0:
-                execv(fileName, static_cast<char *[]>{fileName, args, NULL});
+                argV.push_back(const_cast<char *>(fileName.c_str()));
+                argV.push_back(const_cast<char *>(args.c_str()));
+                argV.push_back(nullptr);
+                execv(argV[0], &argV[0]);
+                break;
             default:
                 mProcess = pid;
         }
@@ -50,20 +58,21 @@ namespace ipc {
         p.mProcess = PROCESS_INVALID_HANDLE;
     }
 
-    Process::~Process()
+    Process::~Process() throw(ProcessException)
     {
-        if(!mIsOwner);
+        if(!mIsOwner){
             return;
+        }
             
         Kill();
     }
 
-    int32_t Process::ExitCode() const
+    int32_t Process::ExitCode() const throw(ProcessException)
     {
         return WEXITSTATUS(mStatus);
     }
 
-    void Process::Kill()
+    void Process::Kill() throw(ProcessException)
     {
         if(mProcess == PROCESS_INVALID_HANDLE)
             return;
@@ -73,12 +82,13 @@ namespace ipc {
             throw ProcessException("Process could not be killed.");
     }
 
-    Process& Process::Wait()
+    Process& Process::Wait() throw(ProcessException)
     {
         waitpid(mProcess, &mStatus, 0);
+        return *this;
     }
 
-    std::vector<ProcessInfo> Process::GetProcessByName(const std::string& name)
+    std::vector<ProcessInfo> Process::GetProcessByName(const std::string& name) throw(ProcessException)
     {
         DIR *directory = opendir("/proc");
         std::vector<ProcessInfo> results;
@@ -113,12 +123,11 @@ namespace ipc {
                 }
                     
             }
-            return results;
-
         }
+        return results;
     }
 
-    std::vector<ProcessInfo> Process::GetProcesses()
+    std::vector<ProcessInfo> Process::GetProcesses() throw(ProcessException)
     {
         
         DIR *directory = opendir("/proc");
@@ -141,15 +150,17 @@ namespace ipc {
                 ProcessInfo tmp;
                 tmp.mId = nextPid;
                 tmp.mHandle = nextPid;
-                tmp.GetName = line;
+                tmp.mName = line;
                 results.push_back(tmp);
             }
-            return results;
+        }
         
+        return results;
     }
     
     
-    Process::ValidateProcessHandle(ProcessHandle& handle) {
+    
+    void Process::ValidateProcessHandle() {
         int rv = kill(mProcess, 0);
         if (rv == 0) {
             mIsOwner = true;
@@ -160,8 +171,6 @@ namespace ipc {
             mProcess = PROCESS_INVALID_HANDLE;
             throw ProcessException("Process is not valid.");
         }
-        
-        return true;
     }
 
 }

@@ -35,7 +35,7 @@ namespace ipc {
         IpcException(const std::string&);
         IpcException(const std::string, const std::exception& ex);
         ~IpcException() = default;
-        const char* what() const override;
+        virtual const char* what() const throw();
     private:
         std::string mMsg = "";
         std::exception mInnerException;

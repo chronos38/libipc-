@@ -75,7 +75,7 @@ namespace ipc {
     //! Native process handle
     typedef pid_t ProcessHandle;
     //! Native process null handle
-    static const ProcessHandle PROCESS_INVALID_HANDLE = nullptr;
+    static const ProcessHandle PROCESS_INVALID_HANDLE = -1;
     //! Native byte count type
     typedef ssize_t ByteCount;
 }
@@ -97,7 +97,7 @@ namespace ipc {
         //! Default constructor
         ReferenceType() = default;
         //! Default destructor
-        virtual ~ReferenceType() = default;
+        virtual ~ReferenceType() NOEXCEPT(false); //default ist noexcept
 
 #ifdef _MSC_VER
         //! Explicit implemenation for Win32

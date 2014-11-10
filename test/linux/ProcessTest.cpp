@@ -3,5 +3,6 @@
 
 TEST(ProcessTest, Ctor_Returns_Process)
 {
-    Process p;
+   auto list =  ipc::Process::GetProcessByName("firefox");
+    
 }
