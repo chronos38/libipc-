@@ -33,7 +33,7 @@ namespace ipc {
     {
     public:
         IpcException(const std::string&);
-        IpcException(const std::string, const std::exception& ex);
+        IpcException(const std::string&, const std::exception& ex);
         ~IpcException() = default;
         virtual const char* what() const throw();
     private:

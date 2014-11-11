@@ -33,10 +33,9 @@ namespace ipc
 {
     class LIBIPC_API MessageQueueException : public IpcException
     {
-    MessageQueueException ( const std::string& );
-    MessageQueueException ( const std::string , const exception& ex );
-    virtual ~MessageQueueException();
-    virtual const char* what() const;
+        MessageQueueException(const std::string&);
+        MessageQueueException(const std::string&, const exception& ex);
+        virtual ~MessageQueueException() = default;
     };
 
 }

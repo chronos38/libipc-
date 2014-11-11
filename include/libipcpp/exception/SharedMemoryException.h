@@ -35,8 +35,7 @@ namespace ipc
     {
     public:
         SharedMemoryException(const std::string& );
-        SharedMemoryException(const std::string , const exception& ex);
-        virtual const char* what() const;
+        SharedMemoryException(const std::string& , const exception& ex);
         virtual ~SharedMemoryException() = default;
     };
 

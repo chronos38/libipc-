@@ -33,8 +33,8 @@ namespace ipc
 {
     class LIBIPC_API NamedPipeException : public IpcException
     {
-        NamedPipeException(const std::string);
-        NamedPipeException(const std::string, const std::exception&);
+        NamedPipeException(const std::string&);
+        NamedPipeException(const std::string&, const std::exception&);
         virtual ~NamedPipeException() = default;
     };
 

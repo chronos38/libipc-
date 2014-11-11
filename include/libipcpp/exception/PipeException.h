@@ -34,10 +34,9 @@ namespace ipc
     class PipeException : public IpcException
     {
     public:
-        PipeException ( const std::string& );
-        PipeException ( const std::string , const exception& ex );
+        PipeException(const std::string&);
+        PipeException(const std::string&, const exception& ex);
         virtual ~PipeException() = default;
-        virtual const char* what() const;
     };
 
 }

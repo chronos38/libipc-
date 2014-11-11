@@ -33,9 +33,8 @@ namespace ipc
     class LIBIPC_API ProcessException : public IpcException
     {
     public:
-        ProcessException ( const std::string& );
-        ProcessException ( const std::string , const exception& ex ); 
-        virtual const char* what() const throw();
+        ProcessException(const std::string&);
+        ProcessException(const std::string&, const exception& ex); 
         virtual ~ProcessException() = default;
     };
 

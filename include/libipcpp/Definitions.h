@@ -97,7 +97,7 @@ namespace ipc {
         //! Default constructor
         ReferenceType() = default;
         //! Default destructor
-        virtual ~ReferenceType() NOEXCEPT(false); //default ist noexcept
+        virtual ~ReferenceType() = default;
 
 #ifdef _MSC_VER
         //! Explicit implemenation for Win32

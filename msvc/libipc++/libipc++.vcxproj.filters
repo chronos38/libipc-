@@ -22,6 +22,9 @@
     <Filter Include="Header Files\Inline">
       <UniqueIdentifier>{11afde6e-d1ba-431a-b83f-8b9a98f4dd64}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Exception">
+      <UniqueIdentifier>{34c762dc-0dc7-4c36-b64a-d82f0e04b1b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\libipcpp\Definitions.h">
@@ -102,6 +105,30 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\platform\win32\Process.cpp">
+      <Filter>Source Files\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\exception\IpcException.cpp">
+      <Filter>Source Files\Exception</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\exception\MessageQueueException.cpp">
+      <Filter>Source Files\Exception</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\exception\NamedPipeException.cpp">
+      <Filter>Source Files\Exception</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\exception\PipeException.cpp">
+      <Filter>Source Files\Exception</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\exception\ProcessException.cpp">
+      <Filter>Source Files\Exception</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\exception\SemaphoreException.cpp">
+      <Filter>Source Files\Exception</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\exception\SharedMemoryException.cpp">
+      <Filter>Source Files\Exception</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\platform\win32\Pipe.cpp">
       <Filter>Source Files\Win32</Filter>
     </ClCompile>
   </ItemGroup>

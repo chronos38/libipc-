@@ -155,7 +155,7 @@ namespace ipc {
     vector<ProcessInfo> Process::GetProcessByName(const string& name)
     {
         vector<ProcessInfo> result;
-        DWORD aProcesses[1024];
+        DWORD aProcesses[8192];
         DWORD cbNeeded;
         DWORD cProcesses;
 
@@ -200,7 +200,7 @@ namespace ipc {
     vector<ProcessInfo> Process::GetProcesses()
     {
         vector<ProcessInfo> result;
-        DWORD aProcesses[1024];
+        DWORD aProcesses[8192];
         DWORD cbNeeded;
         DWORD cProcesses;
 
