@@ -55,7 +55,8 @@ namespace ipc {
             throw ProcessException("");
         } else {
             mIsOwner = true;
-            mProcess = processInformation.hProcess; // TODO: hThread speichern.
+            mProcess = processInformation.hProcess;
+            mThread = processInformation.hThread;
         }
     }
 
@@ -65,10 +66,11 @@ namespace ipc {
     }
 
     Process::Process(Process&& p) :
-        mIsOwner(p.mIsOwner), mProcess(p.mProcess)
+        mIsOwner(p.mIsOwner), mProcess(p.mProcess), mThread(p.mThread)
     {
         p.mIsOwner = false;
         p.mProcess = PROCESS_INVALID_HANDLE;
+        p.mThread = PROCESS_INVALID_HANDLE;
     }
 
     Process::~Process()
@@ -78,9 +80,9 @@ namespace ipc {
                 Kill();
             } else {
                 CloseHandle(mProcess);
+                CloseHandle(mThread);
                 mProcess = PROCESS_INVALID_HANDLE;
-
-                // TODO: mThread schließen.
+                mThread = PROCESS_INVALID_HANDLE;
             }
         }
     }
@@ -89,7 +91,7 @@ namespace ipc {
     {
         if (mProcess != PROCESS_INVALID_HANDLE) {
             DWORD ret = WaitForSingleObject(mProcess, 0);
-            return (ret == WAIT_TIMEOUT) ? ProcessState::IsRunning : ProcessState::NotRunning;
+            return (ret == WAIT_TIMEOUT) ? ProcessState::IsRunning : ProcessState::NotRunning; 
         } else {
             return ProcessState::Invalid;
         }
@@ -97,44 +99,56 @@ namespace ipc {
 
     int32_t Process::ExitCode() const
     {
-        DWORD exitCode = ~0;
-        
-        if (!GetExitCodeProcess(mProcess, &exitCode)) {
-            // TODO: Systeminformation abrufen und als Argument übergeben.
-            throw ProcessException("");
+        if (mProcess != PROCESS_INVALID_HANDLE) {
+            DWORD exitCode = ~0;
+
+            if (!GetExitCodeProcess(mProcess, &exitCode)) {
+                // TODO: Systeminformation abrufen und als Argument übergeben.
+                throw ProcessException("");
+            } else {
+                return static_cast<int32_t>(exitCode);
+            }
         } else {
-            return static_cast<int32_t>(exitCode);
+            throw ProcessException("Invalid process handle");
         }
     }
 
     void Process::Kill()
     {
-        if (GetState() == ProcessState::IsRunning) {
-            // TODO: Bestimmter ExitCode?
-            BOOL result = TerminateProcess(mProcess, ~0);
+        if (mProcess != PROCESS_INVALID_HANDLE) {
+            if (GetState() == ProcessState::IsRunning) {
+                // TODO: Bestimmter ExitCode?
+                BOOL result = TerminateProcess(mProcess, ~0);
 
-            if (!result) {
-                // TODO: Systeminformation abrufen und als Argument übergeben.
-                throw ProcessException("");
-            } else {
-                CloseHandle(mProcess);
-                mProcess = PROCESS_INVALID_HANDLE;
+                if (!result) {
+                    // TODO: Systeminformation abrufen und als Argument übergeben.
+                    throw ProcessException("");
+                } else {
+                    CloseHandle(mProcess);
+                    CloseHandle(mThread);
+                    mProcess = PROCESS_INVALID_HANDLE;
+                    mThread = PROCESS_INVALID_HANDLE;
+                }
             }
-
-            // TODO: mThread terminieren.
+        } else {
+            throw ProcessException("Invalid process handle");
         }
     }
 
     Process& Process::Wait()
     {
-        if (WaitForSingleObject(mProcess, INFINITE) == WAIT_FAILED) {
-            // TODO: Systeminformation abrufen und als Argument übergeben.
-            throw ProcessException("");
+        if (mProcess != PROCESS_INVALID_HANDLE) {
+            if (WaitForSingleObject(mProcess, INFINITE) == WAIT_FAILED) {
+                // TODO: Systeminformation abrufen und als Argument übergeben.
+                throw ProcessException("");
+            } else {
+                CloseHandle(mProcess);
+                CloseHandle(mThread);
+                mProcess = PROCESS_INVALID_HANDLE;
+                mThread = PROCESS_INVALID_HANDLE;
+            }
         } else {
-            CloseHandle(mProcess);
-            mProcess = PROCESS_INVALID_HANDLE;
-
-            // TODO: mThread schließen.
+            throw ProcessException("Invalid process handle");
         }
     }
 

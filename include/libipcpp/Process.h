@@ -222,6 +222,7 @@ namespace ipc {
         bool mIsOwner = false;
         ProcessHandle mProcess = PROCESS_INVALID_HANDLE;
 #ifdef _MSC_VER
+        ProcessHandle mThread = PROCESS_INVALID_HANDLE;
 #else
         void ValidateProcessHandle();
         
