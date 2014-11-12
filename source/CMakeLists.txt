@@ -5,8 +5,14 @@ set(SOURCES
     Semaphore.cpp
     SharedMemory.cpp
     Utility.cpp
-    
-    PARENT_SCOPE
+#    
+    ./exception/IpcException.cpp
+    ./exception/MessageQueueException.cpp
+    ./exception/NamedPipeException.cpp
+    ./exception/PipeException.cpp
+    ./exception/ProcessException.cpp
+    ./exception/SemaphoreException.cpp
+    ./exception/SharedMemoryException.cpp
 )
 
 set(HEADERS
@@ -22,7 +28,7 @@ set(HEADERS
     ../include/libipcpp/Semaphore.h
     ../include/libipcpp/SharedMemory.h
     ../include/libipcpp/Utility.h
-    
+#    
     ../include/libipcpp/exception/FileLockException.h
     ../include/libipcpp/exception/IpcException.h
     ../include/libipcpp/exception/MemoryMapException.h

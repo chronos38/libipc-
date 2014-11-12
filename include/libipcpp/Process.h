@@ -38,7 +38,7 @@ namespace ipc {
         //! Standard copy constructor.
         ProcessInfo(const ProcessInfo&) = default;
         //! Standard destructor.
-        ~ProcessInfo();
+        ~ProcessInfo() = default;
 
 #ifdef _MSC_VER
         //! Explicit implemenation for Win32
@@ -138,7 +138,7 @@ namespace ipc {
          * be killed.
          *
          */
-        virtual ~Process() throw(ProcessException);
+        virtual ~Process();
 
         /*!
          * Checks if the process is in a valid state.

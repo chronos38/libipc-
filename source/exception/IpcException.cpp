@@ -20,6 +20,7 @@
 #include "../../include/libipcpp/exception/IpcException.h"
 
 namespace ipc {
+    
     IpcException::IpcException(const std::string& msg) :
         mMsg(msg)
     {
@@ -30,7 +31,7 @@ namespace ipc {
     {
     }
     
-    const char* IpcException::what() const
+    const char* IpcException::what() const throw()
     {
         return mMsg.c_str();
     }

@@ -58,13 +58,18 @@ namespace ipc {
         p.mProcess = PROCESS_INVALID_HANDLE;
     }
 
-    Process::~Process() throw(ProcessException)
+    Process::~Process()
     {
         if(!mIsOwner){
             return;
         }
             
-        Kill();
+        try {
+            Kill();
+            
+        } catch (ProcessException) {
+            
+        }
     }
 
     int32_t Process::ExitCode() const throw(ProcessException)

@@ -3,22 +3,22 @@
 using string = std::string;
 
 namespace ipc {
-    int64_t ProcessInfo::GetId() const
+    int64_t ProcessInfo::GetId() const NOEXCEPT
     {
         return mId;
     }
 
-    string ProcessInfo::GetName() const
+    string ProcessInfo::GetName() const NOEXCEPT
     {
         return mName;
     }
 
-    ProcessHandle ProcessInfo::GetHandle() const
+    ProcessHandle ProcessInfo::GetHandle() const NOEXCEPT
     {
         return mHandle;
     }
 
-    bool Process::IsValid() const
+    bool Process::IsValid() const NOEXCEPT
     {
         return (mProcess != PROCESS_INVALID_HANDLE);
     }

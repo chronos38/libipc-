@@ -1,0 +1,3 @@
+repository='http://googletest.googlecode.com/svn/trunk user= password='
+module=''
+tag=''
