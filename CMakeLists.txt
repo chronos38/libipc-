@@ -37,7 +37,7 @@ endif()
 
 # Subdirectories
 add_subdirectory(${PROJECT_SOURCE_DIR}/source)
-include_directories(${PROJECT_SOURCE_DIR}/include/)
+include_directories(${PROJECT_SOURCE_DIR}/include)
 
 add_subdirectory(${EXT_PROJECT_DIR}/gtest)
 
@@ -54,6 +54,8 @@ include_directories(${GTEST_INCLUDE_DIRS}
 file(GLOB TEST_COMMON_SRC_FILES ${PROJECT_SOURCE_DIR}/test/*.cpp)
 
 if(NOT WIN32)
+    
+    add_subdirectory(${PROJECT_SOURCE_DIR}/test/linux)
     
     file(GLOB TEST_LINUX_SRC_FILES ${PROJECT_SOURCE_DIR}/test/linux/*.cpp)
     add_executable(${PROJECT_TEST_NAME} ${TEST_COMMON_SRC_FILES} ${TEST_LINUX_SRC_FILES})

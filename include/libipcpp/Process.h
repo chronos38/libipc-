@@ -213,7 +213,7 @@ namespace ipc {
          * \returns Vector of all running processes
          */
         static std::vector<ProcessInfo> GetProcesses() throw(ProcessException);
-
+        
     private:
 
         Process() = delete;

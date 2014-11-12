@@ -39,6 +39,7 @@ namespace ipc {
                 break;
             default:
                 mProcess = pid;
+                mIsOwner = true;
         }
     }
     
