@@ -38,14 +38,14 @@ namespace ipc {
                 execv(argV[0], &argV[0]);
                 break;
             default:
-                mProcess = pid;
+                mProcessInfo.mHandle = pid;
                 mIsOwner = true;
         }
     }
     
     Process::Process(const ProcessInfo& info)
     {
-        mProcess = info.GetHandle();
+        mProcessInfo = info;
         ValidateProcessHandle();
         if (!IsValid()) {
             throw ProcessException("Process handle is not valid.");
@@ -53,10 +53,10 @@ namespace ipc {
     }
 
     Process::Process(Process&& p) :
-        mIsOwner(p.mIsOwner), mProcess(p.mProcess)
+        mIsOwner(p.mIsOwner), mProcessInfo(p.mProcessInfo)
     {
         p.mIsOwner = false;
-        p.mProcess = PROCESS_INVALID_HANDLE;
+        p.mProcessInfo.mHandle = PROCESS_INVALID_HANDLE;
     }
 
     Process::~Process()
@@ -80,17 +80,17 @@ namespace ipc {
 
     void Process::Kill() throw(ProcessException)
     {
-        if(mProcess == PROCESS_INVALID_HANDLE)
+        if(mProcessInfo.mHandle == PROCESS_INVALID_HANDLE)
             return;
         
-        int rv = kill(mProcess, SIGKILL);
+        int rv = kill(mProcessInfo.mHandle, SIGKILL);
         if(rv < 0)
             throw ProcessException("Process could not be killed.");
     }
 
     Process& Process::Wait() throw(ProcessException)
     {
-        waitpid(mProcess, &mStatus, 0);
+        waitpid(mProcessInfo.mHandle, &mStatus, 0);
         return *this;
     }
 
@@ -167,14 +167,14 @@ namespace ipc {
     
     
     void Process::ValidateProcessHandle() {
-        int rv = kill(mProcess, 0);
+        int rv = kill(mProcessInfo.mHandle, 0);
         if (rv == 0) {
             mIsOwner = true;
         }
         else if(rv == EPERM) {
             mIsOwner = false;
         } else if(rv < 0) {
-            mProcess = PROCESS_INVALID_HANDLE;
+            mProcessInfo.mHandle = PROCESS_INVALID_HANDLE;
             throw ProcessException("Process is not valid.");
         }
     }

@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
 #include "../../include/libipcpp/Process.h"
+#include "../../include/libipcpp/exception/ProcessException.h"
 
 
 class ProcessTest : public testing::Test
@@ -24,12 +25,14 @@ protected:
     ipc::Process* mProcess;
 };
 
-TEST_F(ProcessTest, GetProcessByName_Returns_ProcessInfo)
+TEST_F(ProcessTest, GetProcessByName_ReturnsCorrect_ProcessInfo)
 {
    auto list =  ipc::Process::GetProcessByName("testprocess");
    if (list.size() == 0)
        ASSERT_TRUE(false) << "Testprocess not found.";
-   ASSERT_TRUE(list[0].GetName() == "testprocess");
+   
+   ASSERT_TRUE(list.front().GetName() == "testprocess");
+   ASSERT_TRUE(list.front().GetHandle() == mProcess->GetProcessInfo().GetHandle());
 }
 
 TEST_F(ProcessTest, Ctor_CreatedProcessIsValid)

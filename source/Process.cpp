@@ -20,6 +20,11 @@ namespace ipc {
 
     bool Process::IsValid() const NOEXCEPT
     {
-        return (mProcess != PROCESS_INVALID_HANDLE);
+        return (mProcessInfo.mHandle != PROCESS_INVALID_HANDLE);
+    }
+    
+    ProcessInfo Process::GetProcessInfo()
+    {
+        return mProcessInfo;
     }
 }

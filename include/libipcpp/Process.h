@@ -47,6 +47,8 @@ namespace ipc {
         //! Default move constructor
         ProcessInfo(ProcessInfo&&) = default;
 #endif
+        
+        ProcessInfo& operator=(const ProcessInfo&) = default;
 
         /*!
          * On success the process ID is returned.
@@ -214,13 +216,19 @@ namespace ipc {
          */
         static std::vector<ProcessInfo> GetProcesses() throw(ProcessException);
         
+        /*!
+         * 
+         * \returns This getter returns a copy of the ProcessInfo object.
+         */
+        ProcessInfo GetProcessInfo();
+        
     private:
 
         Process() = delete;
         Process(const Process&) = delete;
 
         bool mIsOwner = false;
-        ProcessHandle mProcess = PROCESS_INVALID_HANDLE;
+        ProcessInfo mProcessInfo;
 #ifdef _MSC_VER
         ProcessHandle mThread = PROCESS_INVALID_HANDLE;
 #else
