@@ -222,6 +222,8 @@ namespace ipc {
          */
         ProcessInfo GetProcessInfo();
         
+        Process& operator=(Process&&) = default;
+        
     private:
 
         Process() = delete;

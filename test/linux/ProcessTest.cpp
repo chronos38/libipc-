@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include "../../include/libipcpp/Process.h"
 #include "../../include/libipcpp/exception/ProcessException.h"
+#include <memory>
 
 
 class ProcessTest : public testing::Test
@@ -8,7 +9,8 @@ class ProcessTest : public testing::Test
 protected:
     virtual void SetUp()
     {
-        mProcess = new ipc::Process("./data/testprocess", "");
+        mProcess = std::unique_ptr<ipc::Process>(new ipc::Process("./data/testprocess", ""));
+        
     }
     
     virtual void TearDown()
@@ -19,10 +21,9 @@ protected:
         } catch (ipc::ProcessException ex) {
             ASSERT_TRUE(false) << ex.what();
         }
-        delete mProcess;
     }
     
-    ipc::Process* mProcess;
+    std::unique_ptr<ipc::Process> mProcess;
 };
 
 TEST_F(ProcessTest, GetProcessByName_ReturnsCorrect_ProcessInfo)

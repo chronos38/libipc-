@@ -25,7 +25,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
         -Wno-variadic-macros -Wuninitialized -Wcast-align -Wredundant-decls \
         -Wno-unknown-pragmas -fdata-sections -ffunction-sections -pedantic \
         -Wextra -Wold-style-cast -Wstrict-overflow -Woverloaded-virtual \
-        -Wsign-promo -Wabi -Wmissing-declarations -Wall -std=c++11")
+        -Wsign-promo -Wabi -Wmissing-declarations -Wall -std=c++1y")
 
 else()
     message(STATUS "Setting MSVC flags")
