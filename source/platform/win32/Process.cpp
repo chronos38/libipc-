@@ -246,5 +246,18 @@ namespace ipc {
 
         return result;
     }
+
+    Process& Process::operator=(Process&& p)
+    {
+        mIsOwner = p.mIsOwner;
+        mProcessInfo = p.mProcessInfo;
+        mThread = p.mThread;
+        
+        p.mIsOwner = false;
+        p.mProcessInfo = ProcessInfo();
+        p.mThread = PROCESS_INVALID_HANDLE;
+
+        return *this;
+    }
 }
 #endif

@@ -221,7 +221,11 @@ namespace ipc {
          */
         ProcessInfo GetProcessInfo();
         
+#ifdef _MSC_VER
+        Process& operator=(Process&&);
+#else
         Process& operator=(Process&&) = default;
+#endif
         
     private:
 
