@@ -113,7 +113,7 @@ namespace ipc {
          * \param[in] fileName The executable file for the new process.
          * \param[in] args Arguments for the new process.
          */
-        Process(const std::string& fileName, const std::string& args);
+        Process(const std::string& fileName, const std::string& args) throw(ProcessException);
         
        /*!
         * Creates a new Process instance. The process class does not take
@@ -219,7 +219,7 @@ namespace ipc {
          * 
          * \returns This getter returns a copy of the ProcessInfo object.
          */
-        ProcessInfo GetProcessInfo();
+        ProcessInfo GetProcessInfo() const NOEXCEPT;
         
 #ifdef _MSC_VER
         Process& operator=(Process&&);

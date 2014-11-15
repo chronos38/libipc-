@@ -543,7 +543,7 @@
 #if GTEST_HAS_TR1_TUPLE
 
 # if GTEST_USE_OWN_TR1_TUPLE
-#  include "gtest/internal/gtest-tuple.h"
+#  include "../internal/gtest-tuple.h"
 # elif GTEST_ENV_HAS_STD_TUPLE_
 #  include <tuple>
 // C++11 puts its tuple into the ::std namespace rather than

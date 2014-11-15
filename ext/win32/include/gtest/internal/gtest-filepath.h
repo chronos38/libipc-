@@ -34,13 +34,13 @@
 // This header file declares classes and functions used internally by
 // Google Test.  They are subject to change without notice.
 //
-// This file is #included in <gtest/internal/gtest-internal.h>.
+// This file is #included in <../internal/gtest-internal.h>.
 // Do not include this header file separately!
 
 #ifndef GTEST_INCLUDE_GTEST_INTERNAL_GTEST_FILEPATH_H_
 #define GTEST_INCLUDE_GTEST_INTERNAL_GTEST_FILEPATH_H_
 
-#include "gtest/internal/gtest-string.h"
+#include "../internal/gtest-string.h"
 
 namespace testing {
 namespace internal {

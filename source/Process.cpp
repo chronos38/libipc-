@@ -1,3 +1,4 @@
+#ifndef _MSC_VER
 #include "../include/libipcpp/Process.h"
 
 using string = std::string;
@@ -23,8 +24,9 @@ namespace ipc {
         return (mProcessInfo.mHandle != PROCESS_INVALID_HANDLE);
     }
     
-    ProcessInfo Process::GetProcessInfo()
+    ProcessInfo Process::GetProcessInfo() const NOEXCEPT
     {
         return mProcessInfo;
     }
 }
+#endif

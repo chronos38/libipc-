@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libipc++", "libipc++\libipc
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libipc++.test", "libipc++.test\libipc++.test.vcxproj", "{21E55B87-522A-491C-BF51-69C7FFC64A69}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ProcessTest", "ProcessTest\ProcessTest.vcxproj", "{FD31098B-9C52-44B8-A3B8-B3CBA315C594}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -21,6 +23,10 @@ Global
 		{21E55B87-522A-491C-BF51-69C7FFC64A69}.Debug|Win32.Build.0 = Debug|Win32
 		{21E55B87-522A-491C-BF51-69C7FFC64A69}.Release|Win32.ActiveCfg = Release|Win32
 		{21E55B87-522A-491C-BF51-69C7FFC64A69}.Release|Win32.Build.0 = Release|Win32
+		{FD31098B-9C52-44B8-A3B8-B3CBA315C594}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FD31098B-9C52-44B8-A3B8-B3CBA315C594}.Debug|Win32.Build.0 = Debug|Win32
+		{FD31098B-9C52-44B8-A3B8-B3CBA315C594}.Release|Win32.ActiveCfg = Release|Win32
+		{FD31098B-9C52-44B8-A3B8-B3CBA315C594}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

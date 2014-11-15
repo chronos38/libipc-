@@ -5,8 +5,6 @@
 using string = std::string;
 template <typename T>
 using vector = std::vector < T > ;
-template <typename T>
-using shared_ptr = std::shared_ptr < T > ;
 
 namespace ipc {
     ProcessInfo::ProcessInfo(ProcessInfo&& info) :
@@ -19,13 +17,17 @@ namespace ipc {
 
     Process::Process(const string& fileName, const vector<string>& args)
     {
-        string str = fileName;
+        string str;
 
         for (const string& arg : args) {
-            str += " " + arg;
+            if (str.empty())  {
+                str += arg;
+            } else {
+                str += " " + arg;
+            }
         }
 
-        Process::Process(fileName, args);
+        Process::Process(fileName, str);
     }
 
     Process::Process(const string& fileName, const string& args)
@@ -51,14 +53,13 @@ namespace ipc {
             DWORD cbNeeded;
             mIsOwner = true;
             mProcessInfo.mHandle = processInformation.hProcess;
-            mProcessInfo.mId = GetProcessId(processInformation.hProcess);
+            mProcessInfo.mId = processInformation.dwProcessId;
             mThread = processInformation.hThread;
 
             if (EnumProcessModules(mProcessInfo.mHandle, &hMod, sizeof(hMod), &cbNeeded)) {
                 GetModuleBaseNameA(mProcessInfo.mHandle, hMod, szProcessName, sizeof(szProcessName) / sizeof(CHAR));
                 mProcessInfo.mName = szProcessName;
             }
-
         }
     }
 
@@ -157,11 +158,6 @@ namespace ipc {
         }
     }
 
-    ProcessInfo Process::GetProcessInfo()
-    {
-        return mProcessInfo;
-    }
-
     vector<ProcessInfo> Process::GetProcessByName(const string& name)
     {
         vector<ProcessInfo> result;
@@ -258,6 +254,31 @@ namespace ipc {
         p.mThread = PROCESS_INVALID_HANDLE;
 
         return *this;
+    }
+
+    int64_t ProcessInfo::GetId() const
+    {
+        return mId;
+    }
+
+    string ProcessInfo::GetName() const
+    {
+        return mName;
+    }
+
+    ProcessHandle ProcessInfo::GetHandle() const
+    {
+        return mHandle;
+    }
+
+    bool Process::IsValid() const
+    {
+        return (mProcessInfo.mHandle != PROCESS_INVALID_HANDLE);
+    }
+
+    ProcessInfo Process::GetProcessInfo() const
+    {
+        return mProcessInfo;
     }
 }
 #endif

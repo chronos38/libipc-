@@ -100,8 +100,8 @@
 #include <string>
 #include <utility>
 #include <vector>
-#include "gtest/internal/gtest-port.h"
-#include "gtest/internal/gtest-internal.h"
+#include "./internal/gtest-port.h"
+#include "./internal/gtest-internal.h"
 
 namespace testing {
 

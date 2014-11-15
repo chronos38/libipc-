@@ -35,7 +35,7 @@
 // Google Test.  They are subject to change without notice. They should not used
 // by code external to Google Test.
 //
-// This header file is #included by <gtest/internal/gtest-internal.h>.
+// This header file is #included by <../internal/gtest-internal.h>.
 // It should not be #included by other files.
 
 #ifndef GTEST_INCLUDE_GTEST_INTERNAL_GTEST_STRING_H_
@@ -49,7 +49,7 @@
 #include <string.h>
 #include <string>
 
-#include "gtest/internal/gtest-port.h"
+#include "../internal/gtest-port.h"
 
 namespace testing {
 namespace internal {

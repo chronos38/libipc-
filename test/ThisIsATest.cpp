@@ -1,4 +1,4 @@
-#include "gtest/gtest.h"
+#include "../ext/win32/include/gtest/gtest.h"
 #include <vector>
 #include <algorithm>
 
