@@ -17,14 +17,6 @@ namespace ipc {
         info.mHandle = PROCESS_INVALID_HANDLE;
     }
 
-    ProcessInfo::~ProcessInfo()
-    {
-        if (mHandle != PROCESS_INVALID_HANDLE) {
-            CloseHandle(mHandle);
-            mHandle = PROCESS_INVALID_HANDLE;
-        }
-    }
-
     Process::Process(const string& fileName, const vector<string>& args)
     {
         string str = fileName;
@@ -54,44 +46,57 @@ namespace ipc {
             // TODO: Systeminformation abrufen und als Argument übergeben.
             throw ProcessException("");
         } else {
+            CHAR szProcessName[MAX_PATH] = "<unknown>";
+            HMODULE hMod;
+            DWORD cbNeeded;
             mIsOwner = true;
-            mProcess = processInformation.hProcess;
+            mProcessInfo.mHandle = processInformation.hProcess;
+            mProcessInfo.mId = GetProcessId(processInformation.hProcess);
             mThread = processInformation.hThread;
+
+            if (EnumProcessModules(mProcessInfo.mHandle, &hMod, sizeof(hMod), &cbNeeded)) {
+                GetModuleBaseNameA(mProcessInfo.mHandle, hMod, szProcessName, sizeof(szProcessName) / sizeof(CHAR));
+                mProcessInfo.mName = szProcessName;
+            }
+
         }
     }
 
     Process::Process(const ProcessInfo& info) :
-        mProcess(info.mHandle)
+        mProcessInfo(info)
     {
     }
 
     Process::Process(Process&& p) :
-        mIsOwner(p.mIsOwner), mProcess(p.mProcess), mThread(p.mThread)
+        mIsOwner(p.mIsOwner), mProcessInfo(p.mProcessInfo), mThread(p.mThread)
     {
         p.mIsOwner = false;
-        p.mProcess = PROCESS_INVALID_HANDLE;
         p.mThread = PROCESS_INVALID_HANDLE;
     }
 
     Process::~Process()
     {
-        if (mProcess != PROCESS_INVALID_HANDLE) {
-            if (mIsOwner) {
-                Kill();
-            } else {
-                CloseHandle(mProcess);
-                CloseHandle(mThread);
-                mProcess = PROCESS_INVALID_HANDLE;
-                mThread = PROCESS_INVALID_HANDLE;
+        try {
+            if (mProcessInfo.mHandle != PROCESS_INVALID_HANDLE) {
+                if (mIsOwner) {
+                    Kill();
+                } else {
+                    CloseHandle(mProcessInfo.mHandle);
+                    CloseHandle(mThread);
+                    mProcessInfo.mHandle = PROCESS_INVALID_HANDLE;
+                    mThread = PROCESS_INVALID_HANDLE;
+                }
             }
+        } catch (ProcessException&) {
+            // Do nothing
         }
     }
 
     ProcessState Process::GetState() const
     {
-        if (mProcess != PROCESS_INVALID_HANDLE) {
-            DWORD ret = WaitForSingleObject(mProcess, 0);
-            return (ret == WAIT_TIMEOUT) ? ProcessState::IsRunning : ProcessState::NotRunning; 
+        if (mProcessInfo.mHandle != PROCESS_INVALID_HANDLE) {
+            DWORD result = WaitForSingleObject(mProcessInfo.mHandle, 0);
+            return (result == WAIT_TIMEOUT) ? ProcessState::IsRunning : ProcessState::NotRunning;
         } else {
             return ProcessState::Invalid;
         }
@@ -99,10 +104,10 @@ namespace ipc {
 
     int32_t Process::ExitCode() const
     {
-        if (mProcess != PROCESS_INVALID_HANDLE) {
+        if (mProcessInfo.mHandle != PROCESS_INVALID_HANDLE) {
             DWORD exitCode = ~0;
 
-            if (!GetExitCodeProcess(mProcess, &exitCode)) {
+            if (!GetExitCodeProcess(mProcessInfo.mHandle, &exitCode)) {
                 // TODO: Systeminformation abrufen und als Argument übergeben.
                 throw ProcessException("");
             } else {
@@ -115,18 +120,18 @@ namespace ipc {
 
     void Process::Kill()
     {
-        if (mProcess != PROCESS_INVALID_HANDLE) {
+        if (mProcessInfo.mHandle != PROCESS_INVALID_HANDLE) {
             if (GetState() == ProcessState::IsRunning) {
                 // TODO: Bestimmter ExitCode?
-                BOOL result = TerminateProcess(mProcess, ~0);
+                BOOL result = TerminateProcess(mProcessInfo.mHandle, ~0);
 
                 if (!result) {
                     // TODO: Systeminformation abrufen und als Argument übergeben.
                     throw ProcessException("");
                 } else {
-                    CloseHandle(mProcess);
+                    CloseHandle(mProcessInfo.mHandle);
                     CloseHandle(mThread);
-                    mProcess = PROCESS_INVALID_HANDLE;
+                    mProcessInfo.mHandle = PROCESS_INVALID_HANDLE;
                     mThread = PROCESS_INVALID_HANDLE;
                 }
             }
@@ -137,19 +142,24 @@ namespace ipc {
 
     Process& Process::Wait()
     {
-        if (mProcess != PROCESS_INVALID_HANDLE) {
-            if (WaitForSingleObject(mProcess, INFINITE) == WAIT_FAILED) {
+        if (mProcessInfo.mHandle != PROCESS_INVALID_HANDLE) {
+            if (WaitForSingleObject(mProcessInfo.mHandle, INFINITE) == WAIT_FAILED) {
                 // TODO: Systeminformation abrufen und als Argument übergeben.
                 throw ProcessException("");
             } else {
-                CloseHandle(mProcess);
+                CloseHandle(mProcessInfo.mHandle);
                 CloseHandle(mThread);
-                mProcess = PROCESS_INVALID_HANDLE;
+                mProcessInfo.mHandle = PROCESS_INVALID_HANDLE;
                 mThread = PROCESS_INVALID_HANDLE;
             }
         } else {
             throw ProcessException("Invalid process handle");
         }
+    }
+
+    ProcessInfo Process::GetProcessInfo()
+    {
+        return mProcessInfo;
     }
 
     vector<ProcessInfo> Process::GetProcessByName(const string& name)

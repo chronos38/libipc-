@@ -62,7 +62,7 @@ namespace ipc {
          * \param[in]   index   The 0 based index for access.
          * \returns Byte on given index.
          */
-        uint8_t& operator[](size_t index) throw(MemoryMapException, std::out_of_range);
+        uint8_t& operator[](size_t index) throw(SharedMemoryException, std::out_of_range);
 
         /*!
          * Gets read only access for the byte on the given index. If the index
@@ -71,46 +71,39 @@ namespace ipc {
          * \param[in]   index   The 0 based index for access.
          * \returns Byte on given index.
          */
-        const uint8_t& operator[](size_t index) const throw(MemoryMapException, std::out_of_range);
+        const uint8_t& operator[](size_t index) const throw(SharedMemoryException, std::out_of_range);
 
         /*!
-         * Gets the length for this memory map.
-         * \returns Length in bytes for this memory map.
+         * Gets the length for this shared memory.
+         * \returns Length in bytes for this shared memory.
          */
-        virtual size_t Length() const NOEXCEPT override;
+        virtual size_t Length() const NOEXCEPT;
 
         /*!
-         * Gets the current position within this map.
+         * Gets the current position within this memory.
          * \returns Position in this map.
          */
-        virtual size_t Position() const NOEXCEPT override;
+        virtual size_t Position() const NOEXCEPT;
 
         /*!
-         * Sets the position within this map. If the position is out of range,
-         * than the particular exception is raised.
+         * Sets the position within this memory. If the position is out of
+         * range, than the particular exception is raised.
          */
-        virtual void Position(size_t position) throw(std::out_of_range) override;
+        virtual void Position(size_t position) throw(std::out_of_range);
 
         /*!
-         * Writes a buffer to this memory map. This method is not safe for
+         * Writes a buffer to this shared memory. This method is not safe for
          * concurrent execution. It needs an external lock mechanism to be
          * considered safe. If two write operations happen at the same time,
          * than the behavior is undefined.
          *
-         * If the offset is greater than or equal the buffer size, than an 
-         * out_of_range exception is thrown.
+         * For the remaining errors an IpcException is thrown.
          *
-         * If the size minus offset is greate than the buffer size, than an
-         * out_of_range exception is thrown.
-         *
-         * For the remaining errors an MemoryMapException is thrown.
-         *
-         * \param[in]   buffer  The byte buffer to write to the memory map.
-         * \param[in]   offset  The offest for the given byte buffer.
+         * \param[in]   buffer  The byte buffer to write to the shared memory.
          * \param[in]   size    The actual size to write.
-         * \returns Count of written bytes to the memory map.
+         * \returns Count of written bytes to the shared memory.
          */
-        virtual ByteCount Write(const std::vector<uint8_t>& buffer, size_t offset, size_t size) throw(MemoryMapException, std::out_of_range) override;
+        virtual ByteCount Write(const char* out, size_t size) const throw(SharedMemoryException) override;
 
         /*!
          * This method allows range based writing. It expects sequential
@@ -122,41 +115,34 @@ namespace ipc {
          *
          * \param[in]   first   Iterator that points to the beginning.
          * \param[in]   last    Iterator that points to the ending.
-         * \returns Count of written elements to the memory map.
+         * \returns Count of written elements to the shared memory.
          */
         template <typename InputIt>
-        size_t Write(InputIt first, InputIt last) throw(MemoryMapException)
+        size_t Write(InputIt first, InputIt last) const throw(IpcException)
         {
             // TODO: implementieren
         }
 
         /*!
-         * Writes a single byte to the memory map. If this method fails it does
+         * Writes a single byte to the shared memory. If this method fails it does
          * not throw an exception, but instead it returns zero (0).
          *
          * \returns Either 1 or 0.
          */
-        virtual ByteCount WriteByte(uint8_t byte) NOEXCEPT override;
+        virtual ByteCount WriteByte(char byte) const NOEXCEPT override;
 
         /*!
-         * This method reads from the memory map. All read bytes are written
+         * This method reads from the shared memory. All read bytes are written
          * into the given byte buffer. It is possible to define an offset
          * and read size for this method. So the range is customizable.
          *
-         * If the offset is greater than or equal the buffer size, than an 
-         * out_of_range exception is thrown.
-         *
-         * If the size minus offset is greate than the buffer size, than an
-         * out_of_range exception is thrown.
-         *
-         * For the remaining errors an MemoryMapException is thrown.
+         * For the remaining errors an IpcException is thrown.
          *
          * \param[in,out]   buffer  Target buffer for this operation.
-         * \param[in]   offset  The offest for the given byte buffer.
          * \param[in]   size    The actual size to write.
-         * \returns Count of read bytes from the memory map.
+         * \returns Count of read bytes from the shared memory.
          */
-        virtual ByteCount Read(std::vector<uint8_t>& buffer, size_t offset, size_t size) throw(MemoryMapException, std::out_of_range) override;
+        virtual ByteCount Read(char* out, size_t size) const throw(SharedMemoryException) override;
 
         /*!
          * This method allows range based reading. It expects sequential
@@ -168,10 +154,10 @@ namespace ipc {
          *
          * \param[in]   first   Iterator that points to the beginning.
          * \param[in]   last    Iterator that points to the ending.
-         * \returns Count of written elements to the memory map.
+         * \returns Count of written elements to the shared memory.
          */
         template <typename OutputIt>
-        size_t Read(OutputIt first, OutputIt last) throw(MemoryMapException)
+        size_t Read(OutputIt first, OutputIt last) const throw(IpcException)
         {
             // TODO: implementieren
         }
@@ -183,7 +169,7 @@ namespace ipc {
          *
          * \returns Byte value or -1
          */
-        virtual int ReadByte() NOEXCEPT override;
+        virtual int ReadByte() const NOEXCEPT override;
     };
 }
 

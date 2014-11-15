@@ -62,19 +62,19 @@ namespace ipc {
          * Gets the length for this shared memory.
          * \returns Length in bytes for this shared memory.
          */
-        virtual size_t Length() const NOEXCEPT override;
+        virtual size_t Length() const NOEXCEPT;
 
         /*!
          * Gets the current position within this memory.
          * \returns Position in this map.
          */
-        virtual size_t Position() const NOEXCEPT override;
+        virtual size_t Position() const NOEXCEPT;
 
         /*!
          * Sets the position within this memory. If the position is out of
          * range, than the particular exception is raised.
          */
-        virtual void Position(size_t position) throw(std::out_of_range) override;
+        virtual void Position(size_t position) throw(std::out_of_range);
 
         /*!
          * Writes a buffer to this shared memory. This method is not safe for
@@ -82,20 +82,13 @@ namespace ipc {
          * considered safe. If two write operations happen at the same time,
          * than the behavior is undefined.
          *
-         * If the offset is greater than or equal the buffer size, than an
-         * out_of_range exception is thrown.
-         *
-         * If the size minus offset is greate than the buffer size, than an
-         * out_of_range exception is thrown.
-         *
          * For the remaining errors an IpcException is thrown.
          *
          * \param[in]   buffer  The byte buffer to write to the shared memory.
-         * \param[in]   offset  The offest for the given byte buffer.
          * \param[in]   size    The actual size to write.
          * \returns Count of written bytes to the shared memory.
          */
-        virtual ByteCount Write(const std::vector<uint8_t>& buffer, size_t offset, size_t size) throw(SharedMemoryException, std::out_of_range) override;
+        virtual ByteCount Write(const char* out, size_t size) const throw(SharedMemoryException) override;
 
         /*!
          * This method allows range based writing. It expects sequential
@@ -110,7 +103,7 @@ namespace ipc {
          * \returns Count of written elements to the shared memory.
          */
         template <typename InputIt>
-        size_t Write(InputIt first, InputIt last) throw(IpcException)
+        size_t Write(InputIt first, InputIt last) const throw(IpcException)
         {
             // TODO: implementieren
         }
@@ -121,27 +114,20 @@ namespace ipc {
          *
          * \returns Either 1 or 0.
          */
-        virtual ByteCount WriteByte(uint8_t byte) NOEXCEPT override;
+        virtual ByteCount WriteByte(char byte) const NOEXCEPT override;
 
         /*!
          * This method reads from the shared memory. All read bytes are written
          * into the given byte buffer. It is possible to define an offset
          * and read size for this method. So the range is customizable.
          *
-         * If the offset is greater than or equal the buffer size, than an
-         * out_of_range exception is thrown.
-         *
-         * If the size minus offset is greate than the buffer size, than an
-         * out_of_range exception is thrown.
-         *
          * For the remaining errors an IpcException is thrown.
          *
          * \param[in,out]   buffer  Target buffer for this operation.
-         * \param[in]   offset  The offest for the given byte buffer.
          * \param[in]   size    The actual size to write.
          * \returns Count of read bytes from the shared memory.
          */
-        virtual ByteCount Read(std::vector<uint8_t>& buffer, size_t offset, size_t size) throw(SharedMemoryException, std::out_of_range) override;
+        virtual ByteCount Read(char* out, size_t size) const throw(SharedMemoryException) override;
 
         /*!
          * This method allows range based reading. It expects sequential
@@ -156,7 +142,7 @@ namespace ipc {
          * \returns Count of written elements to the shared memory.
          */
         template <typename OutputIt>
-        size_t Read(OutputIt first, OutputIt last) throw(IpcException)
+        size_t Read(OutputIt first, OutputIt last) const throw(IpcException)
         {
             // TODO: implementieren
         }
@@ -168,7 +154,7 @@ namespace ipc {
          *
          * \returns Byte value or -1
          */
-        virtual int ReadByte() NOEXCEPT override;
+        virtual int ReadByte() const NOEXCEPT override;
     };
 }
 

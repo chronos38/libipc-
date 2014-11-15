@@ -98,9 +98,6 @@
     <ClCompile Include="..\..\source\Semaphore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\SharedMemory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\source\platform\win32\Definitions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -134,6 +131,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\include\libipcpp\Platform\Win32\Process.inl">
+      <Filter>Header Files\Inline</Filter>
+    </None>
+    <None Include="..\..\include\libipcpp\platform\win32\Pipe.inl">
       <Filter>Header Files\Inline</Filter>
     </None>
   </ItemGroup>

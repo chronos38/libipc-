@@ -32,13 +32,10 @@ namespace ipc {
     {
     public:
         virtual ~IOBase() = default;
-        virtual size_t Length() const = 0;
-        virtual size_t Position() const = 0;
-        virtual void Position(size_t position) = 0;
-        virtual ByteCount Write(const std::vector<uint8_t>& buffer, size_t offset, size_t size) = 0;
-        virtual ByteCount WriteByte(uint8_t byte) = 0;
-        virtual ByteCount Read(std::vector<uint8_t>& buffer, size_t offset, size_t size) = 0;
-        virtual int ReadByte() = 0;
+        virtual ByteCount Write(const char* buffer, size_t size) const = 0;
+        virtual ByteCount WriteByte(char byte) const = 0;
+        virtual ByteCount Read(char* buffer, size_t size) const = 0;
+        virtual int ReadByte() const = 0;
     };
 }
 

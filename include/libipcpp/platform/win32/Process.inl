@@ -5,7 +5,7 @@ namespace ipc {
     bool Process::WaitFor(const std::chrono::duration<Rep, Period>& timeoutDuration) throw(ProcessException)
     {
         if (mProcess != PROCESS_INVALID_HANDLE) {
-            DWORD result = WaitForSingleObject(mProcess, static_cast<DWORD>(std::chrono::duration_cast<std::chrono::milliseconds>(timeoutDuration).count()));
+            DWORD result = WaitForSingleObject(mProcessInfo.mHandle, static_cast<DWORD>(std::chrono::duration_cast<std::chrono::milliseconds>(timeoutDuration).count()));
 
             switch (result) {
             case WAIT_FAILED:
@@ -30,7 +30,7 @@ namespace ipc {
             auto timeoutDuration = std::chrono::duration_cast<std::chrono::milliseconds>(Clock::now() - timeoutTime);
 
             if (timeoutDuration.count() > 0) {
-                DWORD result = WaitForSingleObject(mProcess, static_cast<DWORD>(timeoutDuration.count()));
+                DWORD result = WaitForSingleObject(mProcessInfo.mHandle, static_cast<DWORD>(timeoutDuration.count()));
 
                 switch (result) {
                 case WAIT_FAILED:

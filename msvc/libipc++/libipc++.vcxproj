@@ -43,7 +43,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>LIBIPC_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -57,7 +57,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>LIBIPC_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -103,9 +103,9 @@
     <ClCompile Include="..\..\source\platform\win32\Process.cpp" />
     <ClCompile Include="..\..\source\Process.cpp" />
     <ClCompile Include="..\..\source\Semaphore.cpp" />
-    <ClCompile Include="..\..\source\SharedMemory.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\include\libipcpp\platform\win32\Pipe.inl" />
     <None Include="..\..\include\libipcpp\Platform\Win32\Process.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

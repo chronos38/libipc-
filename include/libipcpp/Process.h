@@ -169,7 +169,6 @@ namespace ipc {
         /*!
          * Terminates the process and sets the instance state to "invalid".
          * A exception of the type ProcessException is thrown on error.
-         *
          */
         void Kill() throw(ProcessException);
         

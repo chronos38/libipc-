@@ -7,7 +7,7 @@ include(cmake/ParseArguments.cmake)
 set(PROJECT_NAME_STR libipc++)
 project(${PROJECT_NAME_STR})
 
-set(CMAKE_SHARED_LIBRARY_PREFIX "") #Entfernt automatischen "lib" Prefix
+set(CMAKE_SHARED_LIBRARY_PREFIX "") # Entfernt automatischen "lib" Prefix
 set(COMMON_INCLUDES ${PROJECT_SOURCE_DIR}/include)
 set(EXT_PROJECT_DIR ${PROJECT_SOURCE_DIR}/ext)
 set(OTHER_SOURCES)
@@ -29,7 +29,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 
 else()
     message(STATUS "Setting MSVC flags")
-    set(CMAKE_CXX_FLAGS "") #MSVC Definitionen hier einfügen
+    set(CMAKE_CXX_FLAGS "") # MSVC Definitionen hier einfügen
 endif() 
 
 
