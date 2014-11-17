@@ -86,12 +86,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\source\MessageQueue.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\Semaphore.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\source\platform\win32\Definitions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -121,9 +115,6 @@
     </ClCompile>
     <ClCompile Include="..\..\source\platform\win32\Pipe.cpp">
       <Filter>Source Files\Win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\SharedMemory.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\platform\win32\Utility.cpp">
       <Filter>Source Files\Win32</Filter>

@@ -98,13 +98,10 @@
     <ClCompile Include="..\..\source\exception\ProcessException.cpp" />
     <ClCompile Include="..\..\source\exception\SemaphoreException.cpp" />
     <ClCompile Include="..\..\source\exception\SharedMemoryException.cpp" />
-    <ClCompile Include="..\..\source\MessageQueue.cpp" />
     <ClCompile Include="..\..\source\platform\win32\Definitions.cpp" />
     <ClCompile Include="..\..\source\platform\win32\Pipe.cpp" />
     <ClCompile Include="..\..\source\platform\win32\Process.cpp" />
     <ClCompile Include="..\..\source\platform\win32\Utility.cpp" />
-    <ClCompile Include="..\..\source\Semaphore.cpp" />
-    <ClCompile Include="..\..\source\SharedMemory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\include\libipcpp\platform\win32\Pipe.inl" />
