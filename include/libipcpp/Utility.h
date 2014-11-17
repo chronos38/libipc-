@@ -29,31 +29,40 @@
 
 namespace ipc {
 
-        /*!
-         * Checks if a filename is compatible with Windows
-         *
-         * \params[in] fileName The filename that should be checked
-         * \returns TRUE if the filename was OK, else FALSE
-         */
-        bool IsValidFileName(std::string& fileName);
-        /*!
-         * Checks wether a string is solely composed of numbers.
-         * 
-         * \param[in] input The string to be checked.
-         * 
-         * \returns Returns True if the string is only containing numbers.
-         */
-        bool IsNumber(const std::string& input);
-        /*!
-         * Splits a string into tokens using the passed delimiters
-         * 
-         * \param[in] str The string to be split into tokens
-         * \param[in] delimiters The delimiters used to split the string
-         * \param[out] tokens The resulting tokens
-         */
-        void SplitString(const std::string& str,
-                         const std::string& delimiters,
-                         std::vector<std::string>& tokens);
+    /*!
+     * Checks if a filename is compatible with Windows
+     *
+     * \params[in] fileName The filename that should be checked
+     * \returns TRUE if the filename was OK, else FALSE
+     */
+    LIBIPC_API bool IsValidFileName(std::string& fileName);
+    /*!
+     * Checks wether a string is solely composed of numbers.
+     * 
+     * \param[in] input The string to be checked.
+     * 
+     * \returns Returns True if the string is only containing numbers.
+     */
+    LIBIPC_API bool IsNumber(const std::string& input);
+    /*!
+     * Splits a string into tokens using the passed delimiters
+     * 
+     * \param[in] str The string to be split into tokens
+     * \param[in] delimiters The delimiters used to split the string
+     * \param[out] tokens The resulting tokens
+     */
+    LIBIPC_API void SplitString(const std::string& str,
+                        const std::string& delimiters,
+                        std::vector<std::string>& tokens);
+
+#ifdef _MSC_VER
+    /*!
+     * Get last system error string from Win32.
+     *
+     * \returns Last system error string.
+     */
+	LIBIPC_API std::string GetLastErrorString();
+#endif
 
 }
 #endif

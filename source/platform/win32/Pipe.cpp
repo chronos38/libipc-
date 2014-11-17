@@ -1,4 +1,4 @@
-#include "../../../include/libipcpp/Pipe.h"
+#include <libipcpp\Pipe.h>
 
 using out_of_range = std::out_of_range;
 
@@ -8,7 +8,7 @@ namespace ipc {
         // INFO: Größe bestimmen?
         if (!CreatePipe(&mHandles[1], &mHandles[0], NULL, 65536)) {
             // TODO: Information auslesen.
-            throw PipeException("");
+            throw PipeException(GetLastErrorString());
         }
     }
 
@@ -27,7 +27,7 @@ namespace ipc {
 
         if (!WriteFile(mHandles[0], in, size, &n, NULL)) {
             // TODO: Information auslesen.
-            throw PipeException("");
+            throw PipeException(GetLastErrorString());
         }
 
         return n;
@@ -39,7 +39,7 @@ namespace ipc {
 
         if (!ReadFile(mHandles[1], out, size, &n, NULL)) {
             // TODO: Information auslesen.
-            throw PipeException("");
+            throw PipeException(GetLastErrorString());
         }
 
         return n;
@@ -89,7 +89,7 @@ namespace ipc {
 
         if (error) {
             // TODO: Information auslesen.
-            throw PipeException("");
+            throw PipeException(GetLastErrorString());
         }
     }
 

@@ -10,7 +10,7 @@ namespace ipc {
             switch (result) {
             case WAIT_FAILED:
                 // TODO: Systeminformation abrufen und als Argument übergeben.
-                throw ProcessException("");
+                throw ProcessException(GetLastErrorString());
 
             case WAIT_TIMEOUT:
                 return false;
@@ -35,7 +35,7 @@ namespace ipc {
                 switch (result) {
                 case WAIT_FAILED:
                     // TODO: Systeminformation abrufen und als Argument übergeben.
-                    throw ProcessException("");
+                    throw ProcessException(GetLastErrorString());
 
                 case WAIT_TIMEOUT:
                     return false;

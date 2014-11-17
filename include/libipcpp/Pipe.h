@@ -27,6 +27,7 @@
 
 #include "Definitions.h"
 #include "IOBase.h"
+#include "Utility.h"
 #include "exception/PipeException.h"
 
 namespace ipc {

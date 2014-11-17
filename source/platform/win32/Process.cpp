@@ -1,5 +1,5 @@
 #ifdef _MSC_VER
-#include "../../../include/libipcpp/Process.h"
+#include <libipcpp\Process.h>
 #include <Psapi.h>
 
 using string = std::string;
@@ -46,7 +46,7 @@ namespace ipc {
 
         if (!result) {
             // TODO: Systeminformation abrufen und als Argument übergeben.
-            throw ProcessException("");
+            throw ProcessException(GetLastErrorString());
         } else {
             CHAR szProcessName[MAX_PATH] = "<unknown>";
             HMODULE hMod;
@@ -110,7 +110,7 @@ namespace ipc {
 
             if (!GetExitCodeProcess(mProcessInfo.mHandle, &exitCode)) {
                 // TODO: Systeminformation abrufen und als Argument übergeben.
-                throw ProcessException("");
+                throw ProcessException(GetLastErrorString());
             } else {
                 return static_cast<int32_t>(exitCode);
             }
@@ -128,7 +128,7 @@ namespace ipc {
 
                 if (!result) {
                     // TODO: Systeminformation abrufen und als Argument übergeben.
-                    throw ProcessException("");
+                    throw ProcessException(GetLastErrorString());
                 } else {
                     CloseHandle(mProcessInfo.mHandle);
                     CloseHandle(mThread);
@@ -146,7 +146,7 @@ namespace ipc {
         if (mProcessInfo.mHandle != PROCESS_INVALID_HANDLE) {
             if (WaitForSingleObject(mProcessInfo.mHandle, INFINITE) == WAIT_FAILED) {
                 // TODO: Systeminformation abrufen und als Argument übergeben.
-                throw ProcessException("");
+                throw ProcessException(GetLastErrorString());
             } else {
                 CloseHandle(mProcessInfo.mHandle);
                 CloseHandle(mThread);
@@ -167,7 +167,7 @@ namespace ipc {
 
         if (!EnumProcesses(aProcesses, sizeof(aProcesses), &cbNeeded)) {
             // TODO: Systeminformation abrufen und als Argument übergeben.
-            throw ProcessException("");
+            throw ProcessException(GetLastErrorString());
         }
 
         cProcesses = cbNeeded / sizeof(DWORD);
@@ -212,7 +212,7 @@ namespace ipc {
 
         if (!EnumProcesses(aProcesses, sizeof(aProcesses), &cbNeeded)) {
             // TODO: Systeminformation abrufen und als Argument übergeben.
-            throw ProcessException("");
+            throw ProcessException(GetLastErrorString());
         }
 
         cProcesses = cbNeeded / sizeof(DWORD);

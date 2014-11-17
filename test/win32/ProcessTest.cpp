@@ -1,5 +1,7 @@
+#ifdef _MSC_VER
 #include <gtest\gtest.h>
 #include <libipcpp\Process.h>
+#include <libipcpp\Utility.h>
 #include <Psapi.h>
 
 using namespace ipc;
@@ -24,7 +26,7 @@ protected:
 TEST(ProcessTest, Process_Constructor_Vector)
 {
     // Arrange
-    string name = "ProcessTest.exe";
+    string name = ".\ProcessTest.exe";
     Process p(name, { "arg1", "arg2", "arg3" });
     vector<string> result;
     DWORD aProcesses[8192];
@@ -34,7 +36,7 @@ TEST(ProcessTest, Process_Constructor_Vector)
     // Act
     if (!EnumProcesses(aProcesses, sizeof(aProcesses), &cbNeeded)) {
         // TODO: Systeminformation abrufen und als Argument übergeben.
-        throw ProcessException("");
+        throw ProcessException(GetLastErrorString());
     }
 
     cProcesses = cbNeeded / sizeof(DWORD);
@@ -72,7 +74,7 @@ TEST(ProcessTest, Process_Constructor_Vector)
 TEST(ProcessTest, Process_Constructor_String)
 {
     // Arrange
-    string name = "ProcessTest.exe";
+    string name = ".\ProcessTest.exe";
     Process p(name, "arg1 arg2 arg3");
     vector<string> result;
     DWORD aProcesses[8192];
@@ -82,7 +84,7 @@ TEST(ProcessTest, Process_Constructor_String)
     // Act
     if (!EnumProcesses(aProcesses, sizeof(aProcesses), &cbNeeded)) {
         // TODO: Systeminformation abrufen und als Argument übergeben.
-        throw ProcessException("");
+        throw ProcessException(GetLastErrorString());
     }
 
     cProcesses = cbNeeded / sizeof(DWORD);
@@ -116,3 +118,5 @@ TEST(ProcessTest, Process_Constructor_String)
     ASSERT_EQ(name, result[0]);
     ASSERT_EQ(p.GetProcessInfo().GetName(), result[0]);
 }
+
+#endif

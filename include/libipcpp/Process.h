@@ -26,6 +26,7 @@
 #endif
 
 #include "Definitions.h"
+#include "Utility.h"
 #include "exception/ProcessException.h"
 
 namespace ipc {

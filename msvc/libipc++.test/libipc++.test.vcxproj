@@ -84,7 +84,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\test\Main.cpp" />
-    <ClCompile Include="..\..\test\ProcessTest.cpp" />
     <ClCompile Include="..\..\test\win32\ProcessTest.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
