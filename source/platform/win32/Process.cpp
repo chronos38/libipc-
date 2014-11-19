@@ -20,14 +20,43 @@ namespace ipc {
         string str;
 
         for (const string& arg : args) {
-            if (str.empty())  {
-                str += arg;
-            } else {
-                str += " " + arg;
+            if (!arg.empty()) {
+                if (str.empty()) {
+                    str += arg;
+                } else {
+                    str += " " + arg;
+                }
             }
         }
 
-        Process::Process(fileName, str);
+        LPSTR cmdl = new CHAR[str.size() + 1];
+        STARTUPINFO startupInfo;
+        PROCESS_INFORMATION processInformation;
+        memset(&startupInfo, 0, sizeof(startupInfo));
+        memset(cmdl, 0, str.size() + 1);
+        memcpy(cmdl, str.data(), str.size());
+
+        startupInfo.cb = sizeof(startupInfo);
+
+        BOOL result = CreateProcessA(fileName.c_str(), cmdl, NULL, NULL, FALSE, 0, NULL, NULL, &startupInfo, &processInformation);
+        delete cmdl;
+
+        if (!result) {
+            throw ProcessException(GetLastErrorString());
+        } else {
+            CHAR szProcessName[MAX_PATH] = "<unknown>";
+            HMODULE hMod;
+            DWORD cbNeeded;
+            mIsOwner = true;
+            mProcessInfo.mHandle = processInformation.hProcess;
+            mProcessInfo.mId = processInformation.dwProcessId;
+            mThread = processInformation.hThread;
+
+            if (EnumProcessModules(mProcessInfo.mHandle, &hMod, sizeof(hMod), &cbNeeded)) {
+                GetModuleBaseNameA(mProcessInfo.mHandle, hMod, szProcessName, sizeof(szProcessName) / sizeof(CHAR));
+                mProcessInfo.mName = szProcessName;
+            }
+        }
     }
 
     Process::Process(const string& fileName, const string& args)

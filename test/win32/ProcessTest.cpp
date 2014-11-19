@@ -15,18 +15,20 @@ using vector = std::vector < T > ;
 using string = std::string;
 
 static const string NAME = ".\\ProcessTest.exe";
+static const string CMPNAME = "ProcessTest.exe";
+static std::fstream gLog;
 
 class ProcessTest : public ::testing::Test
 {
 protected:
     virtual void SetUp()
     {
-
+        gLog.open(LOGFILE, std::fstream::out | std::fstream::app);
     }
 
     virtual void TearDown()
     {
-
+        gLog.close();
     }
 };
 
@@ -34,7 +36,7 @@ TEST_F(ProcessTest, Process_Constructor_Vector)
 {
     try {
         // Arrange
-        Process p(NAME, { "", "", "" });
+        Process p(NAME, { "60", "", "" });
         vector<string> result;
         DWORD aProcesses[8192];
         DWORD cbNeeded;
@@ -42,7 +44,6 @@ TEST_F(ProcessTest, Process_Constructor_Vector)
 
         // Act
         if (!EnumProcesses(aProcesses, sizeof(aProcesses), &cbNeeded)) {
-            // TODO: Systeminformation abrufen und als Argument übergeben.
             throw ProcessException(GetLastErrorString());
         }
 
@@ -60,9 +61,10 @@ TEST_F(ProcessTest, Process_Constructor_Vector)
                     if (EnumProcessModules(hProcess, &hMod, sizeof(hMod), &cbNeeded)) {
                         GetModuleBaseNameA(hProcess, hMod, szProcessName, sizeof(szProcessName) / sizeof(CHAR));
 
-                        if (szProcessName == NAME.c_str()) {
+                        if (szProcessName == CMPNAME) {
                             result.push_back(szProcessName);
                         } else {
+                            gLog << "ProcessTest: INFO:  Process name: " << szProcessName << "\n";
                             CloseHandle(hProcess);
                         }
                     } else {
@@ -74,13 +76,10 @@ TEST_F(ProcessTest, Process_Constructor_Vector)
 
         // Assert
         ASSERT_TRUE(result.size() > 0);
-        ASSERT_EQ(NAME, result[0]);
+        ASSERT_EQ(CMPNAME, result[0]);
         ASSERT_EQ(p.GetProcessInfo().GetName(), result[0]);
     } catch (ProcessException& e) {
-        std::fstream log;
-        log.open(LOGFILE, std::fstream::out | std::fstream::app);
-        log << "ProcessTest: " << e.what();
-        log.close();
+        gLog << "ProcessTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
     }
 }
@@ -89,7 +88,7 @@ TEST_F(ProcessTest, Process_Constructor_String)
 {
     try {
         // Arrange
-        Process p(NAME, "");
+        Process p(NAME, "60");
         vector<string> result;
         DWORD aProcesses[8192];
         DWORD cbNeeded;
@@ -97,7 +96,6 @@ TEST_F(ProcessTest, Process_Constructor_String)
 
         // Act
         if (!EnumProcesses(aProcesses, sizeof(aProcesses), &cbNeeded)) {
-            // TODO: Systeminformation abrufen und als Argument übergeben.
             throw ProcessException(GetLastErrorString());
         }
 
@@ -115,9 +113,10 @@ TEST_F(ProcessTest, Process_Constructor_String)
                     if (EnumProcessModules(hProcess, &hMod, sizeof(hMod), &cbNeeded)) {
                         GetModuleBaseNameA(hProcess, hMod, szProcessName, sizeof(szProcessName) / sizeof(CHAR));
 
-                        if (szProcessName == NAME.c_str()) {
+                        if (szProcessName == CMPNAME) {
                             result.push_back(szProcessName);
                         } else {
+                            gLog << "ProcessTest: INFO:  Process name: " << szProcessName << "\n";
                             CloseHandle(hProcess);
                         }
                     } else {
@@ -129,21 +128,12 @@ TEST_F(ProcessTest, Process_Constructor_String)
 
         // Assert
         ASSERT_TRUE(result.size() > 0);
-        ASSERT_EQ(NAME, result[0]);
+        ASSERT_EQ(CMPNAME, result[0]);
         ASSERT_EQ(p.GetProcessInfo().GetName(), result[0]);
     } catch (ProcessException& e) {
-        std::fstream log;
-        log.open(LOGFILE, std::fstream::out | std::fstream::app);
-        log << "ProcessTest: " << e.what();
-        log.close();
+        gLog << "ProcessTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
     }
-}
-
-TEST_F(ProcessTest, Process_Constructor_ProcessInfo)
-{
-    Process p(ProcessInfo());
-    // ?!
 }
 
 TEST_F(ProcessTest, Process_GetProcessByName_ValidName)
@@ -156,12 +146,11 @@ TEST_F(ProcessTest, Process_GetProcessByName_ValidName)
         auto v = Process::GetProcessByName(NAME);
 
         // Assert
-        ASSERT_TRUE(v.size() == 1);
+        ASSERT_TRUE(v.size() > 0);
+        ASSERT_EQ(CMPNAME, v[0].GetName());
+        ASSERT_EQ(p.GetProcessInfo().GetName(), v[0].GetName());
     } catch (ProcessException& e) {
-        std::fstream log;
-        log.open(LOGFILE, std::fstream::out | std::fstream::app);
-        log << "ProcessTest: " << e.what();
-        log.close();
+        gLog << "ProcessTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
     }
 }
@@ -178,10 +167,7 @@ TEST_F(ProcessTest, Process_GetProcessByName_InvalidName)
         // Assert
         ASSERT_TRUE(v.size() == 0);
     } catch (ProcessException& e) {
-        std::fstream log;
-        log.open(LOGFILE, std::fstream::out | std::fstream::app);
-        log << "ProcessTest: " << e.what();
-        log.close();
+        gLog << "ProcessTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
     }
 }
@@ -203,10 +189,7 @@ TEST_F(ProcessTest, Process_GetProcesses_Exist)
         ASSERT_TRUE(v.size() > 0);
         ASSERT_TRUE(exist);
     } catch (ProcessException& e) {
-        std::fstream log;
-        log.open(LOGFILE, std::fstream::out | std::fstream::app);
-        log << "ProcessTest: " << e.what();
-        log.close();
+        gLog << "ProcessTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
     }
 }
@@ -222,10 +205,7 @@ TEST_F(ProcessTest, Process_ExitCode_Default)
         // Assert
         ASSERT_EQ(p.ExitCode(), ~0);
     } catch (ProcessException& e) {
-        std::fstream log;
-        log.open(LOGFILE, std::fstream::out | std::fstream::app);
-        log << "ProcessTest: " << e.what();
-        log.close();
+        gLog << "ProcessTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
     }
 }
@@ -242,10 +222,7 @@ TEST_F(ProcessTest, Process_ExitCode_42)
         // Assert
         ASSERT_EQ(p.ExitCode(), 42);
     } catch (ProcessException& e) {
-        std::fstream log;
-        log.open(LOGFILE, std::fstream::out | std::fstream::app);
-        log << "ProcessTest: " << e.what();
-        log.close();
+        gLog << "ProcessTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
     }
 }
@@ -262,10 +239,7 @@ TEST_F(ProcessTest, Process_ExitCode_neg42)
         // Assert
         ASSERT_EQ(p.ExitCode(), -42);
     } catch (ProcessException& e) {
-        std::fstream log;
-        log.open(LOGFILE, std::fstream::out | std::fstream::app);
-        log << "ProcessTest: " << e.what();
-        log.close();
+        gLog << "ProcessTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
     }
 }
@@ -282,10 +256,7 @@ TEST_F(ProcessTest, Process_GetState_IsRunning)
         // Assert
         ASSERT_EQ(state, ProcessState::IsRunning);
     } catch (ProcessException& e) {
-        std::fstream log;
-        log.open(LOGFILE, std::fstream::out | std::fstream::app);
-        log << "ProcessTest: " << e.what();
-        log.close();
+        gLog << "ProcessTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
     }
 }
@@ -303,10 +274,7 @@ TEST_F(ProcessTest, Process_GetState_NotRunning)
         // Assert
         ASSERT_EQ(state, ProcessState::NotRunning);
     } catch (ProcessException& e) {
-        std::fstream log;
-        log.open(LOGFILE, std::fstream::out | std::fstream::app);
-        log << "ProcessTest: " << e.what();
-        log.close();
+        gLog << "ProcessTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
     }
 }
@@ -324,10 +292,7 @@ TEST_F(ProcessTest, Process_GetState_Invalid)
         // Assert
         ASSERT_EQ(state, ProcessState::Invalid);
     } catch (ProcessException& e) {
-        std::fstream log;
-        log.open(LOGFILE, std::fstream::out | std::fstream::app);
-        log << "ProcessTest: " << e.what();
-        log.close();
+        gLog << "ProcessTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
     }
 }
@@ -346,10 +311,7 @@ TEST_F(ProcessTest, Process_Kill_BeforeExit)
         ASSERT_TRUE(v.size() == 0);
         ASSERT_EQ(p.GetState(), ProcessState::Invalid);
     } catch (ProcessException& e) {
-        std::fstream log;
-        log.open(LOGFILE, std::fstream::out | std::fstream::app);
-        log << "ProcessTest: " << e.what();
-        log.close();
+        gLog << "ProcessTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
     }
 }
@@ -369,10 +331,7 @@ TEST_F(ProcessTest, Process_Kill_AfterExit)
         ASSERT_TRUE(v.size() == 0);
         ASSERT_EQ(p.GetState(), ProcessState::Invalid);
     } catch (ProcessException& e) {
-        std::fstream log;
-        log.open(LOGFILE, std::fstream::out | std::fstream::app);
-        log << "ProcessTest: " << e.what();
-        log.close();
+        gLog << "ProcessTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
     }
 }
@@ -393,10 +352,7 @@ TEST_F(ProcessTest, Process_Wait_Valid)
         // Assert
         ASSERT_TRUE(elapsed_seconds.count() > 3.0);
     } catch (ProcessException& e) {
-        std::fstream log;
-        log.open(LOGFILE, std::fstream::out | std::fstream::app);
-        log << "ProcessTest: " << e.what();
-        log.close();
+        gLog << "ProcessTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
     }
 }
@@ -416,10 +372,7 @@ TEST_F(ProcessTest, Process_WaitFor_Sufficient)
         ASSERT_EQ(stateBefore, ProcessState::IsRunning);
         ASSERT_EQ(stateAfter, ProcessState::NotRunning);
     } catch (ProcessException& e) {
-        std::fstream log;
-        log.open(LOGFILE, std::fstream::out | std::fstream::app);
-        log << "ProcessTest: " << e.what();
-        log.close();
+        gLog << "ProcessTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
     }
 }
@@ -439,10 +392,7 @@ TEST_F(ProcessTest, Process_WaitFor_NotSufficient)
         ASSERT_EQ(stateBefore, ProcessState::IsRunning);
         ASSERT_EQ(stateAfter, ProcessState::IsRunning);
     } catch (ProcessException& e) {
-        std::fstream log;
-        log.open(LOGFILE, std::fstream::out | std::fstream::app);
-        log << "ProcessTest: " << e.what();
-        log.close();
+        gLog << "ProcessTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
     }
 }
