@@ -83,8 +83,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\test\Main.cpp" />
+    <ClCompile Include="..\..\test\win32\Main.cpp" />
     <ClCompile Include="..\..\test\win32\ProcessTest.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\test\win32\Globals.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

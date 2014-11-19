@@ -45,7 +45,6 @@ namespace ipc {
         delete cmdl;
 
         if (!result) {
-            // TODO: Systeminformation abrufen und als Argument übergeben.
             throw ProcessException(GetLastErrorString());
         } else {
             CHAR szProcessName[MAX_PATH] = "<unknown>";
@@ -109,7 +108,6 @@ namespace ipc {
             DWORD exitCode = ~0;
 
             if (!GetExitCodeProcess(mProcessInfo.mHandle, &exitCode)) {
-                // TODO: Systeminformation abrufen und als Argument übergeben.
                 throw ProcessException(GetLastErrorString());
             } else {
                 return static_cast<int32_t>(exitCode);
@@ -127,7 +125,6 @@ namespace ipc {
                 BOOL result = TerminateProcess(mProcessInfo.mHandle, ~0);
 
                 if (!result) {
-                    // TODO: Systeminformation abrufen und als Argument übergeben.
                     throw ProcessException(GetLastErrorString());
                 } else {
                     CloseHandle(mProcessInfo.mHandle);
@@ -145,7 +142,6 @@ namespace ipc {
     {
         if (mProcessInfo.mHandle != PROCESS_INVALID_HANDLE) {
             if (WaitForSingleObject(mProcessInfo.mHandle, INFINITE) == WAIT_FAILED) {
-                // TODO: Systeminformation abrufen und als Argument übergeben.
                 throw ProcessException(GetLastErrorString());
             } else {
                 CloseHandle(mProcessInfo.mHandle);
@@ -166,7 +162,6 @@ namespace ipc {
         DWORD cProcesses;
 
         if (!EnumProcesses(aProcesses, sizeof(aProcesses), &cbNeeded)) {
-            // TODO: Systeminformation abrufen und als Argument übergeben.
             throw ProcessException(GetLastErrorString());
         }
 
@@ -211,7 +206,6 @@ namespace ipc {
         DWORD cProcesses;
 
         if (!EnumProcesses(aProcesses, sizeof(aProcesses), &cbNeeded)) {
-            // TODO: Systeminformation abrufen und als Argument übergeben.
             throw ProcessException(GetLastErrorString());
         }
 
