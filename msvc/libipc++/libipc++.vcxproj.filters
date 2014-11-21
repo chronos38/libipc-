@@ -86,9 +86,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\source\platform\win32\Definitions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\source\exception\IpcException.cpp">
       <Filter>Source Files\Exception</Filter>
     </ClCompile>
@@ -110,16 +107,19 @@
     <ClCompile Include="..\..\source\exception\SharedMemoryException.cpp">
       <Filter>Source Files\Exception</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\platform\win32\Pipe.cpp">
-      <Filter>Source Files\Win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\platform\win32\Utility.cpp">
-      <Filter>Source Files\Win32</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\source\Process.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\platform\win32\ProcessWin32.cpp">
+      <Filter>Source Files\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\platform\win32\PipeWin32.cpp">
+      <Filter>Source Files\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\platform\win32\UtilityWin32.cpp">
+      <Filter>Source Files\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\platform\win32\DefinitionsWin32.cpp">
       <Filter>Source Files\Win32</Filter>
     </ClCompile>
   </ItemGroup>
@@ -127,7 +127,7 @@
     <None Include="..\..\include\libipcpp\Platform\Win32\Process.inl">
       <Filter>Header Files\Inline</Filter>
     </None>
-    <None Include="..\..\include\libipcpp\platform\win32\Pipe.inl">
+    <None Include="..\..\include\libipcpp\Pipe.inl">
       <Filter>Header Files\Inline</Filter>
     </None>
   </ItemGroup>

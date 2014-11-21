@@ -98,14 +98,14 @@
     <ClCompile Include="..\..\source\exception\ProcessException.cpp" />
     <ClCompile Include="..\..\source\exception\SemaphoreException.cpp" />
     <ClCompile Include="..\..\source\exception\SharedMemoryException.cpp" />
-    <ClCompile Include="..\..\source\platform\win32\Definitions.cpp" />
-    <ClCompile Include="..\..\source\platform\win32\Pipe.cpp" />
+    <ClCompile Include="..\..\source\platform\win32\DefinitionsWin32.cpp" />
+    <ClCompile Include="..\..\source\platform\win32\PipeWin32.cpp" />
     <ClCompile Include="..\..\source\platform\win32\ProcessWin32.cpp" />
-    <ClCompile Include="..\..\source\platform\win32\Utility.cpp" />
+    <ClCompile Include="..\..\source\platform\win32\UtilityWin32.cpp" />
     <ClCompile Include="..\..\source\Process.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\include\libipcpp\platform\win32\Pipe.inl" />
+    <None Include="..\..\include\libipcpp\Pipe.inl" />
     <None Include="..\..\include\libipcpp\Platform\Win32\Process.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

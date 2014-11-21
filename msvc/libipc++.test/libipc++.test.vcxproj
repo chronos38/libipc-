@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\test\win32\Main.cpp" />
+    <ClCompile Include="..\..\test\win32\PipeTest.cpp" />
     <ClCompile Include="..\..\test\win32\ProcessTest.cpp" />
   </ItemGroup>
   <ItemGroup>
