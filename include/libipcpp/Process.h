@@ -155,6 +155,8 @@ namespace ipc {
          * Reads the exit code of the process. The value depends heavily on the
          * used operating systems.
          *
+         * If the process is still running, than the return value is undefined.
+         *
          * \returns The exit code of the process.
          */
         int32_t ExitCode() const throw(ProcessException);

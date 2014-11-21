@@ -145,8 +145,9 @@ namespace ipc {
     void Process::Kill()
     {
         if (mProcessInfo.mHandle != PROCESS_INVALID_HANDLE) {
-            if (GetState() == ProcessState::IsRunning) {
-                // TODO: Bestimmter ExitCode?
+            auto state = GetState();
+
+            if (state == ProcessState::IsRunning) {
                 BOOL result = TerminateProcess(mProcessInfo.mHandle, ~0);
 
                 if (!result) {
@@ -157,6 +158,11 @@ namespace ipc {
                     mProcessInfo.mHandle = PROCESS_INVALID_HANDLE;
                     mThread = PROCESS_INVALID_HANDLE;
                 }
+            } else if (state == ProcessState::NotRunning) {
+                CloseHandle(mProcessInfo.mHandle);
+                CloseHandle(mThread);
+                mProcessInfo.mHandle = PROCESS_INVALID_HANDLE;
+                mThread = PROCESS_INVALID_HANDLE;
             }
         } else {
             throw ProcessException("Invalid process handle");

@@ -197,22 +197,6 @@ TEST_F(ProcessTest, GetProcesses_Exist)
     }
 }
 
-TEST_F(ProcessTest, ExitCode_Default)
-{
-    try {
-        // Arrange
-        Process p(NAME, "1");
-
-        // Act
-
-        // Assert
-        ASSERT_EQ(~0, p.ExitCode());
-    } catch (ProcessException& e) {
-        gLog << "ProcessTest: ERROR: " << e.what();
-        ASSERT_FALSE(true);
-    }
-}
-
 TEST_F(ProcessTest, ExitCode_42)
 {
     try {
