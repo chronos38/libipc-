@@ -44,18 +44,16 @@ namespace ipc {
         if (!result) {
             throw ProcessException(GetLastErrorString());
         } else {
-            CHAR szProcessName[MAX_PATH] = "<unknown>";
-            HMODULE hMod;
-            DWORD cbNeeded;
+            CHAR cFileName[MAX_PATH];
+            CHAR cExt[MAX_PATH];
             mIsOwner = true;
             mProcessInfo.mHandle = processInformation.hProcess;
             mProcessInfo.mId = processInformation.dwProcessId;
             mThread = processInformation.hThread;
-
-            if (EnumProcessModules(mProcessInfo.mHandle, &hMod, sizeof(hMod), &cbNeeded)) {
-                GetModuleBaseNameA(mProcessInfo.mHandle, hMod, szProcessName, sizeof(szProcessName) / sizeof(CHAR));
-                mProcessInfo.mName = szProcessName;
-            }
+            memset(cFileName, 0, sizeof(cFileName));
+            memset(cExt, 0, sizeof(cExt));
+            _splitpath_s(fileName.c_str(), NULL, 0, NULL, 0, cFileName, sizeof(cFileName), cExt, sizeof(cExt));
+            mProcessInfo.mName = string(cFileName) + string(cExt);
         }
     }
 
@@ -76,18 +74,16 @@ namespace ipc {
         if (!result) {
             throw ProcessException(GetLastErrorString());
         } else {
-            CHAR szProcessName[MAX_PATH] = "<unknown>";
-            HMODULE hMod;
-            DWORD cbNeeded;
+            CHAR cFileName[MAX_PATH];
+            CHAR cExt[MAX_PATH];
             mIsOwner = true;
             mProcessInfo.mHandle = processInformation.hProcess;
             mProcessInfo.mId = processInformation.dwProcessId;
             mThread = processInformation.hThread;
-
-            if (EnumProcessModules(mProcessInfo.mHandle, &hMod, sizeof(hMod), &cbNeeded)) {
-                GetModuleBaseNameA(mProcessInfo.mHandle, hMod, szProcessName, sizeof(szProcessName) / sizeof(CHAR));
-                mProcessInfo.mName = szProcessName;
-            }
+            memset(cFileName, 0, sizeof(cFileName));
+            memset(cExt, 0, sizeof(cExt));
+            _splitpath_s(fileName.c_str(), NULL, 0, NULL, 0, cFileName, sizeof(cFileName), cExt, sizeof(cExt));
+            mProcessInfo.mName = string(cFileName) + string(cExt);
         }
     }
 
@@ -200,8 +196,9 @@ namespace ipc {
 
         for (DWORD i = 0; i < cProcesses; i++) {
             if (aProcesses[i] != 0) {
-                CHAR szProcessName[MAX_PATH] = "<unknown>";
+                CHAR szProcessName[MAX_PATH];
                 HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, aProcesses[i]);
+                memset(szProcessName, 0, sizeof(szProcessName));
 
                 if (hProcess) {
                     HMODULE hMod;
@@ -210,7 +207,7 @@ namespace ipc {
                     if (EnumProcessModules(hProcess, &hMod, sizeof(hMod), &cbNeeded)) {
                         GetModuleBaseNameA(hProcess, hMod, szProcessName, sizeof(szProcessName) / sizeof(CHAR));
                         
-                        if (szProcessName == name.c_str()) {
+                        if (szProcessName == name) {
                             ProcessInfo info;
                             info.mHandle = hProcess;
                             info.mId = static_cast<int64_t>(aProcesses[i]);
@@ -244,8 +241,9 @@ namespace ipc {
 
         for (DWORD i = 0; i < cProcesses; i++) {
             if (aProcesses[i] != 0) {
-                CHAR szProcessName[MAX_PATH] = "<unknown>";
+                CHAR szProcessName[MAX_PATH];
                 HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, aProcesses[i]);
+                memset(szProcessName, 0, sizeof(szProcessName));
 
                 if (hProcess) {
                     HMODULE hMod;

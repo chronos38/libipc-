@@ -32,7 +32,7 @@ protected:
     }
 };
 
-TEST_F(ProcessTest, Process_Constructor_Vector)
+TEST_F(ProcessTest, Constructor_Vector)
 {
     try {
         // Arrange
@@ -43,6 +43,8 @@ TEST_F(ProcessTest, Process_Constructor_Vector)
         DWORD cProcesses;
 
         // Act
+        std::this_thread::sleep_for(std::chrono::seconds(1)); // Slepp one second
+
         if (!EnumProcesses(aProcesses, sizeof(aProcesses), &cbNeeded)) {
             throw ProcessException(GetLastErrorString());
         }
@@ -64,7 +66,6 @@ TEST_F(ProcessTest, Process_Constructor_Vector)
                         if (szProcessName == CMPNAME) {
                             result.push_back(szProcessName);
                         } else {
-                            gLog << "ProcessTest: INFO:  Process name: " << szProcessName << "\n";
                             CloseHandle(hProcess);
                         }
                     } else {
@@ -84,7 +85,7 @@ TEST_F(ProcessTest, Process_Constructor_Vector)
     }
 }
 
-TEST_F(ProcessTest, Process_Constructor_String)
+TEST_F(ProcessTest, Constructor_String)
 {
     try {
         // Arrange
@@ -95,6 +96,8 @@ TEST_F(ProcessTest, Process_Constructor_String)
         DWORD cProcesses;
 
         // Act
+        std::this_thread::sleep_for(std::chrono::seconds(1)); // Slepp one second
+
         if (!EnumProcesses(aProcesses, sizeof(aProcesses), &cbNeeded)) {
             throw ProcessException(GetLastErrorString());
         }
@@ -116,7 +119,6 @@ TEST_F(ProcessTest, Process_Constructor_String)
                         if (szProcessName == CMPNAME) {
                             result.push_back(szProcessName);
                         } else {
-                            gLog << "ProcessTest: INFO:  Process name: " << szProcessName << "\n";
                             CloseHandle(hProcess);
                         }
                     } else {
@@ -129,33 +131,34 @@ TEST_F(ProcessTest, Process_Constructor_String)
         // Assert
         ASSERT_TRUE(result.size() > 0);
         ASSERT_EQ(CMPNAME, result[0]);
-        ASSERT_EQ(p.GetProcessInfo().GetName(), result[0]);
+        ASSERT_EQ(CMPNAME, p.GetProcessInfo().GetName());
     } catch (ProcessException& e) {
         gLog << "ProcessTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
     }
 }
 
-TEST_F(ProcessTest, Process_GetProcessByName_ValidName)
+TEST_F(ProcessTest, GetProcessByName_ValidName)
 {
     try {
         // Arrange
-        Process p(NAME, "");
+        Process p(NAME, "3");
 
         // Act
-        auto v = Process::GetProcessByName(NAME);
+        std::this_thread::sleep_for(std::chrono::seconds(1)); // Slepp one second
+        auto v = Process::GetProcessByName(CMPNAME);
 
         // Assert
         ASSERT_TRUE(v.size() > 0);
         ASSERT_EQ(CMPNAME, v[0].GetName());
-        ASSERT_EQ(p.GetProcessInfo().GetName(), v[0].GetName());
+        ASSERT_EQ(CMPNAME, p.GetProcessInfo().GetName());
     } catch (ProcessException& e) {
         gLog << "ProcessTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
     }
 }
 
-TEST_F(ProcessTest, Process_GetProcessByName_InvalidName)
+TEST_F(ProcessTest, GetProcessByName_InvalidName)
 {
     try {
         // Arrange
@@ -172,7 +175,7 @@ TEST_F(ProcessTest, Process_GetProcessByName_InvalidName)
     }
 }
 
-TEST_F(ProcessTest, Process_GetProcesses_Exist)
+TEST_F(ProcessTest, GetProcesses_Exist)
 {
     try {
         // Arrange
@@ -182,7 +185,7 @@ TEST_F(ProcessTest, Process_GetProcesses_Exist)
         // Act
         auto v = Process::GetProcesses();
         std::for_each(std::begin(v), std::end(v), [&] (const ProcessInfo& info) {
-            !exist ? (exist = (info.GetName() == NAME)) : (true);
+            !exist ? (exist = (info.GetName() == CMPNAME)) : (true);
         });
 
         // Assert
@@ -194,7 +197,7 @@ TEST_F(ProcessTest, Process_GetProcesses_Exist)
     }
 }
 
-TEST_F(ProcessTest, Process_ExitCode_Default)
+TEST_F(ProcessTest, ExitCode_Default)
 {
     try {
         // Arrange
@@ -203,14 +206,14 @@ TEST_F(ProcessTest, Process_ExitCode_Default)
         // Act
 
         // Assert
-        ASSERT_EQ(p.ExitCode(), ~0);
+        ASSERT_EQ(~0, p.ExitCode());
     } catch (ProcessException& e) {
         gLog << "ProcessTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
     }
 }
 
-TEST_F(ProcessTest, Process_ExitCode_42)
+TEST_F(ProcessTest, ExitCode_42)
 {
     try {
         // Arrange
@@ -220,14 +223,14 @@ TEST_F(ProcessTest, Process_ExitCode_42)
         std::this_thread::sleep_for(std::chrono::seconds(2));
 
         // Assert
-        ASSERT_EQ(p.ExitCode(), 42);
+        ASSERT_EQ(42, p.ExitCode());
     } catch (ProcessException& e) {
         gLog << "ProcessTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
     }
 }
 
-TEST_F(ProcessTest, Process_ExitCode_neg42)
+TEST_F(ProcessTest, ExitCode_Negative42)
 {
     try {
         // Arrange
@@ -237,14 +240,14 @@ TEST_F(ProcessTest, Process_ExitCode_neg42)
         std::this_thread::sleep_for(std::chrono::seconds(2));
 
         // Assert
-        ASSERT_EQ(p.ExitCode(), -42);
+        ASSERT_EQ(-42, p.ExitCode());
     } catch (ProcessException& e) {
         gLog << "ProcessTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
     }
 }
 
-TEST_F(ProcessTest, Process_GetState_IsRunning)
+TEST_F(ProcessTest, GetState_IsRunning)
 {
     try {
         // Arrange
@@ -254,14 +257,14 @@ TEST_F(ProcessTest, Process_GetState_IsRunning)
         auto state = p.GetState();
 
         // Assert
-        ASSERT_EQ(state, ProcessState::IsRunning);
+        ASSERT_EQ(ProcessState::IsRunning, state);
     } catch (ProcessException& e) {
         gLog << "ProcessTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
     }
 }
 
-TEST_F(ProcessTest, Process_GetState_NotRunning)
+TEST_F(ProcessTest, GetState_NotRunning)
 {
     try {
         // Arrange
@@ -272,14 +275,14 @@ TEST_F(ProcessTest, Process_GetState_NotRunning)
         auto state = p.GetState();
 
         // Assert
-        ASSERT_EQ(state, ProcessState::NotRunning);
+        ASSERT_EQ(ProcessState::NotRunning, state);
     } catch (ProcessException& e) {
         gLog << "ProcessTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
     }
 }
 
-TEST_F(ProcessTest, Process_GetState_Invalid)
+TEST_F(ProcessTest, GetState_Invalid)
 {
     try {
         // Arrange
@@ -290,14 +293,14 @@ TEST_F(ProcessTest, Process_GetState_Invalid)
         auto state = p.GetState();
 
         // Assert
-        ASSERT_EQ(state, ProcessState::Invalid);
+        ASSERT_EQ(ProcessState::Invalid, state);
     } catch (ProcessException& e) {
         gLog << "ProcessTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
     }
 }
 
-TEST_F(ProcessTest, Process_Kill_BeforeExit)
+TEST_F(ProcessTest, Kill_BeforeExit)
 {
     try {
         // Arrange
@@ -309,14 +312,14 @@ TEST_F(ProcessTest, Process_Kill_BeforeExit)
 
         // Assert
         ASSERT_TRUE(v.size() == 0);
-        ASSERT_EQ(p.GetState(), ProcessState::Invalid);
+        ASSERT_EQ(ProcessState::Invalid, p.GetState());
     } catch (ProcessException& e) {
         gLog << "ProcessTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
     }
 }
 
-TEST_F(ProcessTest, Process_Kill_AfterExit)
+TEST_F(ProcessTest, Kill_AfterExit)
 {
     try {
         // Arrange
@@ -329,20 +332,20 @@ TEST_F(ProcessTest, Process_Kill_AfterExit)
 
         // Assert
         ASSERT_TRUE(v.size() == 0);
-        ASSERT_EQ(p.GetState(), ProcessState::Invalid);
+        ASSERT_EQ(ProcessState::Invalid, p.GetState());
     } catch (ProcessException& e) {
         gLog << "ProcessTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
     }
 }
 
-TEST_F(ProcessTest, Process_Wait_Valid)
+TEST_F(ProcessTest, Wait_Valid)
 {
     try {
         // Arrange
         std::chrono::time_point<std::chrono::system_clock> start, end;
         start = std::chrono::system_clock::now();
-        Process p(NAME, "3 many arguments for the hope of a minor delay");
+        Process p(NAME, "3");
 
         // Act
         p.Wait();
@@ -357,11 +360,11 @@ TEST_F(ProcessTest, Process_Wait_Valid)
     }
 }
 
-TEST_F(ProcessTest, Process_WaitFor_Sufficient)
+TEST_F(ProcessTest, WaitFor_Sufficient)
 {
     try {
         // Arrange
-        Process p(NAME, "1 many arguments for the hope of a minor delay");
+        Process p(NAME, "1");
 
         // Act
         auto stateBefore = p.GetState();
@@ -369,19 +372,19 @@ TEST_F(ProcessTest, Process_WaitFor_Sufficient)
         auto stateAfter = p.GetState();
 
         // Assert
-        ASSERT_EQ(stateBefore, ProcessState::IsRunning);
-        ASSERT_EQ(stateAfter, ProcessState::NotRunning);
+        ASSERT_EQ(ProcessState::IsRunning, stateBefore);
+        ASSERT_EQ(ProcessState::NotRunning, stateAfter);
     } catch (ProcessException& e) {
         gLog << "ProcessTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
     }
 }
 
-TEST_F(ProcessTest, Process_WaitFor_NotSufficient)
+TEST_F(ProcessTest, WaitFor_NotSufficient)
 {
     try {
         // Arrange
-        Process p(NAME, "3 many arguments for the hope of a minor delay");
+        Process p(NAME, "3");
 
         // Act
         auto stateBefore = p.GetState();
@@ -389,8 +392,8 @@ TEST_F(ProcessTest, Process_WaitFor_NotSufficient)
         auto stateAfter = p.GetState();
 
         // Assert
-        ASSERT_EQ(stateBefore, ProcessState::IsRunning);
-        ASSERT_EQ(stateAfter, ProcessState::IsRunning);
+        ASSERT_EQ(ProcessState::IsRunning, stateBefore);
+        ASSERT_EQ(ProcessState::IsRunning, stateAfter);
     } catch (ProcessException& e) {
         gLog << "ProcessTest: ERROR: " << e.what();
         ASSERT_FALSE(true);

@@ -10,12 +10,19 @@ namespace ipc {
 
     bool IsNumber(const std::string& input)
     {
-        return false;
+        int64_t i = 0;
+        return (std::sscanf(input.c_str(), "%lld", &i) == 1);
     }
 
     void SplitString(const std::string& str, const std::string& delimiters, std::vector<std::string>& tokens)
     {
-
+        for (size_t n = str.find_first_of(delimiters), pn = 0; n != str.npos; pn = n + 1, n = str.find_first_of(delimiters, n + 1)) {
+            if (pn == n) {
+                tokens.push_back("");
+            } else {
+                tokens.push_back(str.substr(pn, n - pn));
+            }
+        }
     }
 
     std::string GetLastErrorString()
