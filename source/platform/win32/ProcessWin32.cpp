@@ -181,6 +181,8 @@ namespace ipc {
         } else {
             throw ProcessException("Invalid process handle");
         }
+
+        return *this;
     }
 
     vector<ProcessInfo> Process::GetProcessByName(const string& name)
@@ -277,31 +279,6 @@ namespace ipc {
         p.mThread = PROCESS_INVALID_HANDLE;
 
         return *this;
-    }
-
-    int64_t ProcessInfo::GetId() const
-    {
-        return mId;
-    }
-
-    string ProcessInfo::GetName() const
-    {
-        return mName;
-    }
-
-    ProcessHandle ProcessInfo::GetHandle() const
-    {
-        return mHandle;
-    }
-
-    bool Process::IsValid() const
-    {
-        return (mProcessInfo.mHandle != PROCESS_INVALID_HANDLE);
-    }
-
-    ProcessInfo Process::GetProcessInfo() const
-    {
-        return mProcessInfo;
     }
 }
 #endif
