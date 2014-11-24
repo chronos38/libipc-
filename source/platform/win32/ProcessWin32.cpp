@@ -38,7 +38,7 @@ namespace ipc {
 
         startupInfo.cb = sizeof(startupInfo);
 
-        BOOL result = CreateProcessA(fileName.c_str(), cmdl, NULL, NULL, FALSE, 0, NULL, NULL, &startupInfo, &processInformation);
+        BOOL result = CreateProcessA(fileName.c_str(), cmdl, NULL, NULL, TRUE, 0, NULL, NULL, &startupInfo, &processInformation);
         delete cmdl;
 
         if (!result) {
@@ -68,7 +68,7 @@ namespace ipc {
 
         startupInfo.cb = sizeof(startupInfo);
 
-        BOOL result = CreateProcessA(fileName.c_str(), cmdl, NULL, NULL, FALSE, 0, NULL, NULL, &startupInfo, &processInformation);
+        BOOL result = CreateProcessA(fileName.c_str(), cmdl, NULL, NULL, TRUE, 0, NULL, NULL, &startupInfo, &processInformation);
         delete cmdl;
 
         if (!result) {
