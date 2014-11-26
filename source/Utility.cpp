@@ -12,7 +12,7 @@ namespace ipc {
 
     bool IsValidFileName(std::string& fileName)
     {
-
+        return true;
     }
 
     void SplitString(const std::string& str,

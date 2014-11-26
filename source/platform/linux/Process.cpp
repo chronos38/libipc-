@@ -16,13 +16,35 @@ namespace ipc {
     Process::Process(const std::string& fileName, const std::vector<std::string>& args) throw(ProcessException)
     {
         std::string str;
-        for(const std::string& arg : args) {
-            str += " " + arg;
+        if(!args.empty()){
+            for(const std::string& arg : args) {
+                if(str.empty())
+                    str += arg;
+                else
+                    str += " " + arg;
+            }
         }
-        Process(fileName, args);
+        
+        pid_t pid = fork();
+        std::vector<char *> argV;
+        
+        switch(pid) {
+            case -1:
+                throw ProcessException("Process could not be created.");
+                break;
+            case 0:
+                argV.push_back(const_cast<char *>(fileName.c_str()));
+                argV.push_back(const_cast<char *>(str.c_str()));
+                argV.push_back(nullptr);
+                execv(argV[0], &argV[0]);
+                break;
+            default:
+                mProcessInfo.mHandle = pid;
+                mIsOwner = true;
+        }
     }
     
-    Process::Process(const std::string& fileName, const std::string& args)
+    Process::Process(const std::string& fileName, const std::string& args) throw (ipc::ProcessException) 
     {
         pid_t pid = fork();
         std::vector<char *> argV;
@@ -46,7 +68,6 @@ namespace ipc {
     Process::Process(const ProcessInfo& info)
     {
         mProcessInfo = info;
-        ValidateProcessHandle();
         if (!IsValid()) {
             throw ProcessException("Process handle is not valid.");
         }
@@ -86,6 +107,7 @@ namespace ipc {
         int rv = kill(mProcessInfo.mHandle, SIGKILL);
         if(rv < 0)
             throw ProcessException("Process could not be killed.");
+        waitpid(mProcessInfo.mHandle, &mStatus, 0);
     }
 
     Process& Process::Wait() throw(ProcessException)
@@ -164,9 +186,15 @@ namespace ipc {
         return results;
     }
     
+    bool Process::IsValid() NOEXCEPT
+    {
+        ValidateProcessHandle();
+        return (mProcessInfo.mHandle != PROCESS_INVALID_HANDLE);
+    }
     
     
-    void Process::ValidateProcessHandle() {
+    void Process::ValidateProcessHandle() 
+    {
         int rv = kill(mProcessInfo.mHandle, 0);
         if (rv == 0) {
             mIsOwner = true;
@@ -175,9 +203,10 @@ namespace ipc {
             mIsOwner = false;
         } else if(rv < 0) {
             mProcessInfo.mHandle = PROCESS_INVALID_HANDLE;
-            throw ProcessException("Process is not valid.");
         }
     }
+    
+
 
 }
 #endif

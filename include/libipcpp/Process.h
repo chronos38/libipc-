@@ -149,7 +149,7 @@ namespace ipc {
          *
          * \returns TRUE when the Process is in a valid state, otherwise FALSE is returned.
          */
-        bool IsValid() const NOEXCEPT;
+        bool IsValid() NOEXCEPT;
 
         /*!
          * Reads the exit code of the process. The value depends heavily on the

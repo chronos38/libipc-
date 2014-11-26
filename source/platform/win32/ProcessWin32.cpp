@@ -284,5 +284,10 @@ namespace ipc {
 
         return *this;
     }
+    
+    bool Process::IsValid() NOEXCEPT
+    {
+        return (mProcessInfo.mHandle != PROCESS_INVALID_HANDLE);
+    }
 }
 #endif

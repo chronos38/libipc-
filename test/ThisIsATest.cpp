@@ -1,4 +1,8 @@
+#ifdef _MSC_VER_
 #include "../ext/win32/include/gtest/gtest.h"
+#else
+#include "gtest/gtest.h"
+#endif
 #include <vector>
 #include <algorithm>
 
