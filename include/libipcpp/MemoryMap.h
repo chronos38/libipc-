@@ -62,7 +62,7 @@ namespace ipc {
          * \param[in]   index   The 0 based index for access.
          * \returns Byte on given index.
          */
-        uint8_t& operator[](size_t index) throw(SharedMemoryException, std::out_of_range);
+        char& operator[](size_t index) throw(SharedMemoryException, std::out_of_range);
 
         /*!
          * Gets read only access for the byte on the given index. If the index
@@ -71,7 +71,7 @@ namespace ipc {
          * \param[in]   index   The 0 based index for access.
          * \returns Byte on given index.
          */
-        const uint8_t& operator[](size_t index) const throw(SharedMemoryException, std::out_of_range);
+        const char& operator[](size_t index) const throw(SharedMemoryException, std::out_of_range);
 
         /*!
          * Gets the length for this shared memory.

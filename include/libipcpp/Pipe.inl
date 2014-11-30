@@ -1,22 +1,33 @@
+#ifdef _MSC_VER
 namespace ipc {
     template <typename InputIt>
     ByteCount Pipe::Write(InputIt first, InputIt last) const
     {
-        return Write(std::vector<char>(first, last).data(), std::distance(first, last));
+        auto buffer = vector<typename std::iterator_traits<InputIt>::value_type>(first, last);
+        auto size = std::distance(first, last) * sizeof(typename std::iterator_traits<InputIt>::value_type);
+        DWORD n = 0;
+
+        if (!WriteFile(mHandles[0], buffer.data(), size, &n, NULL)) {
+            throw PipeException(GetLastErrorString());
+        }
+
+        return n;
     }
 
     template <typename OutputIt>
-    ByteCount Pipe::Read(OutputIt first, OutputIt end) const
+    ByteCount Pipe::Read(OutputIt first, OutputIt last) const
     {
-        OutputIt it = first;
-        for (; it != end; std::advance(it, 1)) {
-            int byte = ReadByte();
+        auto buffer = vector<typename std::iterator_traits<OutputIt>::value_type>(first, last);
+        auto size = std::distance(first, last) * sizeof(typename std::iterator_traits<OutputIt>::value_type);
+        DWORD n = 0;
 
-            if (byte != -1) {
-                *it = static_cast<char>(byte);
-            }
+        if (!ReadFile(mHandles[1], buffer.data(), size, &n, NULL)) {
+            throw PipeException(GetLastErrorString());
+        } else {
+            std::copy(std::begin(buffer), std::end(buffer), first);
         }
 
-        return static_cast<ByteCount>(std::distance(first, it));
+        return n;
     }
 }
+#endif

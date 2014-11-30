@@ -44,7 +44,7 @@ namespace ipc {
 
     struct Message {
         PriorityId Priority;
-        std::vector<uint8_t> Data;
+        std::vector<char> Data;
     };
 
     // TODO: Ein IO Interace für Schreib- und Leseoperationen definieren.

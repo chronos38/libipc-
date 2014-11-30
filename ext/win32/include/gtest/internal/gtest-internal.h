@@ -57,7 +57,7 @@
 #include <limits>
 #include <set>
 
-#include "./gtest-message.h"
+#include "../gtest-message.h"
 #include "../internal/gtest-string.h"
 #include "../internal/gtest-filepath.h"
 #include "../internal/gtest-type-util.h"

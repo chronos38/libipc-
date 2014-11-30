@@ -1,15 +1,21 @@
 #include <libipcpp\Pipe.h>
 
-using out_of_range = std::out_of_range;
-// TODO: Größe bestimmen?
 #define PIPE_SIZE 65536
 
 namespace ipc {
-    Pipe::Pipe(Pipe&& p)
+    Pipe::Pipe()
     {
         if (!CreatePipe(&mHandles[1], &mHandles[0], NULL, PIPE_SIZE)) {
             throw PipeException(GetLastErrorString());
         }
+    }
+
+    Pipe::Pipe(Pipe&& p)
+    {
+        mHandles[0] = p.mHandles[0];
+        mHandles[1] = p.mHandles[1];
+        p.mHandles[0] = INVALID_HANDLE;
+        p.mHandles[1] = INVALID_HANDLE;
     }
 
     Pipe::~Pipe()
@@ -46,8 +52,9 @@ namespace ipc {
     ByteCount Pipe::WriteByte(char c) const
     {
         DWORD n = 0;
+        unsigned char b = (unsigned char)c;
 
-        if (!WriteFile(mHandles[0], &c, 1, &n, NULL)) {
+        if (!WriteFile(mHandles[0], &b, 1, &n, NULL)) {
             return 0;
         }
 
@@ -63,7 +70,7 @@ namespace ipc {
             return -1;
         }
 
-        return result;
+        return (unsigned char)result;
     }
 
     void Pipe::Close()

@@ -29,19 +29,13 @@
 #include "IOBase.h"
 #include "Utility.h"
 #include "exception/PipeException.h"
+#include <iterator>
+#include <algorithm>
 
 namespace ipc {
 
     class LIBIPC_API Pipe : public IOBase, public ReferenceType
     {
-        Pipe() = default;
-        ~Pipe();
-
-#ifdef _MSC_VER
-        Pipe(Pipe&&);
-#else
-        Pipe(Pipe&&) = default;
-#endif
     public:
         /*!
          *  Writes a block of data to the pipe.
@@ -107,8 +101,14 @@ namespace ipc {
          */
         bool IsOpen() const;
 
+        /* Do not use these constructors. Their purpose is for internal usage. */
+        Pipe();
+        Pipe(Pipe&&);
+        ~Pipe();
+
     private:
         IpcHandle mHandles[2];
+        friend class Process;
     };
 }
 

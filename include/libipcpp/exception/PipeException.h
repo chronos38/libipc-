@@ -31,7 +31,7 @@
 
 namespace ipc
 {
-    class PipeException : public IpcException
+    class LIBIPC_API PipeException : public IpcException
     {
     public:
         PipeException(const std::string&);
