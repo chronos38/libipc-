@@ -36,11 +36,11 @@
 namespace ipc {
     //! Global OS handle
     typedef HANDLE IpcHandle;
-    //! Native OS null handle
+    //! Native OS invalid handle
     static const IpcHandle INVALID_HANDLE = INVALID_HANDLE_VALUE;
     //! Native process handle
     typedef HANDLE ProcessHandle;
-    //! Native process null handle
+    //! Native process invalid handle
     static const ProcessHandle PROCESS_INVALID_HANDLE = INVALID_HANDLE_VALUE;
     //! Native byte count type
     typedef DWORD ByteCount;

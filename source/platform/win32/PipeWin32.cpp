@@ -22,8 +22,8 @@ namespace ipc {
     {
         try {
             Close();
-        } catch (PipeException&) {
-            // Do nothing
+        } catch (PipeException& e) {
+            fprintf(stderr, "Silent throw in pipe: %s\n", e.what());
         }
     }
 
@@ -75,24 +75,24 @@ namespace ipc {
 
     void Pipe::Close()
     {
-        BOOL error = FALSE;
+        BOOL success = FALSE;
 
         if (mHandles[0] != INVALID_HANDLE) {
-            error = CloseHandle(mHandles[0]);
+            success = CloseHandle(mHandles[0]);
             mHandles[0] = INVALID_HANDLE;
         }
 
         if (mHandles[1] != INVALID_HANDLE) {
-            if (!error) {
-                error = CloseHandle(mHandles[1]);
-            } else {
+            if (success) {
                 CloseHandle(mHandles[1]);
+            } else {
+                success = CloseHandle(mHandles[1]);
             }
 
             mHandles[1] = INVALID_HANDLE;
         }
 
-        if (error) {
+        if (!success) {
             throw PipeException(GetLastErrorString());
         }
     }

@@ -112,8 +112,8 @@ namespace ipc {
                     mThread = PROCESS_INVALID_HANDLE;
                 }
             }
-        } catch (ProcessException&) {
-            // Do nothing
+        } catch (ProcessException& e) {
+            fprintf(stderr, "Silent throw in process: %s\n", e.what());
         }
     }
 
