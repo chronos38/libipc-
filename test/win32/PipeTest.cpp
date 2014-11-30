@@ -2,10 +2,6 @@
 #include <gtest\gtest.h>
 #include <libipcpp\Pipe.h>
 #include <libipcpp\Utility.h>
-#include <Psapi.h>
-#include <algorithm>
-#include <thread>
-#include <chrono>
 #include <fstream>
 #include "Globals.h"
 

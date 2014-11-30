@@ -35,7 +35,7 @@ namespace ipc
     {
     public:
         SemaphoreException(const std::string&);
-        SemaphoreException(const std::string&, const exception& e );
+        SemaphoreException(const std::string&, const exception& e);
         virtual ~SemaphoreException() = default;
     };
 

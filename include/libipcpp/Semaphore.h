@@ -36,7 +36,7 @@ namespace ipc {
     {
     public:
         //! Creates a new semaphore object.
-        Semaphore();
+        Semaphore(); // TODO: Count angeben?
         //! Frees all allocated resources.
         virtual ~Semaphore();
 
@@ -50,7 +50,7 @@ namespace ipc {
          * the owner unlocks it. Than the order for the next owner is not
          * specified.
          */
-        void Lock() NOEXCEPT;
+        void Lock() throw(SemaphoreException);
 
         /*!
          * Tries to lock the semaphore. The executing thread or process gets
@@ -61,7 +61,7 @@ namespace ipc {
          *
          * \returns TRUE if locked successful, in any other case FALSE.
          */
-        bool TryLock() NOEXCEPT;
+        bool TryLock() throw(SemaphoreException);
 
         /*!
          * Unlocks the semaphore. This method should be only called by the
@@ -71,6 +71,10 @@ namespace ipc {
          * This method is non blocking and returns immediately.
          */
         void Unlock() throw(SemaphoreException);
+
+    private:
+
+        IpcHandle mHandle = INVALID_HANDLE;
     };
 }
 

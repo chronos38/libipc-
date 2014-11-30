@@ -122,6 +122,9 @@
     <ClCompile Include="..\..\source\platform\win32\DefinitionsWin32.cpp">
       <Filter>Source Files\Win32</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\source\platform\win32\SemaphoreWin32.cpp">
+      <Filter>Source Files\Win32</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\include\libipcpp\Platform\Win32\Process.inl">
