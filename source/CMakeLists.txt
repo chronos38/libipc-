@@ -43,9 +43,8 @@ set(HEADERS
 optional_source(LINUX
     SOURCES
         platform/linux/Process.cpp
+        platform/linux/Pipe.cpp
     HEADERS
-        ../include/libipcpp/platform/linux/Process.inl
-
 )
 
 optional_source(WIN32

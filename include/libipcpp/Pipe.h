@@ -31,6 +31,8 @@
 #include "exception/PipeException.h"
 #include <iterator>
 #include <algorithm>
+#include <cstring>
+
 
 namespace ipc {
 
@@ -109,6 +111,9 @@ namespace ipc {
     private:
         IpcHandle mHandles[2];
         friend class Process;
+#ifndef _MSC_VER
+        bool mOpen;
+#endif
     };
 }
 
