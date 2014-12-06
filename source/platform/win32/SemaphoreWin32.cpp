@@ -52,6 +52,9 @@ namespace ipc {
 
             case WAIT_FAILED:
                 throw SemaphoreException(GetLastErrorString());
+
+            default:
+                return false;
             }
         } else {
             throw SemaphoreException("Invalid semaphore handle.");

@@ -84,6 +84,12 @@
     <ClInclude Include="..\..\include\libipcpp\Utility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\libipcpp\exception\FileLockException.h">
+      <Filter>Header Files\Exception</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\libipcpp\exception\MemoryMapException.h">
+      <Filter>Header Files\Exception</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\exception\IpcException.cpp">
@@ -125,12 +131,21 @@
     <ClCompile Include="..\..\source\platform\win32\SemaphoreWin32.cpp">
       <Filter>Source Files\Win32</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\source\platform\win32\MemoryMapWin32.cpp">
+      <Filter>Source Files\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\exception\MemoryMapException.cpp">
+      <Filter>Source Files\Exception</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\include\libipcpp\Platform\Win32\Process.inl">
       <Filter>Header Files\Inline</Filter>
     </None>
-    <None Include="..\..\include\libipcpp\Pipe.inl">
+    <None Include="..\..\include\libipcpp\platform\win32\Pipe.inl">
+      <Filter>Header Files\Inline</Filter>
+    </None>
+    <None Include="..\..\include\libipcpp\platform\win32\MemoryMap.inl">
       <Filter>Header Files\Inline</Filter>
     </None>
   </ItemGroup>

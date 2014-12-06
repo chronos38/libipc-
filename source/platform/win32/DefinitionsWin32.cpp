@@ -1,4 +1,4 @@
-#include "..\..\..\include\libipcpp\libipcpp.h"
+#include <libipcpp\Definitions.h>
 
 #ifdef _MSC_VER
 namespace ipc {

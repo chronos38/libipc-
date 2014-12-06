@@ -45,7 +45,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>LIBIPC_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LIBIPC_EXPORT;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -60,7 +60,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>LIBIPC_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LIBIPC_EXPORT;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -71,7 +71,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\libipcpp\Definitions.h" />
+    <ClInclude Include="..\..\include\libipcpp\exception\FileLockException.h" />
     <ClInclude Include="..\..\include\libipcpp\Exception\IpcException.h" />
+    <ClInclude Include="..\..\include\libipcpp\exception\MemoryMapException.h" />
     <ClInclude Include="..\..\include\libipcpp\Exception\MessageQueueException.h" />
     <ClInclude Include="..\..\include\libipcpp\Exception\NamedPipeException.h" />
     <ClInclude Include="..\..\include\libipcpp\Exception\PipeException.h" />
@@ -92,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\exception\IpcException.cpp" />
+    <ClCompile Include="..\..\source\exception\MemoryMapException.cpp" />
     <ClCompile Include="..\..\source\exception\MessageQueueException.cpp" />
     <ClCompile Include="..\..\source\exception\NamedPipeException.cpp" />
     <ClCompile Include="..\..\source\exception\PipeException.cpp" />
@@ -99,6 +102,7 @@
     <ClCompile Include="..\..\source\exception\SemaphoreException.cpp" />
     <ClCompile Include="..\..\source\exception\SharedMemoryException.cpp" />
     <ClCompile Include="..\..\source\platform\win32\DefinitionsWin32.cpp" />
+    <ClCompile Include="..\..\source\platform\win32\MemoryMapWin32.cpp" />
     <ClCompile Include="..\..\source\platform\win32\PipeWin32.cpp" />
     <ClCompile Include="..\..\source\platform\win32\ProcessWin32.cpp" />
     <ClCompile Include="..\..\source\platform\win32\SemaphoreWin32.cpp" />
@@ -106,7 +110,8 @@
     <ClCompile Include="..\..\source\Process.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\include\libipcpp\Pipe.inl" />
+    <None Include="..\..\include\libipcpp\platform\win32\MemoryMap.inl" />
+    <None Include="..\..\include\libipcpp\platform\win32\Pipe.inl" />
     <None Include="..\..\include\libipcpp\Platform\Win32\Process.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

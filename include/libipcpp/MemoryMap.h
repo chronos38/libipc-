@@ -52,44 +52,27 @@ namespace ipc {
          *
          * \param[in]   byteCount   The size in bytes for this memory map.
          */
-        MemoryMap(ByteCount byteCount); // INFO: ByteCount statt size_t?
+        MemoryMap(ByteCount byteCount);
         virtual ~MemoryMap();
-
-        /*!
-         * Gets read and write access for the byte on the given index. If the
-         * index is out of range than the particular exception is thrown.
-         *
-         * \param[in]   index   The 0 based index for access.
-         * \returns Byte on given index.
-         */
-        char& operator[](size_t index) throw(SharedMemoryException, std::out_of_range);
-
-        /*!
-         * Gets read only access for the byte on the given index. If the index
-         * is out of range than the particular exception is thrown.
-         *
-         * \param[in]   index   The 0 based index for access.
-         * \returns Byte on given index.
-         */
-        const char& operator[](size_t index) const throw(SharedMemoryException, std::out_of_range);
 
         /*!
          * Gets the length for this shared memory.
          * \returns Length in bytes for this shared memory.
          */
-        virtual size_t Length() const NOEXCEPT;
+        virtual ByteCount Length() const NOEXCEPT;
 
         /*!
-         * Gets the current position within this memory.
+         * Gets the current zero based position within this memory.
          * \returns Position in this map.
          */
-        virtual size_t Position() const NOEXCEPT;
+        virtual ByteCount Position() const NOEXCEPT;
 
         /*!
          * Sets the position within this memory. If the position is out of
-         * range, than the particular exception is raised.
+         * range, than the particular exception is raised. A value of zero sets
+         * the position on the beginning of this map.
          */
-        virtual void Position(size_t position) throw(std::out_of_range);
+        virtual void Position(ByteCount position) const throw(MemoryMapException);
 
         /*!
          * Writes a buffer to this shared memory. This method is not safe for
@@ -103,7 +86,7 @@ namespace ipc {
          * \param[in]   size    The actual size to write.
          * \returns Count of written bytes to the shared memory.
          */
-        virtual ByteCount Write(const char* out, size_t size) const throw(SharedMemoryException) override;
+        virtual ByteCount Write(const char* buffer, size_t size) const throw(MemoryMapException) override;
 
         /*!
          * This method allows range based writing. It expects sequential
@@ -118,10 +101,7 @@ namespace ipc {
          * \returns Count of written elements to the shared memory.
          */
         template <typename InputIt>
-        size_t Write(InputIt first, InputIt last) const throw(IpcException)
-        {
-            // TODO: implementieren
-        }
+        ByteCount Write(InputIt first, InputIt last) const throw(IpcException);
 
         /*!
          * Writes a single byte to the shared memory. If this method fails it does
@@ -142,7 +122,7 @@ namespace ipc {
          * \param[in]   size    The actual size to write.
          * \returns Count of read bytes from the shared memory.
          */
-        virtual ByteCount Read(char* out, size_t size) const throw(SharedMemoryException) override;
+        virtual ByteCount Read(char* buffer, size_t size) const throw(MemoryMapException) override;
 
         /*!
          * This method allows range based reading. It expects sequential
@@ -157,10 +137,7 @@ namespace ipc {
          * \returns Count of written elements to the shared memory.
          */
         template <typename OutputIt>
-        size_t Read(OutputIt first, OutputIt last) const throw(IpcException)
-        {
-            // TODO: implementieren
-        }
+        ByteCount Read(OutputIt first, OutputIt last) const throw(IpcException);
 
         /*!
          * This method reads a single byte from the shared memory. If any error
@@ -170,7 +147,13 @@ namespace ipc {
          * \returns Byte value or -1
          */
         virtual int ReadByte() const NOEXCEPT override;
+
+    private:
+
+        IpcHandle mHandle;
     };
 }
+
+#include "platform/win32/MemoryMap.inl"
 
 #endif

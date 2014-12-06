@@ -17,26 +17,16 @@
  *  the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  *  Boston, MA 02110-1301, USA.
  */
-#ifndef LIBIPC_MEMORYMAP_EXCEPTION
-#define LIBIPC_MEMORYMAP_EXCEPTION
+#include "../../include/libipcpp/exception/MemoryMapException.h"
 
-#ifdef _MSC_VER
-#pragma once
-#endif
+namespace ipc {
+    MemoryMapException::MemoryMapException(const std::string& msg) :
+        IpcException(msg)
+    {
+    }
 
-#include "IpcException.h"
-#include <string>
-#include <exception>
-
-namespace ipc{
-        
-        class LIBIPC_API MemoryMapException : IpcException
-        {
-        public:
-            MemoryMapException(const std::string&, const exception& ex);
-            MemoryMapException(const std::string&);
-            virtual ~MemoryMapException() = default;
-        };
+    MemoryMapException::MemoryMapException(const std::string& msg, const std::exception& ex) :
+        IpcException(msg, ex)
+    {
+    }
 }
-
-#endif //LIBIPC_MEMORYMAP_EXCEPTION

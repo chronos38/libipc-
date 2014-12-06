@@ -117,6 +117,6 @@ namespace ipc {
     };
 }
 
-#include "Pipe.inl"
+#include "platform/win32/Pipe.inl"
 
 #endif
