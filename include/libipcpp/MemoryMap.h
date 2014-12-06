@@ -150,7 +150,7 @@ namespace ipc {
 
     private:
 
-        IpcHandle mHandle;
+        IpcHandle mHandle = INVALID_HANDLE;
     };
 }
 

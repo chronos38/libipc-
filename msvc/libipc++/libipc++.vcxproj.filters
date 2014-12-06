@@ -137,6 +137,9 @@
     <ClCompile Include="..\..\source\exception\MemoryMapException.cpp">
       <Filter>Source Files\Exception</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\source\platform\win32\SharedMemory.cpp">
+      <Filter>Source Files\Win32</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\include\libipcpp\Platform\Win32\Process.inl">
@@ -146,6 +149,9 @@
       <Filter>Header Files\Inline</Filter>
     </None>
     <None Include="..\..\include\libipcpp\platform\win32\MemoryMap.inl">
+      <Filter>Header Files\Inline</Filter>
+    </None>
+    <None Include="..\..\include\libipcpp\platform\win32\SharedMemory.inl">
       <Filter>Header Files\Inline</Filter>
     </None>
   </ItemGroup>

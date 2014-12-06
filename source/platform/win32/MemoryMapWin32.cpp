@@ -36,7 +36,7 @@ namespace ipc {
         attr.nLength = sizeof(attr);
         attr.bInheritHandle = TRUE;
 
-        mHandle = CreateFileMappingA(INVALID_HANDLE_VALUE, &attr, PAGE_READWRITE | SEC_COMMIT, 0, byteCount, NULL);
+        mHandle = CreateFileMapping(INVALID_HANDLE_VALUE, &attr, PAGE_READWRITE | SEC_COMMIT, 0, byteCount, NULL);
 
         if (!mHandle) {
             throw MemoryMapException(GetLastErrorString());

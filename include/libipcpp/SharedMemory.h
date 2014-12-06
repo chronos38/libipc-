@@ -35,9 +35,11 @@ namespace ipc {
     {
     public:
         /*!
-         * 
+         * Creates a new shared memory with given size in bytes
+         *
+         * \param[in] byteCount Size in bytes for this shared memory.
          */
-        SharedMemory(); // INFO: Leerer Konstruktor richtig?
+        SharedMemory(ByteCount byteCount) throw(SharedMemoryException);
         virtual ~SharedMemory();
 
         /*!
@@ -47,7 +49,7 @@ namespace ipc {
          * \param[in]   index   The 0 based index for access.
          * \returns Byte on given index.
          */
-        uint8_t& operator[](size_t index) throw(SharedMemoryException, std::out_of_range);
+        char& operator[](size_t index) throw(SharedMemoryException, std::out_of_range);
 
         /*!
          * Gets read only access for the byte on the given index. If the index
@@ -56,25 +58,25 @@ namespace ipc {
          * \param[in]   index   The 0 based index for access.
          * \returns Byte on given index.
          */
-        const uint8_t& operator[](size_t index) const throw(SharedMemoryException, std::out_of_range);
+        const char& operator[](size_t index) const throw(SharedMemoryException, std::out_of_range);
 
         /*!
          * Gets the length for this shared memory.
          * \returns Length in bytes for this shared memory.
          */
-        virtual size_t Length() const NOEXCEPT;
+        virtual ByteCount Length() const NOEXCEPT;
 
         /*!
          * Gets the current position within this memory.
          * \returns Position in this map.
          */
-        virtual size_t Position() const NOEXCEPT;
+        virtual ByteCount Position() const NOEXCEPT;
 
         /*!
          * Sets the position within this memory. If the position is out of
          * range, than the particular exception is raised.
          */
-        virtual void Position(size_t position) throw(std::out_of_range);
+        virtual void Position(ByteCount position) throw(std::out_of_range);
 
         /*!
          * Writes a buffer to this shared memory. This method is not safe for
@@ -103,10 +105,7 @@ namespace ipc {
          * \returns Count of written elements to the shared memory.
          */
         template <typename InputIt>
-        size_t Write(InputIt first, InputIt last) const throw(IpcException)
-        {
-            // TODO: implementieren
-        }
+        ByteCount Write(InputIt first, InputIt last) const throw(SharedMemoryException);
 
         /*!
          * Writes a single byte to the shared memory. If this method fails it does
@@ -142,10 +141,7 @@ namespace ipc {
          * \returns Count of written elements to the shared memory.
          */
         template <typename OutputIt>
-        size_t Read(OutputIt first, OutputIt last) const throw(IpcException)
-        {
-            // TODO: implementieren
-        }
+        ByteCount Read(OutputIt first, OutputIt last) const throw(SharedMemoryException);
 
         /*!
          * This method reads a single byte from the shared memory. If any error
@@ -155,7 +151,16 @@ namespace ipc {
          * \returns Byte value or -1
          */
         virtual int ReadByte() const NOEXCEPT override;
+
+    private:
+#ifdef _MSC_VER
+        IpcHandle mHandle = INVALID_HANDLE;
+        mutable void* mBuffer = nullptr;
+        mutable ByteCount mPosition = 0;
+#endif
     };
 }
+
+#include "platform\win32\SharedMemory.inl"
 
 #endif
