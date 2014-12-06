@@ -137,7 +137,7 @@
     <ClCompile Include="..\..\source\exception\MemoryMapException.cpp">
       <Filter>Source Files\Exception</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\platform\win32\SharedMemory.cpp">
+    <ClCompile Include="..\..\source\platform\win32\SharedMemoryWin32.cpp">
       <Filter>Source Files\Win32</Filter>
     </ClCompile>
   </ItemGroup>

@@ -29,7 +29,6 @@
 #include "IOBase.h"
 
 namespace ipc {
-    // TODO: IO Interface implementieren.
     //! A memory map references a file memory in the RAM.
     class LIBIPC_API MemoryMap : public IOBase, public ReferenceType
     {
@@ -150,7 +149,12 @@ namespace ipc {
 
     private:
 
+#ifdef _MSC_VER
         IpcHandle mHandle = INVALID_HANDLE;
+        mutable void* mBuffer = nullptr;
+        mutable ByteCount mPosition = 0;
+        ByteCount mLength = 0;
+#endif
     };
 }
 

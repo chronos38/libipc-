@@ -2,7 +2,8 @@
 #include <libipcpp\Utility.h>
 
 namespace ipc {
-    SharedMemory::SharedMemory(ByteCount byteCount)
+    SharedMemory::SharedMemory(ByteCount byteCount) :
+        mLength(byteCount)
     {
         SECURITY_ATTRIBUTES attr;
 
@@ -33,7 +34,7 @@ namespace ipc {
 
     ByteCount SharedMemory::Length() const
     {
-        return GetFileSize(mHandle, NULL);
+        return mLength;
     }
 
     char& SharedMemory::operator[](size_t index)

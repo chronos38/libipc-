@@ -29,7 +29,6 @@
 #include "IOBase.h"
 
 namespace ipc {
-    // TODO: IO Interface implementieren.
     //! A shared memory for different threads and processes.
     class LIBIPC_API SharedMemory : public IOBase, public ReferenceType
     {
@@ -157,6 +156,7 @@ namespace ipc {
         IpcHandle mHandle = INVALID_HANDLE;
         mutable void* mBuffer = nullptr;
         mutable ByteCount mPosition = 0;
+        ByteCount mLength = 0;
 #endif
     };
 }

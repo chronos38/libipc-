@@ -20,15 +20,22 @@ namespace ipc {
             throw MemoryMapException(GetLastErrorString());
         }
 
+        mLength = GetFileSize(hFile, NULL);
         mHandle = CreateFileMappingA(hFile, &attr, PAGE_READWRITE, 0, 0, fileName.c_str());
-        CloseHandle(hFile);
 
         if (!mHandle) {
             throw MemoryMapException(GetLastErrorString());
         }
+
+        mBuffer = MapViewOfFile(mHandle, FILE_MAP_ALL_ACCESS, 0, 0, mLength);
+
+        if (mBuffer == NULL) {
+            throw MemoryMapException(GetLastErrorString());
+        }
     }
 
-    MemoryMap::MemoryMap(ByteCount byteCount)
+    MemoryMap::MemoryMap(ByteCount byteCount) :
+        mLength(byteCount)
     {
         SECURITY_ATTRIBUTES attr;
 
@@ -41,73 +48,69 @@ namespace ipc {
         if (!mHandle) {
             throw MemoryMapException(GetLastErrorString());
         }
+
+        mBuffer = MapViewOfFile(mHandle, FILE_MAP_ALL_ACCESS, 0, 0, byteCount);
+
+        if (mBuffer == NULL) {
+            throw MemoryMapException(GetLastErrorString());
+        }
     }
 
     MemoryMap::~MemoryMap()
     {
+        UnmapViewOfFile(mBuffer);
         CloseHandle(mHandle);
+        mBuffer = nullptr;
         mHandle = INVALID_HANDLE;
     }
 
     ByteCount MemoryMap::Length() const
     {
-        return GetFileSize(mHandle, NULL);
+        return mLength;
     }
 
     ByteCount MemoryMap::Position() const
     {
-        return GetFilePointer(mHandle);
+        return mPosition;
     }
 
     void MemoryMap::Position(ByteCount position) const
     {
-        if (SetFilePointer(mHandle, position, NULL, FILE_BEGIN) == INVALID_SET_FILE_POINTER) {
-            throw MemoryMapException(GetLastErrorString());
+        if (position >= Length()) {
+            throw std::out_of_range("position");
+        } else {
+            mPosition = position;
         }
     }
 
     ByteCount MemoryMap::Write(const char* buffer, size_t size) const
     {
-        ByteCount count = 0;
-
-        if (!WriteFile(mHandle, buffer, size, &count, NULL)) {
-            throw MemoryMapException(GetLastErrorString());
-        }
-
+        ByteCount count = size > Length() - mPosition ? Length() - mPosition : size;
+        if (count == 0) return 0;
+        CopyMemory((char*)mBuffer + mPosition, buffer, count);
+        mPosition += count;
         return count;
     }
 
     ByteCount MemoryMap::WriteByte(char byte) const
     {
-        ByteCount count = 0;
-
-        if (!WriteFile(mHandle, &byte, 1, &count, NULL)) {
-            return 0;
-        }
-
-        return count;
+        if (mPosition == Length()) return 0;
+        *((char*)mBuffer + mPosition++) = byte;
+        return 1;
     }
 
     ByteCount MemoryMap::Read(char* buffer, size_t size) const
     {
-        ByteCount count = 0;
-
-        if (!ReadFile(mHandle, buffer, size, &count, NULL)) {
-            throw MemoryMapException(GetLastErrorString());
-        }
-
+        ByteCount count = size > Length() - mPosition ? Length() - mPosition : size;
+        if (count == 0) return 0;
+        CopyMemory(buffer, (char*)mBuffer + mPosition, count);
+        mPosition += count;
         return count;
     }
 
     int MemoryMap::ReadByte() const
     {
-        ByteCount count = 0;
-        unsigned char result = 0;
-
-        if (!ReadFile(mHandle, &result, 1, &count, NULL) || count != 1) {
-            return -1;
-        }
-
-        return result;
+        if (mPosition == Length()) return -1;
+        return *((unsigned char*)mBuffer + mPosition++);
     }
 }

@@ -106,7 +106,7 @@
     <ClCompile Include="..\..\source\platform\win32\PipeWin32.cpp" />
     <ClCompile Include="..\..\source\platform\win32\ProcessWin32.cpp" />
     <ClCompile Include="..\..\source\platform\win32\SemaphoreWin32.cpp" />
-    <ClCompile Include="..\..\source\platform\win32\SharedMemory.cpp" />
+    <ClCompile Include="..\..\source\platform\win32\SharedMemoryWin32.cpp" />
     <ClCompile Include="..\..\source\platform\win32\UtilityWin32.cpp" />
     <ClCompile Include="..\..\source\Process.cpp" />
   </ItemGroup>

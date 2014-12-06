@@ -30,7 +30,7 @@
 
 namespace ipc{
         
-        class LIBIPC_API MemoryMapException : IpcException
+        class LIBIPC_API MemoryMapException : public IpcException
         {
         public:
             MemoryMapException(const std::string&, const exception& ex);
