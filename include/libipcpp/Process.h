@@ -242,7 +242,7 @@ namespace ipc {
 #else
         void ValidateProcessHandle();
         
-        int32_t mStatus;
+        int32_t mStatus = 0;
 #endif
     };
 }

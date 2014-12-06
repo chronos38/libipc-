@@ -96,7 +96,10 @@ namespace ipc {
 
     int32_t Process::ExitCode() const throw(ProcessException)
     {
-        return WEXITSTATUS(mStatus);
+        if(WIFEXITED(mStatus))
+            return WEXITSTATUS(mStatus);
+        
+        throw ProcessException("Process is still running.");
     }
 
     void Process::Kill() throw(ProcessException)

@@ -90,3 +90,11 @@ TEST_F(ProcessTest, CtorFromProcessInfo_CreatesValidProcess)
     
 }
 
+TEST_F(ProcessTest, ExitCode_ReturnsExpected_Value)
+{
+    
+    ipc::Process process("./data/testprocess_returns_2", "");
+    process.Wait();
+    auto rv = process.ExitCode();
+    ASSERT_EQ(2, rv);
+}
