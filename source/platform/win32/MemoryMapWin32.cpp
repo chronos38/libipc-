@@ -22,6 +22,7 @@ namespace ipc {
 
         mLength = GetFileSize(hFile, NULL);
         mHandle = CreateFileMappingA(hFile, &attr, PAGE_READWRITE, 0, 0, fileName.c_str());
+        CloseHandle(hFile);
 
         if (!mHandle) {
             throw MemoryMapException(GetLastErrorString());
