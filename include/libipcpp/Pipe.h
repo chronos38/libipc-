@@ -117,6 +117,11 @@ namespace ipc {
     };
 }
 
+#ifdef _MSC_VER
 #include "platform/win32/Pipe.inl"
+#else
+#include "platform/linux/Pipe.inl"
+#endif
+
 
 #endif
