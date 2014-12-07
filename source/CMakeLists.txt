@@ -44,6 +44,7 @@ optional_source(LINUX
     SOURCES
         platform/linux/Process.cpp
         platform/linux/Pipe.cpp
+        platform/linux/Semaphore.cpp
     HEADERS
 )
 

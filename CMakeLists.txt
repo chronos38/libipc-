@@ -62,6 +62,7 @@ if(NOT WIN32)
     set(TEST_LINUX_SRC_FILES
         ${PROJECT_SOURCE_DIR}/test/linux/ProcessTest.cpp
         ${PROJECT_SOURCE_DIR}/test/linux/PipeTest.cpp
+        ${PROJECT_SOURCE_DIR}/test/linux/SemaphoreTest.cpp
     )
     
     add_executable(${PROJECT_TEST_NAME} ${TEST_COMMON_SRC_FILES} ${TEST_LINUX_SRC_FILES})

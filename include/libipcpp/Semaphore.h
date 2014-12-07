@@ -25,7 +25,7 @@
 #pragma once
 #endif
 
-#include "Exception/SemaphoreException.h"
+#include "exception/SemaphoreException.h"
 
 namespace ipc {
     /*!
