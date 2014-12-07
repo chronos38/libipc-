@@ -1,6 +1,6 @@
-/*  This file is part of libipc++
- * 
- *  Copyright (C) 2014 leonhardt schwarz <if12b076@technikum-wien.at>
+/*  This file is part of lipipc++
+ *
+ *  Copyright (C) 2014 David Wolf, Leonhardt Schwarz
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -17,22 +17,16 @@
  *  the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  *  Boston, MA 02110-1301, USA.
  */
-#ifndef FILELOCK_EXCEPTION
-#define FILELOCK_EXCEPTION
+#include "../../include/libipcpp/exception/FileLockException.h"
 
-
-#include "IpcException.h"
-#include <string>
-
-namespace ipc 
-{
-    class LIBIPC_API FileLockException : public IpcException
+namespace ipc {
+    FileLockException::FileLockException(const std::string& msg) :
+        IpcException(msg)
     {
-    public:
-        FileLockException( const std::string& ); 
-        FileLockException( const std::string& , const exception& ex );
-        virtual ~FileLockException() = default;
-    };
-}
+    }
 
-#endif //FileLockException
+    FileLockException::FileLockException(const std::string& msg, const std::exception& ex) :
+        IpcException(msg, ex)
+    {
+    }
+}

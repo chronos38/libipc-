@@ -83,6 +83,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\test\win32\FileLockTest.cpp" />
     <ClCompile Include="..\..\test\win32\Main.cpp" />
     <ClCompile Include="..\..\test\win32\MemoryMapTest.cpp" />
     <ClCompile Include="..\..\test\win32\PipeTest.cpp" />

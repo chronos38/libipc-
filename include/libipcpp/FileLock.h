@@ -26,10 +26,11 @@
 #endif
 
 #include "Definitions.h"
+#include "exception/FileLockException.h"
 
 namespace ipc {
     //! Locks a specified file for a critical section or memory editing
-    class FileLock : public ReferenceType
+    class LIBIPC_API FileLock : public ReferenceType
     {
     public:
         /*!
@@ -40,7 +41,7 @@ namespace ipc {
          * If two or more attempted locks are queued. Than the order for the
          * next lock is not specified.
          */
-        FileLock(const std::string& path);
+        FileLock(const std::string& path) throw(FileLockException);
 
         /*!
          * Frees all allocated resources and unlocks the file if not already
@@ -55,7 +56,7 @@ namespace ipc {
          * If this method gets called multiple times by the same process, than 
          * the behavior is undefined.
          */
-        void Lock() NOEXCEPT;
+        void Lock() throw(FileLockException);
 
         /*!
          * Unlocks the file manually. The destructor will not attempt to unlock
@@ -68,11 +69,15 @@ namespace ipc {
          * If this method gets called by a non owning process, than the
          * behavior is undefined.
          */
-        void Unlock() NOEXCEPT;
+        void Unlock() throw(FileLockException);
 
     private:
         //! No default constructor.
         FileLock() = delete;
+
+#ifdef _MSC_VER
+        IpcHandle mHandle;
+#endif
     };
 }
 

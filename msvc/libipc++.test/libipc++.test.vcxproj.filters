@@ -38,5 +38,8 @@
     <ClCompile Include="..\..\test\win32\SharedMemoryTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\test\win32\FileLockTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
