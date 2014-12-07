@@ -105,6 +105,7 @@
     <ClCompile Include="..\..\source\platform\win32\DefinitionsWin32.cpp" />
     <ClCompile Include="..\..\source\platform\win32\FileLockWin32.cpp" />
     <ClCompile Include="..\..\source\platform\win32\MemoryMapWin32.cpp" />
+    <ClCompile Include="..\..\source\platform\win32\MessageQueueWin32.cpp" />
     <ClCompile Include="..\..\source\platform\win32\PipeWin32.cpp" />
     <ClCompile Include="..\..\source\platform\win32\ProcessWin32.cpp" />
     <ClCompile Include="..\..\source\platform\win32\SemaphoreWin32.cpp" />

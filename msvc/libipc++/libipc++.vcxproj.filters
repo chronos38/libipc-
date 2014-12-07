@@ -146,6 +146,9 @@
     <ClCompile Include="..\..\source\exception\FileLockException.cpp">
       <Filter>Source Files\Exception</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\source\platform\win32\MessageQueueWin32.cpp">
+      <Filter>Source Files\Win32</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\include\libipcpp\Platform\Win32\Process.inl">
