@@ -88,6 +88,7 @@
     <ClCompile Include="..\..\test\win32\PipeTest.cpp" />
     <ClCompile Include="..\..\test\win32\ProcessTest.cpp" />
     <ClCompile Include="..\..\test\win32\SemaphoreTest.cpp" />
+    <ClCompile Include="..\..\test\win32\SharedMemoryTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\test\win32\Globals.h" />

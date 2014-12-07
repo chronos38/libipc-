@@ -35,5 +35,8 @@
     <ClCompile Include="..\..\test\win32\MemoryMapTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\test\win32\SharedMemoryTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
