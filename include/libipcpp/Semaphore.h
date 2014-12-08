@@ -27,7 +27,12 @@
 
 #include "exception/SemaphoreException.h"
 
+#ifndef _MSC_VER_
+#include <semaphore.h>
+#endif
+
 namespace ipc {
+    
     /*!
      * A semaphore provides an interface for critical section locking. The
      * class encapsulates a system resource also named semaphore.
@@ -74,7 +79,12 @@ namespace ipc {
 
     private:
 
-        IpcHandle mHandle = INVALID_HANDLE;
+        IpcHandle mHandle;
+#ifndef _MSC_VER_
+        sem_t * mSem;
+#endif
+        
+        
     };
 }
 

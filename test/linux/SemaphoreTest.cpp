@@ -20,7 +20,7 @@ protected:
     }
 };
 
-TEST_F(SemaphoreTest, Semaphore_IsLockableAndUnLockable)
+TEST_F(SemaphoreTest, Semaphore_IsLockableAndUnLockableFromParent)
 {
     try {
         ipc::Semaphore sp; 
@@ -33,6 +33,30 @@ TEST_F(SemaphoreTest, Semaphore_IsLockableAndUnLockable)
         } else {
             wait(nullptr);
             sp.Unlock();
+        }
+        
+    } catch (ipc::SemaphoreException ex) {
+        ASSERT_TRUE(false) << ex.what();
+    }
+    
+}
+
+TEST_F(SemaphoreTest, Semaphore_IsLockableAndUnLockableFromChild)
+{
+    try {
+        ipc::Semaphore sp; 
+        
+        if(!fork()) {
+            sp.Lock();
+            sleep(1);
+            sp.Unlock();
+            exit(0);
+            
+        } else {
+            sleep(1);
+            ASSERT_FALSE(sp.TryLock());
+            wait(nullptr);
+            ASSERT_TRUE(sp.TryLock());
         }
         
     } catch (ipc::SemaphoreException ex) {
