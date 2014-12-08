@@ -45,6 +45,7 @@ optional_source(LINUX
         platform/linux/Process.cpp
         platform/linux/Pipe.cpp
         platform/linux/Semaphore.cpp
+        platform/linux/SharedMemory.cpp
     HEADERS
 )
 

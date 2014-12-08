@@ -9,7 +9,7 @@ namespace ipc
     Semaphore::Semaphore()
     {
         
-        mHandle = ftok("/proc/self/exe", 7);
+        mHandle = ftok("/dev/null", 7);
         std::string semaphoreName("Semaphore_");
         semaphoreName.append(std::to_string(mHandle));
         

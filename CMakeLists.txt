@@ -25,7 +25,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
         -Wno-variadic-macros -Wuninitialized -Wcast-align -Wredundant-decls \
         -Wno-unknown-pragmas -fdata-sections -ffunction-sections -pedantic \
         -Wextra -Wold-style-cast -Wstrict-overflow -Woverloaded-virtual \
-        -Wsign-promo -Wabi -Wmissing-declarations -Wall -std=c++1y")
+        -Wsign-promo -Wabi -Wmissing-declarations -Wall -std=c++1y -fpermissive")
 
 else()
     message(STATUS "Setting MSVC flags")
@@ -63,6 +63,7 @@ if(NOT WIN32)
         ${PROJECT_SOURCE_DIR}/test/linux/ProcessTest.cpp
         ${PROJECT_SOURCE_DIR}/test/linux/PipeTest.cpp
         ${PROJECT_SOURCE_DIR}/test/linux/SemaphoreTest.cpp
+        ${PROJECT_SOURCE_DIR}/test/linux/SharedMemoryTest.cpp
     )
     
     add_executable(${PROJECT_TEST_NAME} ${TEST_COMMON_SRC_FILES} ${TEST_LINUX_SRC_FILES})

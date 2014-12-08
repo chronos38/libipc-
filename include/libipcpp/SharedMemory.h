@@ -25,8 +25,13 @@
 #pragma once
 #endif
 
-#include "Exception/SharedMemoryException.h"
+#include "exception/SharedMemoryException.h"
 #include "IOBase.h"
+
+#ifndef _MSC_VER
+#include <cstring>
+#endif
+
 
 namespace ipc {
     //! A shared memory for different threads and processes.
@@ -152,15 +157,18 @@ namespace ipc {
         virtual int ReadByte() const NOEXCEPT override;
 
     private:
-#ifdef _MSC_VER
+        
         IpcHandle mHandle = INVALID_HANDLE;
-        mutable void* mBuffer = nullptr;
         mutable ByteCount mPosition = 0;
+        mutable void* mBuffer = nullptr;
         ByteCount mLength = 0;
-#endif
     };
 }
 
+#ifdef _MSC_VER
 #include "platform\win32\SharedMemory.inl"
+#else
+#include "platform/linux/SharedMemory.inl"
+#endif
 
 #endif
