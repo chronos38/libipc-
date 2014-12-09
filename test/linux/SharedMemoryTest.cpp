@@ -260,6 +260,45 @@ TEST_F(SharedMemoryTest, ReadWriteSpecificRangeULong)
     }
 }
 
+TEST_F(SharedMemoryTest,MemoryIsAccessibleFromParentProcess)
+{
+    try {
+        SharedMemory p(1024);
+        
+        vector<char> write = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        vector<char> read(write.size(), 0);
+        
+        
+        pid_t pid = fork();
+        if(pid < 0)
+            ASSERT_TRUE(false) << strerror(errno);
+        
+        
+        if(pid == 0) {
+            //CHILD
+            
+            p.Write(std::begin(write), std::end(write));
+            sleep(1);
+            waitpid(-1, nullptr, 0);
+            
+            
+        } else {
+            //PARENT
+            sleep(2);
+            p.Read(std::begin(read), std::end(read));
+            for (int i = 0; i < read.size(); i++) {
+                ASSERT_EQ(i, read[i]);
+            }
+            exit(0);
+            
+            
+        }
+        
+    } catch(SharedMemoryException ex) {
+        ASSERT_FALSE(true) << "SharedMemoryTest: ERROR: " << ex.what();
+    }
+}
+
 TEST_F(SharedMemoryTest, MemoryIsAccessibleFromChildProcess)
 {
     try {
@@ -275,45 +314,7 @@ TEST_F(SharedMemoryTest, MemoryIsAccessibleFromChildProcess)
         
         
         if(pid == 0) {
-            //PARENT
-            
-            p.Write(std::begin(write), std::end(write));
-            sleep(1);
-            waitpid(-1, nullptr, 0);
-            
-            
-        } else {
             //CHILD
-            sleep(2);
-            p.Read(std::begin(read), std::end(read));
-            for (int i = 0; i < read.size(); i++) {
-                ASSERT_EQ(i, read[i]);
-            }
-            
-            
-        }
-        
-    } catch(SharedMemoryException ex) {
-        ASSERT_FALSE(true) << "SharedMemoryTest: ERROR: " << ex.what();
-    }
-}
-
-TEST_F(SharedMemoryTest, MemoryIsAccessibleFromParentProcess)
-{
-    try {
-        SharedMemory p(1024);
-        
-        vector<char> write = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-        vector<char> read(write.size(), 0);
-        
-        
-        pid_t pid = fork();
-        if(pid < 0)
-            ASSERT_TRUE(false) << strerror(errno);
-        
-        
-        if(pid == 0) {
-            //PARENT
             waitpid(-1, nullptr, 0);
             p.Read(std::begin(read), std::end(read));
             for (int i = 0; i < read.size(); i++) {
@@ -321,8 +322,9 @@ TEST_F(SharedMemoryTest, MemoryIsAccessibleFromParentProcess)
             }
             
         } else {
-            //CHILD
+            //PARENT
             p.Write(std::begin(write), std::end(write));
+            exit(0);
             
         }
     } catch(SharedMemoryException ex) {

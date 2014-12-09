@@ -64,6 +64,7 @@ if(NOT WIN32)
         ${PROJECT_SOURCE_DIR}/test/linux/PipeTest.cpp
         ${PROJECT_SOURCE_DIR}/test/linux/SemaphoreTest.cpp
         ${PROJECT_SOURCE_DIR}/test/linux/SharedMemoryTest.cpp
+        ${PROJECT_SOURCE_DIR}/test/linux/MemoryMapTest.cpp
     )
     
     add_executable(${PROJECT_TEST_NAME} ${TEST_COMMON_SRC_FILES} ${TEST_LINUX_SRC_FILES})

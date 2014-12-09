@@ -25,7 +25,7 @@
 #pragma once
 #endif
 
-#include "Exception/MemoryMapException.h"
+#include "exception/MemoryMapException.h"
 #include "IOBase.h"
 
 namespace ipc {
@@ -71,7 +71,7 @@ namespace ipc {
          * range, than the particular exception is raised. A value of zero sets
          * the position on the beginning of this map.
          */
-        virtual void Position(ByteCount position) const throw(MemoryMapException);
+        virtual void Position(ByteCount position) const throw(std::out_of_range);
 
         /*!
          * Writes a buffer to this shared memory. This method is not safe for
@@ -149,15 +149,14 @@ namespace ipc {
 
     private:
 
-#ifdef _MSC_VER
         IpcHandle mHandle = INVALID_HANDLE;
         mutable void* mBuffer = nullptr;
         mutable ByteCount mPosition = 0;
         ByteCount mLength = 0;
-#endif
     };
 }
 
 #include "platform/win32/MemoryMap.inl"
+#include "platform/linux/MemoryMap.inl"
 
 #endif

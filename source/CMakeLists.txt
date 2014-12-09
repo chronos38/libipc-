@@ -5,6 +5,7 @@ set(SOURCES
     Semaphore.cpp
     SharedMemory.cpp
     Utility.cpp
+    MemoryMap.cpp
 #    
     ./exception/IpcException.cpp
     ./exception/MessageQueueException.cpp
@@ -13,6 +14,7 @@ set(SOURCES
     ./exception/ProcessException.cpp
     ./exception/SemaphoreException.cpp
     ./exception/SharedMemoryException.cpp
+    ./exception/MemoryMapException.cpp
 )
 
 set(HEADERS
@@ -46,6 +48,7 @@ optional_source(LINUX
         platform/linux/Pipe.cpp
         platform/linux/Semaphore.cpp
         platform/linux/SharedMemory.cpp
+        platform/linux/MemoryMap.cpp
     HEADERS
 )
 
