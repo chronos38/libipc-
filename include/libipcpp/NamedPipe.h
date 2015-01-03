@@ -117,12 +117,18 @@ namespace ipc {
 
     private:
         NamedPipeIo mConfig;
+        bool mIsOpen;
 
 #ifdef _MSC_VER
-        IpcHandle mHandle = INVALID_HANDLE;
 #endif
+        IpcHandle mHandle = INVALID_HANDLE;
     };
 }
 
+#ifdef _MSC_VER
+#include "platform/win32/NamedPipe.inl"
+#else
+#include "platform/linux/NamedPipe.inl"
+#endif
 
 #endif

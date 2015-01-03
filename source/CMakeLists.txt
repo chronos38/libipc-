@@ -31,6 +31,7 @@ set(HEADERS
     ../include/libipcpp/Semaphore.h
     ../include/libipcpp/SharedMemory.h
     ../include/libipcpp/Utility.h
+    ../include/libipcpp/NamedPipe.h
 #    
     ../include/libipcpp/exception/FileLockException.h
     ../include/libipcpp/exception/IpcException.h
@@ -51,6 +52,8 @@ optional_source(LINUX
         platform/linux/SharedMemory.cpp
         platform/linux/MemoryMap.cpp
         platform/linux/FileLock.cpp
+        platform/linux/NamedPipe.cpp
+        
     HEADERS
 )
 
