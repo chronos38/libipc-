@@ -15,6 +15,7 @@ set(SOURCES
     ./exception/SemaphoreException.cpp
     ./exception/SharedMemoryException.cpp
     ./exception/MemoryMapException.cpp
+    ./exception/FileLockException.cpp
 )
 
 set(HEADERS
@@ -49,6 +50,7 @@ optional_source(LINUX
         platform/linux/Semaphore.cpp
         platform/linux/SharedMemory.cpp
         platform/linux/MemoryMap.cpp
+        platform/linux/FileLock.cpp
     HEADERS
 )
 

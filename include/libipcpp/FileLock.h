@@ -23,6 +23,8 @@
 
 #ifdef _MSC_VER
 #pragma once
+#else
+#include <fcntl.h>
 #endif
 
 #include "Definitions.h"
@@ -41,7 +43,7 @@ namespace ipc {
          * If two or more attempted locks are queued. Than the order for the
          * next lock is not specified.
          */
-        FileLock(const std::string& path) throw(FileLockException);
+        FileLock(const IpcHandle fileHandle) throw(FileLockException);
 
         /*!
          * Frees all allocated resources and unlocks the file if not already
@@ -75,9 +77,12 @@ namespace ipc {
         //! No default constructor.
         FileLock() = delete;
 
-#ifdef _MSC_VER
         IpcHandle mHandle;
+#ifdef _MSC_VER
+#else
+        struct flock mFlock;
 #endif
+        
     };
 }
 

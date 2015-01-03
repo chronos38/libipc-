@@ -4,7 +4,7 @@
 using string = std::string;
 
 namespace ipc {
-    FileLock::FileLock(const string& path)
+    FileLock::FileLock(const IpcHandle fileHandle)
     {
         SECURITY_ATTRIBUTES attr;
 
@@ -12,7 +12,7 @@ namespace ipc {
         attr.nLength = sizeof(attr);
         attr.bInheritHandle = TRUE;
 
-        mHandle = CreateFileA(path.c_str(), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, &attr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+        mHandle = fileHandle;
 
         if (mHandle == INVALID_HANDLE_VALUE) {
             throw FileLockException(GetLastErrorString());
@@ -21,8 +21,6 @@ namespace ipc {
 
     FileLock::~FileLock()
     {
-        CloseHandle(mHandle);
-        mHandle = INVALID_HANDLE;
     }
 
     void FileLock::Lock()
