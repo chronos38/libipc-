@@ -156,7 +156,10 @@ namespace ipc {
     };
 }
 
+#ifdef _MSC_VER
 #include "platform/win32/MemoryMap.inl"
+#else
 #include "platform/linux/MemoryMap.inl"
+#endif
 
 #endif
