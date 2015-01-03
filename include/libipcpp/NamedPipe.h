@@ -28,17 +28,24 @@
 #include "Definitions.h"
 #include "IOBase.h"
 #include "Utility.h"
-#include "exception/PipeException.h"
+#include "exception/NamedPipeException.h"
 #include <iterator>
 #include <algorithm>
 #include <cstring>
 
 
 namespace ipc {
+    enum class NamedPipeIo {
+        Read,
+        Write
+    };
 
-    class LIBIPC_API Pipe : public IOBase, public ReferenceType
+    class LIBIPC_API NamedPipe : public IOBase, public ReferenceType
     {
     public:
+        NamedPipe(const std::string& name, NamedPipeIo flag) throw(NamedPipeException);
+        virtual ~NamedPipe();
+
         /*!
          *  Writes a block of data to the pipe.
          *
@@ -103,25 +110,19 @@ namespace ipc {
          */
         bool IsOpen() const;
 
-        /* Do not use these constructors. Their purpose is for internal usage. */
-        Pipe();
-        Pipe(Pipe&&);
-        virtual ~Pipe();
+        /*!
+         * \returns IO configuration from this pipe.
+         */
+        NamedPipeIo GetConfiguration() const;
 
     private:
-        IpcHandle mHandles[2];
-        friend class Process;
-#ifndef _MSC_VER
-        bool mOpen;
+        NamedPipeIo mConfig;
+
+#ifdef _MSC_VER
+        IpcHandle mHandle = INVALID_HANDLE;
 #endif
     };
 }
-
-#ifdef _MSC_VER
-#include "platform/win32/Pipe.inl"
-#else
-#include "platform/linux/Pipe.inl"
-#endif
 
 
 #endif

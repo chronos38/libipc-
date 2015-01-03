@@ -33,12 +33,12 @@ namespace ipc {
 
     Message& MessageQueue::ReceiveMessage(Message& message)
     {
-
+        return message;
     }
 
     Message& MessageQueue::ReceiveMessage(Message& message, PriorityId id)
     {
-
+        return message;
     }
 
     HRESULT CreateQueue(LPWSTR wszPathName, PSECURITY_DESCRIPTOR pSecurityDescriptor, LPWSTR wszOutFormatName, DWORD *pdwOutFormatNameLength)

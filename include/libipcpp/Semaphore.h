@@ -27,7 +27,7 @@
 
 #include "exception/SemaphoreException.h"
 
-#ifndef _MSC_VER_
+#ifndef _MSC_VER
 #include <semaphore.h>
 #endif
 
@@ -80,7 +80,7 @@ namespace ipc {
     private:
 
         IpcHandle mHandle;
-#ifndef _MSC_VER_
+#ifndef _MSC_VER
         sem_t * mSem;
 #endif
         
