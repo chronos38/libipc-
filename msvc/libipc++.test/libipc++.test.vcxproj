@@ -86,6 +86,7 @@
     <ClCompile Include="..\..\test\win32\FileLockTest.cpp" />
     <ClCompile Include="..\..\test\win32\Main.cpp" />
     <ClCompile Include="..\..\test\win32\MemoryMapTest.cpp" />
+    <ClCompile Include="..\..\test\win32\NamedPipeTest.cpp" />
     <ClCompile Include="..\..\test\win32\PipeTest.cpp" />
     <ClCompile Include="..\..\test\win32\ProcessTest.cpp" />
     <ClCompile Include="..\..\test\win32\SemaphoreTest.cpp" />
