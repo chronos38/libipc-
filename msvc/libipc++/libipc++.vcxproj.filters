@@ -166,5 +166,8 @@
     <None Include="..\..\include\libipcpp\platform\win32\SharedMemory.inl">
       <Filter>Header Files\Inline</Filter>
     </None>
+    <None Include="..\..\include\libipcpp\platform\win32\NamedPipe.inl">
+      <Filter>Header Files\Inline</Filter>
+    </None>
   </ItemGroup>
 </Project>

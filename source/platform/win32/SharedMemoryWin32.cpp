@@ -17,7 +17,7 @@ namespace ipc {
             throw SharedMemoryException(GetLastErrorString());
         }
 
-        mBuffer = MapViewOfFile(mHandle, FILE_MAP_ALL_ACCESS, 0, 0, byteCount);
+        mBuffer = MapViewOfFile(mHandle, FILE_MAP_ALL_ACCESS, 0, 0, 0);
 
         if (mBuffer == NULL) {
             throw SharedMemoryException(GetLastErrorString());

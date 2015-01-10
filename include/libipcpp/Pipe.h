@@ -39,6 +39,10 @@ namespace ipc {
     class LIBIPC_API Pipe : public IOBase, public ReferenceType
     {
     public:
+        Pipe();
+        Pipe(Pipe&&);
+        virtual ~Pipe();
+
         /*!
          *  Writes a block of data to the pipe.
          *
@@ -102,11 +106,6 @@ namespace ipc {
          * \returns Returns true if the Pipe is Open 
          */
         bool IsOpen() const;
-
-        /* Do not use these constructors. Their purpose is for internal usage. */
-        Pipe();
-        Pipe(Pipe&&);
-        virtual ~Pipe();
 
     private:
         IpcHandle mHandles[2];

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libipc++", "libipc++\libipc++.vcxproj", "{AB304838-172F-4528-9466-44E3CC32E09F}"
 EndProject
@@ -14,6 +14,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ProcessTest", "ProcessTest\
 	ProjectSection(ProjectDependencies) = postProject
 		{AB304838-172F-4528-9466-44E3CC32E09F} = {AB304838-172F-4528-9466-44E3CC32E09F}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "benchmark", "benchmark\benchmark.vcxproj", "{E62B99A5-3911-4551-997A-5EC9F2EB2823}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{FD31098B-9C52-44B8-A3B8-B3CBA315C594}.Debug|Win32.Build.0 = Debug|Win32
 		{FD31098B-9C52-44B8-A3B8-B3CBA315C594}.Release|Win32.ActiveCfg = Release|Win32
 		{FD31098B-9C52-44B8-A3B8-B3CBA315C594}.Release|Win32.Build.0 = Release|Win32
+		{E62B99A5-3911-4551-997A-5EC9F2EB2823}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E62B99A5-3911-4551-997A-5EC9F2EB2823}.Debug|Win32.Build.0 = Debug|Win32
+		{E62B99A5-3911-4551-997A-5EC9F2EB2823}.Release|Win32.ActiveCfg = Release|Win32
+		{E62B99A5-3911-4551-997A-5EC9F2EB2823}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
