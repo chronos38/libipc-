@@ -123,6 +123,30 @@ int main()
     result << "MemoryMap_4096_90000_readwrite: " << CallIpcType(memoryMap, 4096, 90000, ReadWrite).count() << "s\n";
     result << "MemoryMap_4096_100000_readwrite: " << CallIpcType(memoryMap, 4096, 100000, ReadWrite).count() << "s\n\n";
 
+    ///////////////////////////////////////////////////////////////////////////
+    /// FileLock
+    ///////////////////////////////////////////////////////////////////////////
+    result << "IpcFileLock_10000: " << CallIpcFileLock(10000).count() << "s\n";
+    result << "IpcFileLock_20000: " << CallIpcFileLock(20000).count() << "s\n";
+    result << "IpcFileLock_30000: " << CallIpcFileLock(30000).count() << "s\n";
+    result << "IpcFileLock_40000: " << CallIpcFileLock(40000).count() << "s\n";
+    result << "IpcFileLock_50000: " << CallIpcFileLock(50000).count() << "s\n";
+    result << "IpcFileLock_60000: " << CallIpcFileLock(60000).count() << "s\n";
+    result << "IpcFileLock_70000: " << CallIpcFileLock(70000).count() << "s\n";
+    result << "IpcFileLock_80000: " << CallIpcFileLock(80000).count() << "s\n";
+    result << "IpcFileLock_90000: " << CallIpcFileLock(90000).count() << "s\n";
+    result << "IpcFileLock_100000: " << CallIpcFileLock(100000).count() << "s\n\n";
+    result << "NativeFileLock_10000: " << CallNativeFileLock(10000).count() << "s\n";
+    result << "NativeFileLock_20000: " << CallNativeFileLock(20000).count() << "s\n";
+    result << "NativeFileLock_30000: " << CallNativeFileLock(30000).count() << "s\n";
+    result << "NativeFileLock_40000: " << CallNativeFileLock(40000).count() << "s\n";
+    result << "NativeFileLock_50000: " << CallNativeFileLock(50000).count() << "s\n";
+    result << "NativeFileLock_60000: " << CallNativeFileLock(60000).count() << "s\n";
+    result << "NativeFileLock_70000: " << CallNativeFileLock(70000).count() << "s\n";
+    result << "NativeFileLock_80000: " << CallNativeFileLock(80000).count() << "s\n";
+    result << "NativeFileLock_90000: " << CallNativeFileLock(90000).count() << "s\n";
+    result << "NativeFileLock_100000: " << CallNativeFileLock(100000).count() << "s\n\n";
+
     auto file = fopen("./Benchmark.txt", "w");
     auto str = result.str();
     fwrite(str.c_str(), 1, str.length(), file);
