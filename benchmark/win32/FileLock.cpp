@@ -1,7 +1,7 @@
 #include "../Header.h"
 #include "../../include/libipcpp/FileLock.h"
 
-std::chrono::duration<double> CallIpcFileLock(unsigned iterations)
+std::chrono::duration<double, std::ratio<1, 1000>> CallIpcFileLock(unsigned iterations)
 {
     auto file = CreateFileA(".\\BenchmarkFileLock.txt", GENERIC_READ | GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
     auto lock = ipc::FileLock(file);
@@ -16,10 +16,10 @@ std::chrono::duration<double> CallIpcFileLock(unsigned iterations)
 
     CloseHandle(file);
     std::remove(".\\BenchmarkFileLock.txt");
-    return std::chrono::duration_cast<std::chrono::duration<double>>(end - start);
+    return std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1, 1000>>>(end - start);
 }
 
-std::chrono::duration<double> CallNativeFileLock(unsigned iterations)
+std::chrono::duration<double, std::ratio<1, 1000>> CallNativeFileLock(unsigned iterations)
 {
     auto file = CreateFileA(".\\BenchmarkFileLock.txt", GENERIC_READ | GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
     std::chrono::time_point<std::chrono::high_resolution_clock> start, end;
@@ -34,5 +34,5 @@ std::chrono::duration<double> CallNativeFileLock(unsigned iterations)
 
     CloseHandle(file);
     std::remove(".\\BenchmarkFileLock.txt");
-    return std::chrono::duration_cast<std::chrono::duration<double>>(end - start);
+    return std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1, 1000>>>(end - start);
 }

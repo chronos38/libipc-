@@ -1,7 +1,7 @@
 #include "Header.h"
 #include <cstdint>
 
-std::chrono::duration<double> CallIpcType(ipc::IOBase& iobase, unsigned dataSize, unsigned iterations, CallMethod method)
+std::chrono::duration<double, std::ratio<1, 1000>> CallIpcType(ipc::IOBase& iobase, unsigned dataSize, unsigned iterations, CallMethod method)
 {
     char* buffer = new char[dataSize];
     std::chrono::time_point<std::chrono::high_resolution_clock> start, end;
@@ -32,5 +32,5 @@ std::chrono::duration<double> CallIpcType(ipc::IOBase& iobase, unsigned dataSize
     }
 
     delete buffer;
-    return std::chrono::duration_cast<std::chrono::duration<double>>(end - start);
+    return std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1, 1000>>>(end - start);
 }

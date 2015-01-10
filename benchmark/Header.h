@@ -24,15 +24,15 @@ enum CallMethod {
 
 /*
  */
-std::chrono::duration<double> CallIpcType(ipc::IOBase& iobase, unsigned dataSize, unsigned iterations, CallMethod method);
-std::chrono::duration<double> CallNativePipe(unsigned dataSize, unsigned iterations);
-std::chrono::duration<double> CallNativeMemoryMap(unsigned dataSize, unsigned iterations);
-std::chrono::duration<double> CallNativeSharedMemory(unsigned dataSize, unsigned iterations);
+std::chrono::duration<double, std::ratio<1, 1000>> CallIpcType(ipc::IOBase& iobase, unsigned dataSize, unsigned iterations, CallMethod method);
+std::chrono::duration<double, std::ratio<1, 1000>> CallNativePipe(unsigned dataSize, unsigned iterations, CallMethod method);
+std::chrono::duration<double, std::ratio<1, 1000>> CallNativeMemoryMap(unsigned dataSize, unsigned iterations, CallMethod method);
+std::chrono::duration<double, std::ratio<1, 1000>> CallNativeSharedMemory(unsigned dataSize, unsigned iterations, CallMethod method);
 
 /*
  * Lock/Unlock cycles.
  */
-std::chrono::duration<double> CallIpcFileLock(unsigned iterations);
-std::chrono::duration<double> CallNativeFileLock(unsigned iterations);
+std::chrono::duration<double, std::ratio<1, 1000>> CallIpcFileLock(unsigned iterations);
+std::chrono::duration<double, std::ratio<1, 1000>> CallNativeFileLock(unsigned iterations);
 
 #endif
