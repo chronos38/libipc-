@@ -4,7 +4,8 @@
 using string = std::string;
 
 namespace ipc {
-    NamedPipe::NamedPipe(const string& name, NamedPipeIo io)
+    NamedPipe::NamedPipe(const string& name, NamedPipeIo io) :
+        mConfig(io)
     {
         DWORD config = GENERIC_READ | GENERIC_WRITE;
         auto pipeName = "\\\\.\\pipe\\" + name;
@@ -13,10 +14,10 @@ namespace ipc {
         attr.nLength = sizeof(SECURITY_ATTRIBUTES);
         attr.lpSecurityDescriptor = NULL;
 
-        switch (io) {
-        case NamedPipeIo::Read: config = GENERIC_READ;
-        case NamedPipeIo::Write: config = GENERIC_WRITE;
-        }
+        /*switch (io) {
+        case NamedPipeIo::Read: config = GENERIC_READ; break;
+        case NamedPipeIo::Write: config = GENERIC_WRITE; break;
+        }*/
 
         mHandle = CreateFileA(
             pipeName.c_str(), 
@@ -28,17 +29,17 @@ namespace ipc {
             NULL);
         
         if (mHandle == INVALID_HANDLE) {
-            auto hPipe = CreateNamedPipeA(
+            mPipe = CreateNamedPipeA(
                 pipeName.c_str(),
                 PIPE_ACCESS_DUPLEX,
-                0,
+                PIPE_TYPE_BYTE | PIPE_READMODE_BYTE | PIPE_WAIT,
                 PIPE_UNLIMITED_INSTANCES,
                 65536,
                 65536,
-                PIPE_TYPE_BYTE | PIPE_READMODE_BYTE | PIPE_WAIT,
+                NMPWAIT_WAIT_FOREVER,
                 &attr);
 
-            if (hPipe == INVALID_HANDLE) {
+            if (mPipe == INVALID_HANDLE) {
                 throw NamedPipeException(GetLastErrorString());
             }
 
@@ -50,8 +51,6 @@ namespace ipc {
                 OPEN_EXISTING,
                 FILE_ATTRIBUTE_NORMAL,
                 NULL);
-
-            CloseHandle(hPipe);
         }
 
         if (mHandle == INVALID_HANDLE) {
@@ -61,7 +60,12 @@ namespace ipc {
 
     NamedPipe::~NamedPipe()
     {
+        if (mPipe != INVALID_HANDLE) {
+            DisconnectNamedPipe(mPipe);
+        }
+
         CloseHandle(mHandle);
+        CloseHandle(mPipe);
     }
 
     ByteCount NamedPipe::Write(const char* in, size_t size) const
@@ -112,7 +116,8 @@ namespace ipc {
 
     void NamedPipe::Close()
     {
-
+        CloseHandle(mHandle);
+        mHandle = INVALID_HANDLE;
     }
 
     bool NamedPipe::IsOpen() const

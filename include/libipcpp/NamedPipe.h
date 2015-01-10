@@ -18,8 +18,8 @@
  *  Boston, MA 02110-1301, USA.
  */
 
-#ifndef LIBIPC_PIPE_H
-#define LIBIPC_PIPE_H
+#ifndef LIBIPC_NAMEDPIPE_H
+#define LIBIPC_NAMEDPIPE_H
 
 #ifdef _MSC_VER
 #pragma once
@@ -120,6 +120,7 @@ namespace ipc {
         bool mIsOpen;
 
 #ifdef _MSC_VER
+        IpcHandle mPipe = INVALID_HANDLE;
 #endif
         IpcHandle mHandle = INVALID_HANDLE;
     };
