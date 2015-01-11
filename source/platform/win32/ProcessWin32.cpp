@@ -287,7 +287,7 @@ namespace ipc {
     
     bool Process::IsValid() NOEXCEPT
     {
-        return (mProcessInfo.mHandle != PROCESS_INVALID_HANDLE);
+        return (mProcessInfo.mHandle != PROCESS_INVALID_HANDLE && WaitForSingleObject(mProcessInfo.mHandle, 0) == WAIT_TIMEOUT);
     }
 }
 #endif

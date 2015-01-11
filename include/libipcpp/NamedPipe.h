@@ -47,6 +47,11 @@ namespace ipc {
         virtual ~NamedPipe();
 
         /*!
+         * Initializes the named pipe instance.
+         */
+        void Initialize() throw(NamedPipeException);
+
+        /*!
          *  Writes a block of data to the pipe.
          *
          * \param[in] in The vector containing the data to be written to the pipe
