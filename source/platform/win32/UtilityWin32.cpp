@@ -5,7 +5,7 @@
 namespace ipc {
     bool IsValidFileName(std::string& fileName)
     {
-        return false;
+        return (fileName.find_first_of("\\/") == fileName.npos);
     }
 
     bool IsNumber(const std::string& input)

@@ -130,6 +130,25 @@ namespace ipc {
 #endif
         IpcHandle mHandle = INVALID_HANDLE;
     };
+
+    template <typename Type, typename HandleType = IpcHandle>
+    void SendHandle(const Type& type)
+    {
+        const HandleType handle = type.GetHandle();
+        NamedPipe p("LIBIPC_HANDLE_CONNECTION", NamedPipeIo::Write);
+        p.Initialize();
+        p.Write((const char*)&handle, sizeof(handle));
+    }
+
+    template <typename Type, typename HandleType = IpcHandle>
+    void ReceiveHandle(Type& type)
+    {
+        HandleType handle;
+        NamedPipe p("LIBIPC_HANDLE_CONNECTION", NamedPipeIo::Read);
+        p.Initialize();
+        p.Read((char*)&handle, sizeof(handle));
+        type.SetHandle(handle);
+    }
 }
 
 #ifdef _MSC_VER
