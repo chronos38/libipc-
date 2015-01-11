@@ -47,7 +47,8 @@ namespace ipc {
         virtual ~NamedPipe();
 
         /*!
-         * Initializes the named pipe instance.
+         * Initializes the named pipe instance. This methods blocks until a
+         * second pipe connects to this instance.
          */
         void Initialize() throw(NamedPipeException);
 
@@ -125,7 +126,7 @@ namespace ipc {
         bool mIsOpen;
 
 #ifdef _MSC_VER
-        IpcHandle mPipe = INVALID_HANDLE;
+        const std::string mName = "";
 #endif
         IpcHandle mHandle = INVALID_HANDLE;
     };

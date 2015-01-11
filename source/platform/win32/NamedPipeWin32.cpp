@@ -5,32 +5,34 @@ using string = std::string;
 
 namespace ipc {
     NamedPipe::NamedPipe(const string& name, NamedPipeIo io) :
-        mConfig(io)
+        mName("\\\\.\\pipe\\" + name), mConfig(io)
     {
-        DWORD config = GENERIC_READ | GENERIC_WRITE;
-        auto pipeName = "\\\\.\\pipe\\" + name;
+    }
+
+    NamedPipe::~NamedPipe()
+    {
+        Close();
+    }
+
+    void NamedPipe::Initialize()
+    {
         SECURITY_ATTRIBUTES attr;
         attr.bInheritHandle = TRUE;
         attr.nLength = sizeof(SECURITY_ATTRIBUTES);
         attr.lpSecurityDescriptor = NULL;
 
-        /*switch (io) {
-        case NamedPipeIo::Read: config = GENERIC_READ; break;
-        case NamedPipeIo::Write: config = GENERIC_WRITE; break;
-        }*/
-
         mHandle = CreateFileA(
-            pipeName.c_str(), 
-            config,
-            FILE_SHARE_READ | FILE_SHARE_WRITE,
+            mName.c_str(),
+            GENERIC_READ | GENERIC_WRITE,
+            0,
             &attr,
             OPEN_EXISTING,
-            FILE_ATTRIBUTE_NORMAL,
+            0,
             NULL);
-        
+
         if (mHandle == INVALID_HANDLE) {
-            mPipe = CreateNamedPipeA(
-                pipeName.c_str(),
+            mHandle = CreateNamedPipeA(
+                mName.c_str(),
                 PIPE_ACCESS_DUPLEX,
                 PIPE_TYPE_BYTE | PIPE_READMODE_BYTE | PIPE_WAIT,
                 PIPE_UNLIMITED_INSTANCES,
@@ -39,33 +41,12 @@ namespace ipc {
                 NMPWAIT_WAIT_FOREVER,
                 &attr);
 
-            if (mPipe == INVALID_HANDLE) {
+            if (mHandle == INVALID_HANDLE) {
+                throw NamedPipeException(GetLastErrorString());
+            } else if (!ConnectNamedPipe(mHandle, NULL) && GetLastError() != ERROR_PIPE_CONNECTED) {
                 throw NamedPipeException(GetLastErrorString());
             }
-
-            mHandle = CreateFileA(
-                pipeName.c_str(),
-                config,
-                FILE_SHARE_READ | FILE_SHARE_WRITE,
-                &attr,
-                OPEN_EXISTING,
-                FILE_ATTRIBUTE_NORMAL,
-                NULL);
         }
-
-        if (mHandle == INVALID_HANDLE) {
-            throw NamedPipeException(GetLastErrorString());
-        }
-    }
-
-    NamedPipe::~NamedPipe()
-    {
-        if (mPipe != INVALID_HANDLE) {
-            DisconnectNamedPipe(mPipe);
-        }
-
-        CloseHandle(mHandle);
-        CloseHandle(mPipe);
     }
 
     ByteCount NamedPipe::Write(const char* in, size_t size) const

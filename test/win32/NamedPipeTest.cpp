@@ -3,6 +3,8 @@
 #include <libipcpp\NamedPipe.h>
 #include <libipcpp\Utility.h>
 #include <fstream>
+#include <thread>
+#include <chrono>
 #include "Globals.h"
 
 using namespace ipc;
@@ -35,14 +37,30 @@ TEST_F(NamedPipeTest, Constructor)
         // Act
 
         // Assert
-        ASSERT_TRUE(p.IsOpen());
     } catch (NamedPipeException& e) {
         gLog << "NamedPipeTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
     }
 }
 
-TEST_F(NamedPipeTest, IsOpen)
+TEST_F(NamedPipeTest, Destructor)
+{
+    try {
+        // Arrange
+        NamedPipe* p = new NamedPipe("Test", NamedPipeIo::Read);
+
+        // Act
+        p->~NamedPipe();
+        delete p;
+
+        // Assert
+    } catch (NamedPipeException& e) {
+        gLog << "NamedPipeTest: ERROR: " << e.what();
+        ASSERT_FALSE(true);
+    }
+}
+
+TEST_F(NamedPipeTest, IsOpenFalse)
 {
     try {
         // Arrange
@@ -51,7 +69,30 @@ TEST_F(NamedPipeTest, IsOpen)
         // Act
 
         // Assert
-        ASSERT_TRUE(p.IsOpen());
+        ASSERT_FALSE(p.IsOpen());
+    } catch (NamedPipeException& e) {
+        gLog << "NamedPipeTest: ERROR: " << e.what();
+        ASSERT_FALSE(true);
+    }
+}
+
+TEST_F(NamedPipeTest, IsOpenTrue)
+{
+    try {
+        // Arrange
+        NamedPipe server("Test", NamedPipeIo::Write);
+        NamedPipe client("Test", NamedPipeIo::Read);
+        auto t = std::thread([&] () {
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+            client.Initialize();
+        });
+        server.Initialize();
+
+        // Act
+
+        // Assert
+        ASSERT_TRUE(server.IsOpen());
+        t.join();
     } catch (NamedPipeException& e) {
         gLog << "NamedPipeTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
@@ -62,13 +103,20 @@ TEST_F(NamedPipeTest, Close)
 {
     try {
         // Arrange
-        NamedPipe p("Test", NamedPipeIo::Read);
+        NamedPipe server("Test", NamedPipeIo::Write);
+        NamedPipe client("Test", NamedPipeIo::Read);
+        auto t = std::thread([&] () {
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+            client.Initialize();
+        });
+        server.Initialize();
 
         // Act
-        p.Close();
+        server.Close();
 
         // Assert
-        ASSERT_FALSE(p.IsOpen());
+        ASSERT_FALSE(server.IsOpen());
+        t.join();
     } catch (NamedPipeException& e) {
         gLog << "NamedPipeTest: ERROR: " << e.what();
         ASSERT_FALSE(true);
@@ -79,14 +127,21 @@ TEST_F(NamedPipeTest, ReadWriteData)
 {
     try {
         // Arrange
-        NamedPipe r("Test", NamedPipeIo::Read);
-        NamedPipe w("Test", NamedPipeIo::Write);
+        ByteCount n, m;
         char read[4];
+        NamedPipe server("Test", NamedPipeIo::Write);
+        NamedPipe client("Test", NamedPipeIo::Read);
+        auto t = std::thread([&] () {
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+            client.Initialize();
+            m = client.Read(read, sizeof("abc"));
+        });
+        server.Initialize();
 
         // Act
         memset(read, 0, sizeof(read));
-        auto n = w.Write("abc", sizeof("abc"));
-        auto m = r.Read(read, sizeof("abc"));
+        n = server.Write("abc", sizeof("abc"));
+        t.join();
 
         // Assert
         ASSERT_EQ(4, n);
@@ -102,13 +157,20 @@ TEST_F(NamedPipeTest, ReadWriteByte)
 {
     try {
         // Arrange
-        NamedPipe r("Test", NamedPipeIo::Read);
-        NamedPipe w("Test", NamedPipeIo::Write);
+        int n, m;
         char b;
+        NamedPipe server("Test", NamedPipeIo::Write);
+        NamedPipe client("Test", NamedPipeIo::Read);
+        auto t = std::thread([&] () {
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+            client.Initialize();
+            m = client.ReadByte();
+        });
+        server.Initialize();
 
         // Act
-        auto n = w.WriteByte((char)255);
-        auto m = r.ReadByte();
+        n = server.WriteByte((char)255);
+        t.join();
 
         // Assert
         ASSERT_EQ(1, n);
@@ -123,14 +185,21 @@ TEST_F(NamedPipeTest, ReadWriteFullRange)
 {
     try {
         // Arrange
-        NamedPipe r("Test", NamedPipeIo::Read);
-        NamedPipe w("Test", NamedPipeIo::Write);
+        ByteCount n, m;
         vector<char> write = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
         vector<char> read(write.size(), 0);
+        NamedPipe server("Test", NamedPipeIo::Write);
+        NamedPipe client("Test", NamedPipeIo::Read);
+        auto t = std::thread([&] () {
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+            client.Initialize();
+            m = client.Read(std::begin(read), std::end(read));
+        });
+        server.Initialize();
 
         // Act
-        w.Write(std::begin(write), std::end(write));
-        r.Read(std::begin(read), std::end(read));
+        n = server.Write(std::begin(write), std::end(write));
+        t.join();
 
         // Assert
         for (int i = 0; i < read.size(); i++) {
@@ -146,8 +215,7 @@ TEST_F(NamedPipeTest, ReadWriteSpecificRange)
 {
     try {
         // Arrange
-        NamedPipe r("Test", NamedPipeIo::Read);
-        NamedPipe w("Test", NamedPipeIo::Write);
+        ByteCount n, m;
         vector<char> write = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
         vector<char> read(write.size(), 0);
 
@@ -161,9 +229,18 @@ TEST_F(NamedPipeTest, ReadWriteSpecificRange)
         auto rlast = std::begin(read);
         std::advance(rlast, 6);
 
+        NamedPipe server("Test", NamedPipeIo::Write);
+        NamedPipe client("Test", NamedPipeIo::Read);
+        auto t = std::thread([&] () {
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+            client.Initialize();
+            m = client.Read(rfirst, rlast);
+        });
+        server.Initialize();
+
         // Act
-        auto n = w.Write(wfirst, wlast);
-        auto m = r.Read(rfirst, rlast);
+        n = server.Write(wfirst, wlast);
+        t.join();
 
         // Assert
         ASSERT_EQ(3, n);
@@ -185,8 +262,7 @@ TEST_F(NamedPipeTest, ReadWriteSpecificRangeInteger)
 {
     try {
         // Arrange
-        NamedPipe r("Test", NamedPipeIo::Read);
-        NamedPipe w("Test", NamedPipeIo::Write);
+        ByteCount n, m;
         vector<int> write = { -1000, -1001, -1002, -1003, -1004, -1005, -1006, -1007, -1008, -1009 };
         vector<int> read(write.size(), 0);
 
@@ -200,9 +276,18 @@ TEST_F(NamedPipeTest, ReadWriteSpecificRangeInteger)
         auto rlast = std::begin(read);
         std::advance(rlast, 6);
 
+        NamedPipe server("Test", NamedPipeIo::Write);
+        NamedPipe client("Test", NamedPipeIo::Read);
+        auto t = std::thread([&] () {
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+            client.Initialize();
+            m = client.Read(rfirst, rlast);
+        });
+        server.Initialize();
+
         // Act
-        auto n = w.Write(wfirst, wlast);
-        auto m = r.Read(rfirst, rlast);
+        n = server.Write(wfirst, wlast);
+        t.join();
 
         // Assert
         ASSERT_EQ(sizeof(int) * 3, n);
@@ -224,8 +309,7 @@ TEST_F(NamedPipeTest, ReadWriteSpecificRangeULong)
 {
     try {
         // Arrange
-        NamedPipe r("Test", NamedPipeIo::Read);
-        NamedPipe w("Test", NamedPipeIo::Write);
+        ByteCount n, m;
         vector<unsigned long long> write = { 1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009 };
         vector<unsigned long long> read(write.size(), 0);
 
@@ -239,9 +323,18 @@ TEST_F(NamedPipeTest, ReadWriteSpecificRangeULong)
         auto rlast = std::begin(read);
         std::advance(rlast, 6);
 
+        NamedPipe server("Test", NamedPipeIo::Write);
+        NamedPipe client("Test", NamedPipeIo::Read);
+        auto t = std::thread([&] () {
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+            client.Initialize();
+            m = client.Read(rfirst, rlast);
+        });
+        server.Initialize();
+
         // Act
-        auto n = w.Write(wfirst, wlast);
-        auto m = r.Read(rfirst, rlast);
+        n = server.Write(wfirst, wlast);
+        t.join();
 
         // Assert
         ASSERT_EQ(sizeof(unsigned long long) * 3, n);
