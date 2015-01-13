@@ -24,12 +24,14 @@ TEST_F(NamedPipeTest, NamedPipe_OpensAndCloses_WithoutError)
 {
     if(!fork()) {
         ipc::NamedPipe pipe("Testpipe", ipc::NamedPipeIo::Write);
+        pipe.Initialize();
         ASSERT_TRUE(pipe.IsOpen());
         pipe.Close();
         ASSERT_FALSE(pipe.IsOpen());
         exit(0);
     } else {
         ipc::NamedPipe pipe("Testpipe", ipc::NamedPipeIo::Read);
+        pipe.Initialize();
         ASSERT_TRUE(pipe.IsOpen());
         pipe.Close();
         ASSERT_FALSE(pipe.IsOpen());
@@ -42,11 +44,13 @@ TEST_F(NamedPipeTest, NamedPipe_ChildWritingSingleByte_IsReadableByParentProcess
 {
     if(!fork()) {
         ipc::NamedPipe pipe("Testpipe", ipc::NamedPipeIo::Write);
+        pipe.Initialize();
         pipe.WriteByte('a');
         pipe.Close();
         exit(0);
     } else {
         ipc::NamedPipe pipe("Testpipe", ipc::NamedPipeIo::Read);
+        pipe.Initialize();
         ASSERT_EQ('a',pipe.ReadByte());
         pipe.Close();
         wait(nullptr);
@@ -57,10 +61,12 @@ TEST_F(NamedPipeTest, NamedPipe_ParentWritingSingleByte_IsReadableByChildProcess
 {
     if(!fork()) {
         ipc::NamedPipe pipe("Testpipe", ipc::NamedPipeIo::Read);
+        pipe.Initialize();
         ASSERT_EQ('a',pipe.ReadByte());
         exit(0);
     } else {
         ipc::NamedPipe pipe("Testpipe", ipc::NamedPipeIo::Write);
+        pipe.Initialize();
         pipe.WriteByte('a');
         wait(nullptr);
     }
@@ -71,10 +77,12 @@ TEST_F(NamedPipeTest, NamedPipe_ChildWritingMultipleBytes_IsReadAbleByParentProc
     char buf[30] = {0};
     if(!fork()) {
         ipc::NamedPipe pipe("Testpipe", ipc::NamedPipeIo::Write);
+        pipe.Initialize();
         pipe.Write("0123456789", 10);
         exit(0);
     } else {
         ipc::NamedPipe pipe("Testpipe", ipc::NamedPipeIo::Read);
+        pipe.Initialize();
         pipe.Read(buf,10);
         ASSERT_STREQ("0123456789",buf);
         wait(nullptr);
@@ -87,11 +95,13 @@ TEST_F(NamedPipeTest, NamedPipe_ParentWritingMultipleBytes_IsReadAbleByChildProc
     char buf[30] = {0};
     if(!fork()) {
         ipc::NamedPipe pipe("Testpipe", ipc::NamedPipeIo::Read);
+        pipe.Initialize();
         pipe.Read(buf,10);
         ASSERT_STREQ("0123456789",buf);
         exit(0);
     } else {
         ipc::NamedPipe pipe("Testpipe", ipc::NamedPipeIo::Write);
+        pipe.Initialize();
         pipe.Write("0123456789", 10);
         wait(nullptr);
     }
@@ -105,10 +115,12 @@ TEST_F(NamedPipeTest, NamedPipe_ChildWritingVector_IsReadAbleByParentProcess)
     
     if(!fork()) {
         ipc::NamedPipe pipe("Testpipe", ipc::NamedPipeIo::Write);
+        pipe.Initialize();
         pipe.Write(buf.begin(),buf.end());
         exit(0);
     } else {
         ipc::NamedPipe pipe("Testpipe", ipc::NamedPipeIo::Read);
+        pipe.Initialize();
         pipe.Read(bufRead.begin(),bufRead.end());
         for(int i = 0; i < bufRead.size(); i++) {
             ASSERT_EQ(buf[i], bufRead[i]);
@@ -127,6 +139,7 @@ TEST_F(NamedPipeTest, NamedPipe_ParentWritingVector_IsReadAbleByChildProcess)
     
     if(!fork()) {
         ipc::NamedPipe pipe("Testpipe", ipc::NamedPipeIo::Read);
+        pipe.Initialize();
         pipe.Read(bufRead.begin(),bufRead.end());
         for(int i = 0; i < bufRead.size(); i++) {
             ASSERT_EQ(buf[i], bufRead[i]);
@@ -134,6 +147,7 @@ TEST_F(NamedPipeTest, NamedPipe_ParentWritingVector_IsReadAbleByChildProcess)
         exit(0);
     } else {
         ipc::NamedPipe pipe("Testpipe", ipc::NamedPipeIo::Write);
+        pipe.Initialize();
         pipe.Write(buf.begin(),buf.end());
         wait(nullptr);
     }

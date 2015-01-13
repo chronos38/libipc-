@@ -5,7 +5,8 @@
 #include <sys/stat.h>
 
 ipc::NamedPipe::NamedPipe(const std::string& name, ipc::NamedPipeIo flag) throw(NamedPipeException) :
-    mIsOpen(false)
+    mIsOpen(false),
+    mName(name)
 {
     struct stat info;
     if (lstat(name.c_str(), &info) != 0) {
@@ -14,17 +15,20 @@ ipc::NamedPipe::NamedPipe(const std::string& name, ipc::NamedPipeIo flag) throw(
         } 
     }
     
+    mConfig = flag;
     
-    if (flag == NamedPipeIo::Read)
-        mHandle = open(name.c_str(), O_RDONLY);
-    else if (flag == NamedPipeIo::Write)
-        mHandle = open(name.c_str(), O_WRONLY);
+}
+
+
+void ipc::NamedPipe::Initialize() throw(NamedPipeException)
+{
+    if (mConfig == NamedPipeIo::Read)
+        mHandle = open(mName.c_str(), O_RDONLY);
+    else if (mConfig == NamedPipeIo::Write)
+        mHandle = open(mName.c_str(), O_WRONLY);
     
     if (mHandle != -1)
         mIsOpen = true;
-    
-    mConfig = flag;
-    
 }
 
 ipc::NamedPipe::~NamedPipe()
