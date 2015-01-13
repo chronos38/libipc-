@@ -14,10 +14,6 @@ ipc::NamedPipe::NamedPipe(const std::string& name, ipc::NamedPipeIo flag) throw(
         } 
     }
     
-    if (!S_ISFIFO(info.st_mode)) {
-        throw NamedPipeException("File exists and is not a named pipe!");
-    }
-    
     
     if (flag == NamedPipeIo::Read)
         mHandle = open(name.c_str(), O_RDONLY);
@@ -39,6 +35,7 @@ ipc::NamedPipe::~NamedPipe()
 void ipc::NamedPipe::Close()
 {
     close(mHandle);
+    unlink(mName.c_str());
     mIsOpen = false;
 }
 

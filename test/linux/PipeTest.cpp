@@ -95,7 +95,7 @@ TEST_F(PipeTest, Pipe_ChildWritingVector_IsReadAbleByParentProcess)
         exit(0);
     } else {
         pipe.Read(bufRead.begin(),bufRead.end());
-        for(int i = 0; i <= bufRead.size(); i++) {
+        for(int i = 0; i < bufRead.size(); i++) {
             ASSERT_EQ(buf[i], bufRead[i]);
         }
         wait(nullptr);
@@ -113,7 +113,7 @@ TEST_F(PipeTest, Pipe_ParentWritingVector_IsReadAbleByChildProcess)
     
     if(!fork()) {
         pipe.Read(bufRead.begin(),bufRead.end());
-        for(int i = 0; i <= bufRead.size(); i++) {
+        for(int i = 0; i < bufRead.size(); i++) {
             ASSERT_EQ(buf[i], bufRead[i]);
         }
         exit(0);

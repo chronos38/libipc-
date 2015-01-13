@@ -125,9 +125,8 @@ namespace ipc {
         NamedPipeIo mConfig;
         bool mIsOpen;
 
-#ifdef _MSC_VER
         const std::string mName = "";
-#endif
+        
         IpcHandle mHandle = INVALID_HANDLE;
     };
 
