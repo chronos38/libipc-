@@ -113,6 +113,7 @@
     <ClCompile Include="..\..\source\platform\win32\SharedMemoryWin32.cpp" />
     <ClCompile Include="..\..\source\platform\win32\UtilityWin32.cpp" />
     <ClCompile Include="..\..\source\Process.cpp" />
+    <ClCompile Include="..\..\source\Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\include\libipcpp\platform\win32\MemoryMap.inl" />

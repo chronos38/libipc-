@@ -7,6 +7,9 @@ namespace ipc {
     NamedPipe::NamedPipe(const string& name, NamedPipeIo io) :
         mName("\\\\.\\pipe\\" + name), mConfig(io)
     {
+        if (!IsValidFileName(name)) {
+            throw NamedPipeException("Name ist invalid. \\ and / are not allowed.");
+        }
     }
 
     NamedPipe::~NamedPipe()

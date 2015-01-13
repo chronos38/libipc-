@@ -1,6 +1,6 @@
 #include "../include/libipcpp/Utility.h"
 #include <algorithm>
-
+#include <cctype>
 
 namespace ipc {
 
@@ -10,9 +10,9 @@ namespace ipc {
             [](char c) {return !std::isdigit(c); }) == input.end();
     }
 
-    bool IsValidFileName(std::string& fileName)
+    bool IsValidFileName(const std::string& fileName)
     {
-        return true;
+        return (fileName.find_first_of("\\/") == fileName.npos);
     }
 
     void SplitString(const std::string& str,

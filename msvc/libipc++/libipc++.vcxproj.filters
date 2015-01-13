@@ -125,9 +125,6 @@
     <ClCompile Include="..\..\source\platform\win32\PipeWin32.cpp">
       <Filter>Source Files\Win32</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\platform\win32\UtilityWin32.cpp">
-      <Filter>Source Files\Win32</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\source\platform\win32\DefinitionsWin32.cpp">
       <Filter>Source Files\Win32</Filter>
     </ClCompile>
@@ -150,6 +147,12 @@
       <Filter>Source Files\Exception</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\platform\win32\NamedPipeWin32.cpp">
+      <Filter>Source Files\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Utility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\platform\win32\UtilityWin32.cpp">
       <Filter>Source Files\Win32</Filter>
     </ClCompile>
   </ItemGroup>

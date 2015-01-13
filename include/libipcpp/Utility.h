@@ -33,9 +33,9 @@ namespace ipc {
      * Checks if a filename is compatible with Windows
      *
      * \params[in] fileName The filename that should be checked
-     * \returns TRUE if the filename was OK, else FALSE
+     * \returns TRUE if the filename is OK, else FALSE
      */
-    LIBIPC_API bool IsValidFileName(std::string& fileName);
+    LIBIPC_API bool IsValidFileName(const std::string& fileName);
     /*!
      * Checks wether a string is solely composed of numbers.
      * 

@@ -3,7 +3,7 @@
 #include "libipcpp\Utility.h"
 
 namespace ipc {
-    bool IsValidFileName(std::string& fileName)
+    /*bool IsValidFileName(const std::string& fileName)
     {
         return (fileName.find_first_of("\\/") == fileName.npos);
     }
@@ -23,7 +23,7 @@ namespace ipc {
                 tokens.push_back(str.substr(pn, n - pn));
             }
         }
-    }
+    }*/
 
     std::string GetLastErrorString()
     {
