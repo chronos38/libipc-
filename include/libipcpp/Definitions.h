@@ -41,6 +41,12 @@ namespace ipc {
     static const IpcHandle INVALID_HANDLE = INVALID_HANDLE_VALUE;
     //! Native process handle
     typedef HANDLE ProcessHandle;
+    typedef IpcHandle PipeHandle;
+    typedef IpcHandle NamedPipeHandle;
+    typedef IpcHandle MemoryMapHandle;
+    typedef IpcHandle SharedMemoryHandle;
+    typedef IpcHandle FileLockHandle;
+    typedef IpcHandle SemaphoreHandle;
     //! Native process invalid handle
     static const ProcessHandle PROCESS_INVALID_HANDLE = INVALID_HANDLE_VALUE;
     //! Native byte count type
