@@ -20,6 +20,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "benchmark", "benchmark\benc
 		{AB304838-172F-4528-9466-44E3CC32E09F} = {AB304838-172F-4528-9466-44E3CC32E09F}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestReader", "TestReader\TestReader.vcxproj", "{C3381FD8-5525-4685-A751-46D89FFA6D2F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestWriter", "TestWriter\TestWriter.vcxproj", "{A0A7AA05-909D-4EC5-A940-B60F651FF884}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -42,6 +46,14 @@ Global
 		{E62B99A5-3911-4551-997A-5EC9F2EB2823}.Debug|Win32.Build.0 = Debug|Win32
 		{E62B99A5-3911-4551-997A-5EC9F2EB2823}.Release|Win32.ActiveCfg = Release|Win32
 		{E62B99A5-3911-4551-997A-5EC9F2EB2823}.Release|Win32.Build.0 = Release|Win32
+		{C3381FD8-5525-4685-A751-46D89FFA6D2F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C3381FD8-5525-4685-A751-46D89FFA6D2F}.Debug|Win32.Build.0 = Debug|Win32
+		{C3381FD8-5525-4685-A751-46D89FFA6D2F}.Release|Win32.ActiveCfg = Release|Win32
+		{C3381FD8-5525-4685-A751-46D89FFA6D2F}.Release|Win32.Build.0 = Release|Win32
+		{A0A7AA05-909D-4EC5-A940-B60F651FF884}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A0A7AA05-909D-4EC5-A940-B60F651FF884}.Debug|Win32.Build.0 = Debug|Win32
+		{A0A7AA05-909D-4EC5-A940-B60F651FF884}.Release|Win32.ActiveCfg = Release|Win32
+		{A0A7AA05-909D-4EC5-A940-B60F651FF884}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
